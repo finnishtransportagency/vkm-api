@@ -1,5 +1,7 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
+import fi.livi.vkm.util.VkmUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +33,11 @@ public class ReverseGeocodeRequest extends VkmData {
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject params = array.getJSONObject(i);
 				
-                result[i] = new InParameters(params.getString(JSON_TUNNISTE),
-                            params.getDouble(JSON_X),
-							params.getDouble(JSON_Y),
-							params.getInt(JSON_SADE),
-                            params.getString(JSON_PALAUTUSARVOT)
+                result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+                params.getDouble(JSON_X),
+				params.getDouble(JSON_Y),
+				VkmUtil.getJsonInteger(params, JSON_SADE),
+                VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
                 
                 
                 

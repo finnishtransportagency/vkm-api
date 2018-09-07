@@ -150,6 +150,8 @@ public class InParameters {
                 list.add(scanner.nextInt());
                 }
                 scanner.close();
+        } else {
+            list = null;
         }
 		return list;
 	}
