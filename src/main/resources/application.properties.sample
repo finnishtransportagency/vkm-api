@@ -1,0 +1,11 @@
+server.port = 8889
+
+# jdbc.X
+fi.livi.vkm.jdbc.driverClassName=oracle.jdbc.OracleDriver
+fi.livi.vkm.jdbc.url=jdbc:oracle:thin:@<ip>:<port>/<sn>
+fi.livi.vkm.jdbc.user=<user>
+fi.livi.vkm.jdbc.pass=<password>
+
+# hibernate.X
+fi.livi.vkm.hibernate.dialect=org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect
+fi.livi.vkm.hibernate.show_sql=true
