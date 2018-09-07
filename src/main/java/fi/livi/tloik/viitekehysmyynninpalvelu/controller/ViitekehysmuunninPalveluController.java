@@ -262,7 +262,7 @@ public class ViitekehysmuunninPalveluController {
                     }
                     if(tilannepvm != null && kohdepvm != null) {
                 		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, tilannepvm, kohdepvm);
-                		//TODO: Add this to the result System.out.println(kohde);
+                		tulos.setTieosoite(kohde);
                 	}
                     out.add(tulos);
                 }
