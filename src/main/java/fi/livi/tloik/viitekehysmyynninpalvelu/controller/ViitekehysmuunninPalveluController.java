@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.format.annotation;
 
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
@@ -53,18 +54,37 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "x", required = true) Double x,
             @RequestParam(name = "y", required = true) Double y,
             @RequestParam(name = "z", required = false) Double z,
+            @RequestParam(name = "tie", required = false) Integer tie,
+            @RequestParam(name = "osa", required = false) Integer osa,
+            @RequestParam(name = "ajorata", required = false) List<Integer> ajoradat,
+            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
+                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
                 if(sade == null){
                     sade = DEFAULT_SADE;
                 }
                 if(z == null){
                     z = 0.0;
                 }
+                if(z_loppu == null){
+                    z_loppu = 0.0;
+                }
+
+                VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
+
+                if (x_loppu != null && y_loppu != null && z_loppu != null){
+                    VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
+                    tulos.setX(loppu.getX());
+                    tulos.setY(loppu.getY());
+                    tulos.setZ(loppu.getZ());
+                    tulos.setDistance(loppu.getDistance());
+                }
                 
-                
-        return palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), vaylan_luonne, sade, palautusarvot).orElse(null).toString();
+        return tulos.toString();
     }
 
     @RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
@@ -93,13 +113,13 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "ajorata", required = false) List<Integer> ajoradat,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
-        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
+        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
         int alkuOsa = Optional.ofNullable(osa).orElse(0);
         int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(0);
         int loppuOsa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
         int loppuEtaisyys = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
         if(sade == null){
-            sade = 500;
+            sade = DEFAULT_SADE;
         }
         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
                 loppuOsa, loppuEtaisyys, notNullAjoradat, sade, palautusarvot);
@@ -113,6 +133,9 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "katunumero", required = true) Integer katunumero,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot ) throws VkmVirheException {
+                if(sade == null){
+                    sade = DEFAULT_SADE;
+                }
         List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(tunniste,kunta,katunimi,katunumero,sade,palautusarvot);
         return geocode.toString();
     }
@@ -123,6 +146,9 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "y", required = true) Double y,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
+                if(sade == null){
+                    sade = DEFAULT_SADE;
+                }
         return palveluNG.reverseGeocode(tunniste,x,y,sade,palautusarvot).orElse(null).toString();
     }
 
@@ -135,6 +161,9 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "x", required = false) Double x,
             @RequestParam(name = "y", required = false) Double y,
             @RequestParam(name = "z", required = false) Double z,
+            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "tie", required = false) Integer tie,
             @RequestParam(name = "osa", required = false) Integer osa,
@@ -147,6 +176,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "katunimi", required = false) String katunimi,
             @RequestParam(name = "katunumero", required = false) Integer katunumero,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
+                
 
                 if(sade == null){
                     sade = DEFAULT_SADE;
@@ -154,10 +184,23 @@ public class ViitekehysmuunninPalveluController {
                 if(z == null){
                     z = 0.0;
                 }
+                if(z_loppu == null){
+                    z_loppu = 0.0;
+                }
 
             //haun valinta parametrien perusteella
             if("xyhaku".equalsIgnoreCase(haku)){
-                return palveluNG.xyTieosoiteHaku(tunniste,doublesToPoint(x, y, z), vaylan_luonne, sade,palautusarvot).orElse(null).toString();
+                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
+                VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
+
+                if (x_loppu != null && y_loppu != null && z_loppu != null){
+                    VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
+                    tulos.setX(loppu.getX());
+                    tulos.setY(loppu.getY());
+                    tulos.setZ(loppu.getZ());
+                    tulos.setDistance(loppu.getDistance());
+                }
+                return tulos.toString();
             }
             if("tieosoitehaku".equalsIgnoreCase(haku)){
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
@@ -193,9 +236,9 @@ public class ViitekehysmuunninPalveluController {
     public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
         @RequestParam(name = "json", required = true) String json,
         @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
-        @RequestParam(name = "tilannepvm", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate tilannepvm,
-        @RequestParam(name = "tilannepvmloppu", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate tilannepvmloppu,
-        @RequestParam(name = "kohdepvm", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate kohdepvm) throws VkmVirheException {
+        @RequestParam(name = "tilannepvm", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate tilannepvm,
+        @RequestParam(name = "tilannepvmloppu", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate tilannepvmloppu,
+        @RequestParam(name = "kohdepvm", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate kohdepvm) throws VkmVirheException {
 
 
             VkmRequest vkmreq = new VkmRequest(haku,json);
@@ -206,12 +249,22 @@ public class ViitekehysmuunninPalveluController {
             if("xyhaku".equalsIgnoreCase(haku)){
                 
                 for(int i=0;i<data.length;i++){
-                	VkmTieosoite tilanne = palveluNG.xyTieosoiteHaku(data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].vaylat, data[i].sade,data[i].palautusarvot).orElse(null);
-                	if(tilannepvm != null && kohdepvm != null) {
-                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tilanne, tilannepvm, kohdepvm);
+                    VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(
+                        data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade,data[i].palautusarvot).orElse(null);
+
+                    if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
+                        VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
+                            data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].palautusarvot).orElse(null);
+                        tulos.setX(loppu.getX());
+                        tulos.setY(loppu.getY());
+                        tulos.setZ(loppu.getZ());
+                        tulos.setDistance(loppu.getDistance());
+                    }
+                    if(tilannepvm != null && kohdepvm != null) {
+                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, tilannepvm, kohdepvm);
                 		//TODO: Add this to the result System.out.println(kohde);
                 	}
-                    out.add(tilanne);
+                    out.add(tulos);
                 }
                 return out.toString();
                 

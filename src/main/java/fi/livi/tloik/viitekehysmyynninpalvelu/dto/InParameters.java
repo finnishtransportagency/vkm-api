@@ -1,17 +1,12 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.dto;
 
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.Coordinates;
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.Tieosoite;
-
 import java.time.LocalDate;
-import java.util.List;
-import org.assertj.core.util.Lists;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
-import java.util.Optional;
-
-import fi.livi.vkm.util.VkmUtil;
+import org.assertj.core.util.Lists;
 
 
 public class InParameters {
@@ -21,6 +16,9 @@ public class InParameters {
     public Double x;
     public Double y;
     public Double z;
+    public Double x_loppu;
+    public Double y_loppu;
+    public Double z_loppu;
     public String koordinaatisto;
 
     public Integer tie;
@@ -71,7 +69,7 @@ public class InParameters {
     }
 
     //xyhaku
-    public InParameters( String tunniste, Double x, Double y, Double z, Integer sade, String vaylat, String palautusarvot){
+    public InParameters( String tunniste, Double x, Double y, Double z, Integer tie, Integer osa, String ajoradat, Double x_loppu, Double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot){
         if(sade == null){
             this.sade = DEFAULT_SADE;
         } else {
@@ -85,6 +83,15 @@ public class InParameters {
         
         this.x = x;
         this.y = y;
+
+        this.tie = tie;
+        this.osa = osa;
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
+        this.ajoradat = notNullAjoradat;
+
+        this.x_loppu = x_loppu;
+        this.y_loppu = y_loppu;
+        this.z_loppu = z_loppu;
         
         //muuntaa stringin interger listiksi tulevaa hakau varten
         this.vaylat = toIntegerList(vaylat);
@@ -99,7 +106,7 @@ public class InParameters {
         this.tie = tie;
         this.osa = osa;
         this.etaisyys = etaisyys;
-        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.emptyList();
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
         this.ajoradat = notNullAjoradat;
         if(sade == null){
             this.sade = DEFAULT_SADE;
@@ -115,7 +122,7 @@ public class InParameters {
         this.tie = tie;
         this.osa = Optional.ofNullable(osa).orElse(0);
         this.etaisyys = Optional.ofNullable(etaisyys).orElse(0);
-        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.emptyList();
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
         this.ajoradat = notNullAjoradat;
         this.losa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
         this.let = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
@@ -136,14 +143,14 @@ public class InParameters {
 	 * @return
 	 */
 	public static List<Integer> toIntegerList(String test){
-
-		Scanner scanner = new Scanner(test);
-		List<Integer> list = new ArrayList<Integer>();
-		while (scanner.hasNextInt()) {
-    	list.add(scanner.nextInt());
-		}
-		scanner.close();
-
+        List<Integer> list = new ArrayList<Integer>();
+        if(test != null){
+            Scanner scanner = new Scanner(test);
+            while (scanner.hasNextInt()) {
+                list.add(scanner.nextInt());
+                }
+                scanner.close();
+        }
 		return list;
 	}
 

@@ -18,7 +18,7 @@ public abstract class VkmData {
 
 	protected static final String JSON_LET = "let";
 
-	protected static final String JSON_AJORATA = "ajorata";
+	protected static final String JSON_AJORATA = "ajoradat";
 
 	protected static final String JSON_VALIMATKA = "valimatka";
 
@@ -27,6 +27,12 @@ public abstract class VkmData {
 	protected static final String JSON_Y = "y";
 
 	protected static final String JSON_Z = "z";
+
+	protected static final String JSON_X_LOPPU = "x_loppu";
+
+	protected static final String JSON_Y_LOPPU = "y_loppu";
+
+	protected static final String JSON_Z_LOPPU = "z_loppu";
 
 	protected static final String JSON_SADE = "sade";
 	

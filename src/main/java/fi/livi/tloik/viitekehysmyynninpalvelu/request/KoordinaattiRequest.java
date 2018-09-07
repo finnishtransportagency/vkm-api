@@ -1,5 +1,7 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
+import fi.livi.vkm.util.VkmUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,41 +13,56 @@ public class KoordinaattiRequest extends VkmData{
 	private double x;
 	private double y;
 	private Double z;
+	private Integer tie;
+	private Integer osa;
+	private String ajoradat;
+	private double x_loppu;
+	private double y_loppu;
+	private Double z_loppu;
 	private Integer sade;
 	private String vaylat;
 	private String palautusarvot;
 
-	public KoordinaattiRequest(String tunniste, double x, double y, Double z,Integer sade, String vaylat, String palautusarvot) {
+	public KoordinaattiRequest(String tunniste, double x, double y, Double z, Integer tie, Integer osa, String ajoradat, double x_loppu, double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot) {
 		super(tunniste);
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.tie = tie;
+		this.osa = osa;
+		this.ajoradat = ajoradat;
+		this.x_loppu = x_loppu;
+		this.y_loppu = y_loppu;
+		this.z_loppu = z_loppu;
 		this.sade = sade;
 		this.vaylat = vaylat;
 		this.palautusarvot = palautusarvot;
 	}
 
-
+	
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
 			JSONArray array = jsonData.getJSONArray("");
-		
 			InParameters[] result = new InParameters[array.length()];
 		
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject params = array.getJSONObject(i);
-				
 				result[i] = new InParameters(params.getString(JSON_TUNNISTE),
 							params.getDouble(JSON_X),
                             params.getDouble(JSON_Y),
-							params.getDouble(JSON_Z),
+							VkmUtil.getJsonDouble(params, JSON_Z),
+							VkmUtil.getJsonInteger(params, JSON_TIE),
+							VkmUtil.getJsonInteger(params, JSON_OSA),
+							VkmUtil.getJsonString(params, JSON_AJORATA),
+							VkmUtil.getJsonDouble(params, JSON_X_LOPPU),
+                            VkmUtil.getJsonDouble(params, JSON_Y_LOPPU),
+							VkmUtil.getJsonDouble(params, JSON_Z_LOPPU),
 							params.getInt(JSON_SADE),
 							params.getString(JSON_VAYLAT),
 							params.getString(JSON_PALAUTUSARVOT)
 							
                 
                 );
-				
 			}
 			return result;
 		}catch (Exception e){
