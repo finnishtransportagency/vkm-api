@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
 
-                    def pom = readMavenPom(file: 'vkm-spring-boot/pom.xml')
+                    def pom = readMavenPom(file: 'pom.xml')
 
                     def deploy_target = get_environment()
 
@@ -85,7 +85,7 @@ pipeline {
                         choice(choices: group_id, description: "Group ID", name: "group_id")
                     ]
 
-                    def config = "vkm-spring-boot/src/main/resources/application.properties"
+                    def config = "src/main/resources/application.properties"
 
                     STAGE_BUILD_CMD = [
                         "sed -i 's/DB_JDBC_CRED_USR/${env.DB_JDBC_CRED_USR}/g' ${config}",
@@ -96,14 +96,14 @@ pipeline {
                         "sed -i 's/DB_TR_URL/${env.DB_TR_URL}/g' ${config}",
                         [
                             "mvn",
-                            "-f", "vkm-spring-boot/pom.xml",
+                            "-f", "pom.xml",
                             "versions:set",
                             "-DnewVersion=${artifact_version}",
                             "--batch-mode"
                         ].join(" "),
                         [
                             "mvn",
-                            "-f", "vkm-spring-boot/pom.xml",
+                            "-f", "pom.xml",
                             "clean",
                             "install",
                             "--batch-mode"
@@ -115,8 +115,8 @@ pipeline {
                     STAGE_PUBLISH_CMD = [
                         "mvn",
                         "deploy:deploy-file",
-                        "-Dfile=vkm-spring-boot/${filename}",
-                        "-DpomFile=vkm-spring-boot/pom.xml",
+                        "-Dfile=${filename}",
+                        "-DpomFile=pom.xml",
                         "-DrepositoryId=nexus3",
                         "-Durl=${repository_url}",
                         "--batch-mode"
@@ -183,7 +183,7 @@ pipeline {
                 }
             }
             steps {
-                sh "cp /data1/ci/{maven,python}/* vkm-spring-boot/ci/confs/"
+                sh "cp /data1/ci/{maven,python}/* ci/confs/"
                 script {
                     def jenkins_uid = sh(returnStdout: true, script: "id -u").trim()
                     def build_args = [
@@ -193,12 +193,12 @@ pipeline {
                         "--build-arg JENKINS_UID=${jenkins_uid}"
                     ].join(" ")
                     docker.build(
-                        "ptpapp-vkm-spring-boot-maven",
-                        "${build_args} -f vkm-spring-boot/ci/Dockerfile.maven vkm-spring-boot/ci"
+                        "ptpapp-vkm-api-maven",
+                        "${build_args} -f ci/Dockerfile.maven ci"
                     )
                     docker.build(
-                        "ptpapp-vkm-spring-boot-python",
-                        "${build_args} -f vkm-spring-boot/ci/Dockerfile.python vkm-spring-boot/ci"
+                        "ptpapp-vkm-api-python",
+                        "${build_args} -f ci/Dockerfile.python ci"
                     )
                 }
             }
@@ -214,7 +214,7 @@ pipeline {
         stage("Build") {
             agent {
                 docker {
-                    image "ptpapp-vkm-spring-boot-maven"
+                    image "ptpapp-vkm-api-maven"
                     reuseNode true
                 }
             }
@@ -271,7 +271,7 @@ pipeline {
         stage("Publish") {
             agent {
                 docker {
-                    image "ptpapp-vkm-spring-boot-maven"
+                    image "ptpapp-vkm-api-maven"
                     reuseNode true
                 }
             }
