@@ -29,7 +29,7 @@ public class GeocodeRequest extends VkmData {
 
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("");
+			JSONArray array = jsonData.getJSONArray("geocode");
 		
 			InParameters[] result = new InParameters[array.length()];
 		

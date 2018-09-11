@@ -42,7 +42,7 @@ public class KoordinaattiRequest extends VkmData{
 	
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("");
+			JSONArray array = jsonData.getJSONArray("xyhaku");
 			InParameters[] result = new InParameters[array.length()];
 		
 			for (int i = 0; i < array.length(); i++) {

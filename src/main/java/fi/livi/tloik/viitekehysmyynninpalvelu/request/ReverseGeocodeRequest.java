@@ -26,7 +26,7 @@ public class ReverseGeocodeRequest extends VkmData {
 
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("");
+			JSONArray array = jsonData.getJSONArray("reversegeocode");
 		
 			InParameters[] result = new InParameters[array.length()];
 		

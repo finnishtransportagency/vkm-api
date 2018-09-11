@@ -56,7 +56,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "z", required = false) Double z,
             @RequestParam(name = "tie", required = false) Integer tie,
             @RequestParam(name = "osa", required = false) Integer osa,
-            @RequestParam(name = "ajorata", required = false) List<Integer> ajoradat,
+            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
             @RequestParam(name = "x_loppu", required = false) Double x_loppu,
             @RequestParam(name = "y_loppu", required = false) Double y_loppu,
             @RequestParam(name = "z_loppu", required = false) Double z_loppu,
@@ -93,7 +93,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "osa", required = true) Integer osa,
             @RequestParam(name = "etaisyys", required = true) Integer etaisyys,
             @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "ajorata", required = false) List<Integer> ajoradat,
+            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
         if(sade == null){
@@ -111,7 +111,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "losa", required = false) Integer losa,
             @RequestParam(name = "let", required = false) Integer let,
             @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "ajorata", required = false) List<Integer> ajoradat,
+            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
         int alkuOsa = Optional.ofNullable(osa).orElse(0);
