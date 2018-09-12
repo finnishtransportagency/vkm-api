@@ -85,7 +85,7 @@ pipeline {
                         choice(choices: group_id, description: "Group ID", name: "group_id")
                     ]
 
-                    def config = "src/main/resources/application.properties"
+                    def config = "src/main/resources/application-ci.properties"
 
                     STAGE_BUILD_CMD = [
                         "sed -i 's/DB_JDBC_CRED_USR/${env.DB_JDBC_CRED_USR}/g' ${config}",
