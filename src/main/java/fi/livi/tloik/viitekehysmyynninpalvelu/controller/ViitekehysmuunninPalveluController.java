@@ -5,16 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.VkmRequest;
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
-
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,14 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 //import org.springframework.format.annotation;
 
+import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
+import fi.livi.tloik.viitekehysmyynninpalvelu.request.VkmRequest;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.VkmTieosoite;
 import fi.livi.vkm.util.TrDbUtil;
 import fi.livi.vkm.util.VkmUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Tämä on tehty testausta varten.
@@ -235,10 +229,7 @@ public class ViitekehysmuunninPalveluController {
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
     public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
         @RequestParam(name = "json", required = true) String json,
-        @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
-        @RequestParam(name = "tilannepvm", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate tilannepvm,
-        @RequestParam(name = "tilannepvmloppu", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate tilannepvmloppu,
-        @RequestParam(name = "kohdepvm", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate kohdepvm) throws VkmVirheException {
+        @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
 
 
             VkmRequest vkmreq = new VkmRequest(haku,json);
@@ -260,8 +251,11 @@ public class ViitekehysmuunninPalveluController {
                         tulos.setZ(loppu.getZ());
                         tulos.setDistance(loppu.getDistance());
                     }
-                    if(tilannepvm != null && kohdepvm != null) {
-                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, tilannepvm, kohdepvm);
+                    if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
+                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
+                		tulos.setTieosoite(kohde);
+                	} else {
+                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
                 		tulos.setTieosoite(kohde);
                 	}
                     out.add(tulos);
@@ -275,7 +269,15 @@ public class ViitekehysmuunninPalveluController {
                     List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku
                     (data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys, Lists.newArrayList(data[i].ajoradat),data[i].sade,data[i].palautusarvot);
                     for(int j=0;j<pistemainenTieosoiteHaku.size();j++){
-                        out.add(pistemainenTieosoiteHaku.get(j));
+                    	VkmTieosoite tulos = pistemainenTieosoiteHaku.get(j);
+                    	if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
+                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
+                    		tulos.setTieosoite(kohde);
+                    	} else {
+                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
+                    		tulos.setTieosoite(kohde);
+                    	}
+                        out.add(tulos);
                     }
                     
                 }

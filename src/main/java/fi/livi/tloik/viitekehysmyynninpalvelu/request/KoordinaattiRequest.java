@@ -1,12 +1,13 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
-import fi.livi.vkm.util.VkmUtil;
+import java.time.LocalDate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
+import fi.livi.vkm.util.VkmUtil;
 
 public class KoordinaattiRequest extends VkmData{
 
@@ -15,6 +16,8 @@ public class KoordinaattiRequest extends VkmData{
 	private Double z;
 	private Integer tie;
 	private Integer osa;
+	private LocalDate tilannepvm;
+	private LocalDate kohdepvm;
 	private String ajoradat;
 	private double x_loppu;
 	private double y_loppu;
@@ -54,6 +57,8 @@ public class KoordinaattiRequest extends VkmData{
 							VkmUtil.getJsonInteger(params, JSON_TIE),
 							VkmUtil.getJsonInteger(params, JSON_OSA),
 							VkmUtil.getJsonString(params, JSON_AJORATA),
+							VkmUtil.getJsonLocalDate(params, JSON_TILANNEPVM),
+							VkmUtil.getJsonLocalDate(params, JSON_KOHDEPVM),
 							VkmUtil.getJsonDouble(params, JSON_X_LOPPU),
                             VkmUtil.getJsonDouble(params, JSON_Y_LOPPU),
 							VkmUtil.getJsonDouble(params, JSON_Z_LOPPU),

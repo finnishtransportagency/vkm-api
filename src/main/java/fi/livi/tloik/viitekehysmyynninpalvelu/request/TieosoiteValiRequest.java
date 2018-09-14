@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
+import fi.livi.vkm.util.VkmUtil;
 
 public class TieosoiteValiRequest extends VkmData {
 
@@ -43,6 +44,8 @@ public class TieosoiteValiRequest extends VkmData {
                             params.getInt(JSON_OSA),
                             params.getInt(JSON_ETAISYYS), 
 							params.getString(JSON_AJORATA),
+							VkmUtil.getJsonLocalDate(params, JSON_TILANNEPVM),
+							VkmUtil.getJsonLocalDate(params, JSON_KOHDEPVM),
 							params.getInt(JSON_LOSA),
                             params.getInt(JSON_LET),
 							params.getInt(JSON_SADE),

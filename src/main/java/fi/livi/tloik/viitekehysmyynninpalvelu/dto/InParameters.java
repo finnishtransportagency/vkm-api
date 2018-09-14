@@ -27,6 +27,8 @@ public class InParameters {
     public Integer losa;
     public Integer let;
     public List<Integer> ajoradat;
+    public LocalDate tilannepvm;
+    public LocalDate kohdepvm;
 
     public Integer sade;
     public List<Integer> vaylat;
@@ -37,8 +39,6 @@ public class InParameters {
     public Integer kuntakoodi;
     public String katunimi;
     public Integer katunumero;
-
-    public LocalDate kohdepvm;
 
 
     //reversegeocode
@@ -69,7 +69,7 @@ public class InParameters {
     }
 
     //xyhaku
-    public InParameters( String tunniste, Double x, Double y, Double z, Integer tie, Integer osa, String ajoradat, Double x_loppu, Double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot){
+    public InParameters( String tunniste, Double x, Double y, Double z, Integer tie, Integer osa, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Double x_loppu, Double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot){
         if(sade == null){
             this.sade = DEFAULT_SADE;
         } else {
@@ -86,6 +86,8 @@ public class InParameters {
 
         this.tie = tie;
         this.osa = osa;
+        this.tilannepvm = tilannepvm;
+        this.kohdepvm = kohdepvm;
         List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
         this.ajoradat = notNullAjoradat;
 
@@ -100,12 +102,14 @@ public class InParameters {
     }
 
     //tieosoitehaku
-    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, Integer sade, String palautusarvot){
+    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer sade, String palautusarvot){
         
         this.tunniste = tunniste;
         this.tie = tie;
         this.osa = osa;
         this.etaisyys = etaisyys;
+        this.tilannepvm = tilannepvm;
+        this.kohdepvm = kohdepvm;
         List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
         this.ajoradat = notNullAjoradat;
         if(sade == null){
@@ -117,11 +121,13 @@ public class InParameters {
     }
 
     //tieosoitevali
-    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, Integer losa, Integer let, Integer sade, String palautusarvot){
+    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer losa, Integer let, Integer sade, String palautusarvot){
         this.tunniste = tunniste;
         this.tie = tie;
         this.osa = Optional.ofNullable(osa).orElse(0);
         this.etaisyys = Optional.ofNullable(etaisyys).orElse(0);
+        this.tilannepvm = tilannepvm;
+        this.kohdepvm = kohdepvm;
         List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
         this.ajoradat = notNullAjoradat;
         this.losa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);

@@ -21,6 +21,10 @@ public abstract class VkmData {
 	protected static final String JSON_AJORATA = "ajoradat";
 
 	protected static final String JSON_VALIMATKA = "valimatka";
+	
+	protected static final String JSON_TILANNEPVM = "tilannepvm";
+	
+	protected static final String JSON_KOHDEPVM = "kohdepvm";
 
 	protected static final String JSON_X = "x";
 

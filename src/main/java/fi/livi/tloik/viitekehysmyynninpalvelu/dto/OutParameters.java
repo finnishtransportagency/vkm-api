@@ -25,6 +25,7 @@ public class OutParameters {
     public Integer maakunta;
     public Integer urakka_alue;
 
+    public String tilannepvm;
     public String kohdepvm;
     public String tunniste;
 

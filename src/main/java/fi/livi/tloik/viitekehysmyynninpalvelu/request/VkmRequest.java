@@ -1,20 +1,11 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
-import fi.livi.vkm.VkmVirheException;
-
-
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.GeocodeRequest;
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.KoordinaattiRequest;
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.ReverseGeocodeRequest;
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.TieosoiteRequest;
-import fi.livi.tloik.viitekehysmyynninpalvelu.request.TieosoiteValiRequest;
+import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
+import fi.livi.vkm.VkmVirheException;
 
 public class VkmRequest {
 

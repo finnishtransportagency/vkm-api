@@ -1,7 +1,5 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.dto;
 
-import java.util.List;
-
 public class TieosoiteVali extends Tieosoite{
     
     public Integer losa;
