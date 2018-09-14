@@ -28,7 +28,7 @@ public class TieosoiteRequest extends VkmData {
 
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("");
+			JSONArray array = jsonData.getJSONArray("tieosoitehaku");
 		
 			InParameters[] result = new InParameters[array.length()];
 		

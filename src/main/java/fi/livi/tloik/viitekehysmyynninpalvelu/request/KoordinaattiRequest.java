@@ -45,28 +45,26 @@ public class KoordinaattiRequest extends VkmData{
 	
     public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("");
+			JSONArray array = jsonData.getJSONArray("xyhaku");
 			InParameters[] result = new InParameters[array.length()];
 		
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject params = array.getJSONObject(i);
-				result[i] = new InParameters(params.getString(JSON_TUNNISTE),
-							params.getDouble(JSON_X),
-                            params.getDouble(JSON_Y),
-							VkmUtil.getJsonDouble(params, JSON_Z),
-							VkmUtil.getJsonInteger(params, JSON_TIE),
-							VkmUtil.getJsonInteger(params, JSON_OSA),
-							VkmUtil.getJsonString(params, JSON_AJORATA),
-							VkmUtil.getJsonLocalDate(params, JSON_TILANNEPVM),
-							VkmUtil.getJsonLocalDate(params, JSON_KOHDEPVM),
-							VkmUtil.getJsonDouble(params, JSON_X_LOPPU),
-                            VkmUtil.getJsonDouble(params, JSON_Y_LOPPU),
-							VkmUtil.getJsonDouble(params, JSON_Z_LOPPU),
-							params.getInt(JSON_SADE),
-							params.getString(JSON_VAYLAT),
-							params.getString(JSON_PALAUTUSARVOT)
-							
-                
+				result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+				params.getDouble(JSON_X),
+				params.getDouble(JSON_Y),
+				VkmUtil.getJsonDouble(params, JSON_Z),
+				VkmUtil.getJsonInteger(params, JSON_TIE),
+				VkmUtil.getJsonInteger(params, JSON_OSA),
+				VkmUtil.getJsonString(params, JSON_AJORATA),
+				VkmUtil.getJsonLocalDate(params, JSON_TILANNEPVM),
+				VkmUtil.getJsonLocalDate(params, JSON_KOHDEPVM),
+				VkmUtil.getJsonDouble(params, JSON_X_LOPPU),
+				VkmUtil.getJsonDouble(params, JSON_Y_LOPPU),
+				VkmUtil.getJsonDouble(params, JSON_Z_LOPPU),
+				VkmUtil.getJsonInteger(params, JSON_SADE),
+				VkmUtil.getJsonString(params, JSON_VAYLAT),
+				VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
                 );
 			}
 			return result;
