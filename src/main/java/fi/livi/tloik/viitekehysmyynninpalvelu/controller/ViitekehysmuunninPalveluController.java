@@ -51,9 +51,9 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "tie", required = false) Integer tie,
             @RequestParam(name = "osa", required = false) Integer osa,
             @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
-            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
-            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
+            //@RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            //@RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            //@RequestParam(name = "z_loppu", required = false) Double z_loppu,
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
@@ -64,20 +64,21 @@ public class ViitekehysmuunninPalveluController {
                 if(z == null){
                     z = 0.0;
                 }
-                if(z_loppu == null){
+                /*if(z_loppu == null){
                     z_loppu = 0.0;
-                }
+                } */
 
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
 
-                if (x_loppu != null && y_loppu != null && z_loppu != null){
+                //Otettu toistaiseksi nämä pois 
+                /*if (x_loppu != null && y_loppu != null && z_loppu != null){
                     VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
                     tulos.setX(loppu.getX());
                     tulos.setY(loppu.getY());
                     tulos.setZ(loppu.getZ());
                     tulos.setDistance(loppu.getDistance());
                 }
-                
+                */
         return tulos.toString();
     }
 
@@ -155,9 +156,9 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "x", required = false) Double x,
             @RequestParam(name = "y", required = false) Double y,
             @RequestParam(name = "z", required = false) Double z,
-            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
-            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
-            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
+            //@RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            //@RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            //@RequestParam(name = "z_loppu", required = false) Double z_loppu,
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "tie", required = false) Integer tie,
             @RequestParam(name = "osa", required = false) Integer osa,
@@ -178,22 +179,24 @@ public class ViitekehysmuunninPalveluController {
                 if(z == null){
                     z = 0.0;
                 }
+                /*
                 if(z_loppu == null){
                     z_loppu = 0.0;
                 }
+                */
 
             //haun valinta parametrien perusteella
             if("xyhaku".equalsIgnoreCase(haku)){
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
-
+                /*
                 if (x_loppu != null && y_loppu != null && z_loppu != null){
                     VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
                     tulos.setX(loppu.getX());
                     tulos.setY(loppu.getY());
                     tulos.setZ(loppu.getZ());
                     tulos.setDistance(loppu.getDistance());
-                }
+                }*/
                 return tulos.toString();
             }
             if("tieosoitehaku".equalsIgnoreCase(haku)){
@@ -242,7 +245,7 @@ public class ViitekehysmuunninPalveluController {
                 for(int i=0;i<data.length;i++){
                     VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(
                         data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade,data[i].palautusarvot).orElse(null);
-
+                    /*
                     if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
                         VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
                             data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].palautusarvot).orElse(null);
@@ -251,6 +254,7 @@ public class ViitekehysmuunninPalveluController {
                         tulos.setZ(loppu.getZ());
                         tulos.setDistance(loppu.getDistance());
                     }
+                    */
                     if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
                 		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
                 		tulos.setTieosoite(kohde);
