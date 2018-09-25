@@ -10,13 +10,14 @@ import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
 
 public class ReverseGeocodeRequest extends VkmData {
 
+	private Integer kuntakoodi;
 	private Double x;
 	private Double y;
 	private String katunimi;
 	private Integer sade;
 	private String palautusarvot;
 
-	public ReverseGeocodeRequest(String tunniste, Double x, Double y, Integer sade, String palautusarvot) {
+	public ReverseGeocodeRequest(String tunniste, Integer kuntakoodi, String katunimi, Double x, Double y, Integer sade, String palautusarvot) {
 		super(tunniste);
 		this.x = x;
 		this.y = y;
@@ -33,7 +34,9 @@ public class ReverseGeocodeRequest extends VkmData {
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject params = array.getJSONObject(i);
 				
-                result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+				result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+				VkmUtil.getJsonInteger(params, JSON_KUNTAKOODI),
+				VkmUtil.getJsonString(params, JSON_KATUNIMI),
                 params.getDouble(JSON_X),
 				params.getDouble(JSON_Y),
 				VkmUtil.getJsonInteger(params, JSON_SADE),

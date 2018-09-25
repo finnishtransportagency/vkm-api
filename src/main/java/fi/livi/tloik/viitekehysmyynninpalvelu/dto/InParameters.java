@@ -39,11 +39,14 @@ public class InParameters {
     public Integer kuntakoodi;
     public String katunimi;
     public Integer katunumero;
+    public Integer katunumero_loppu;
 
 
     //reversegeocode
-    public InParameters(String tunniste, Double x, Double y, Integer sade, String palautusarvot){
+    public InParameters(String tunniste, Integer kuntakoodi, String katunimi, Double x, Double y, Integer sade, String palautusarvot){
         this.tunniste = tunniste;
+        this.kuntakoodi = kuntakoodi;
+        this.katunimi = katunimi;
         this.x = x;
         this.y = y;
         if(sade == null){
@@ -55,11 +58,12 @@ public class InParameters {
     }
 
     //geocode
-    public InParameters(String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer sade, String palautusarvot){
+    public InParameters(String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer katunumero_loppu, Integer sade, String palautusarvot){
         this.tunniste = tunniste;
         this.kuntakoodi = kuntakoodi;
         this.katunimi = katunimi;
         this.katunumero = katunumero;
+        this.katunumero_loppu = katunumero_loppu;
         if(sade == null){
             this.sade = DEFAULT_SADE;
         } else {

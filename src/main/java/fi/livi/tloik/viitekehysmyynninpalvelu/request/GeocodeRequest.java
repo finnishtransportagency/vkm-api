@@ -40,6 +40,7 @@ public class GeocodeRequest extends VkmData {
                 params.getInt(JSON_KUNTAKOODI),
                 params.getString(JSON_KATUNIMI), 
 				params.getInt(JSON_KATUNUMERO),
+				VkmUtil.getJsonInteger(params, JSON_KATUNUMERO_LOPPU),
 				VkmUtil.getJsonInteger(params, JSON_SADE),
 				VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
                 

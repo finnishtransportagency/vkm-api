@@ -63,6 +63,7 @@ public abstract class VkmData {
 	// Geocode
 	protected static final String JSON_KATUNIMI = "katunimi";
 	protected static final String JSON_KATUNUMERO = "katunumero";
+	protected static final String JSON_KATUNUMERO_LOPPU = "katunumero_loppu";
 	// Geocode
 	//******************************************************
 	protected static final String JSON_RAIDE_TEXT = "raide_text";
