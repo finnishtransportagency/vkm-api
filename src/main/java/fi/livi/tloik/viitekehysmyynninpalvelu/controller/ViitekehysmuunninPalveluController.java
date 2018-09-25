@@ -237,7 +237,15 @@ public class ViitekehysmuunninPalveluController {
                 return geocode.toString();
             }
             if("reversegeocode".equalsIgnoreCase(haku)){
-                return palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x, y, sade, palautusarvot).orElse(null).toString();
+                ReverseGeocodeResult tulos = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x, y, sade, palautusarvot).orElse(null);
+
+                if (x_loppu != null && y_loppu != null){
+                    ReverseGeocodeResult loppu = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x_loppu, y_loppu, sade, palautusarvot).orElse(null);
+                    tulos.setX(loppu.getX());
+                    tulos.setY(loppu.getY());
+                    tulos.setDistance(loppu.getDistance());
+                }
+                return tulos.toString();
             }
             else {
                 return null;
@@ -249,7 +257,6 @@ public class ViitekehysmuunninPalveluController {
     public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
         @RequestParam(name = "json", required = true) String json,
         @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
-
 
             VkmRequest vkmreq = new VkmRequest(haku,json);
             InParameters[] data = vkmreq.getData();
@@ -331,15 +338,21 @@ public class ViitekehysmuunninPalveluController {
             if("reversegeocode".equalsIgnoreCase(haku)){
                 
                 for(int i=0;i<data.length;i++){
-                    out.add(palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x, data[i].y, data[i].sade, data[i].palautusarvot).orElse(null));
+                    ReverseGeocodeResult tulos = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x, data[i].y, data[i].sade, data[i].palautusarvot).orElse(null);
+
+                    if (data[i].x_loppu != null && data[i].y_loppu != null){
+                        ReverseGeocodeResult loppu = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x_loppu, data[i].y_loppu, data[i].sade, data[i].palautusarvot).orElse(null);
+                        tulos.setX(loppu.getX());
+                        tulos.setY(loppu.getY());
+                        tulos.setDistance(loppu.getDistance());
+                        tulos.setKatunumeroLoppu(loppu.getKatunumeroLoppu());
+                    }
+                    out.add(tulos);
                 }
                 return out.toString();
-                
-                
             }
-            
             else {
-                return null;
+                return "Virheellinen haku-parametri!";
             }
             
     }
