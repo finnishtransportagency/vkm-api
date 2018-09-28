@@ -27,7 +27,8 @@ pipeline {
     }
     environment {
         VKM_CORE_PATH = "work/vkm-core"
-        VKM_CORE_REF = "refs/heads/vkm-uusi"
+        // VKM_CORE_REF = "refs/heads/vkm-uusi"
+        VKM_CORE_REF = "refs/heads/jenkinsfile-temp"
     }
     stages {
         stage("Prepare") {
