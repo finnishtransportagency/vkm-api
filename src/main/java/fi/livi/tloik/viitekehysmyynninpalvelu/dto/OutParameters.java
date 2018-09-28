@@ -63,7 +63,9 @@ public class OutParameters {
     public String gridcode;
     public String ely;
     
-    
+    public OutParameters(){
+
+    }
     public OutParameters(String tunniste, Double distance, Integer tie, Integer osa, Integer etaisyys, Integer ajorata, Integer tietyyppi, Point<C3DM> koordReverseGeo, String maakunta, String kuntakoodi, String maakuntaNimi, String kuntaNimi, String gridcode, String ely, List<Integer> palautusarvot) {
         this.tunniste = tunniste;
         this.tie = tie;

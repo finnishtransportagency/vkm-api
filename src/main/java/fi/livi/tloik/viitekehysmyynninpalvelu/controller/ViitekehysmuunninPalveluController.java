@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import org.springframework.format.annotation;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
+import fi.livi.tloik.viitekehysmyynninpalvelu.dto.OutParameters;
 import fi.livi.tloik.viitekehysmyynninpalvelu.request.VkmRequest;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
@@ -132,8 +133,19 @@ public class ViitekehysmuunninPalveluController {
                 if(sade == null){
                     sade = DEFAULT_SADE;
                 }
-        List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, katunumero_loppu, sade, palautusarvot);
-        return geocode.toString();
+        List<fi.livi.vkm.dto.GeocodeResult> tulos = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, sade, palautusarvot);
+            
+        if(katunumero_loppu != null){
+            List<fi.livi.vkm.dto.GeocodeResult> loppu = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero_loppu, sade, palautusarvot);
+            for(int i = 0; i<tulos.size();i++)
+            {
+            tulos.get(i).setX(loppu.get(i).getX());
+            tulos.get(i).setY(loppu.get(i).getY());
+            tulos.get(i).setKatunumeroLoppu(loppu.get(i).getKatunumero());
+            }
+
+        }
+        return tulos.toString();
     }
     
     @RequestMapping(value = "reversegeocode", params = { "x", "y"  }, method= RequestMethod.GET)
@@ -150,14 +162,15 @@ public class ViitekehysmuunninPalveluController {
                     sade = DEFAULT_SADE;
                 }
 
-
                 ReverseGeocodeResult tulos = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x, y, sade, palautusarvot).orElse(null);
 
                 if (x_loppu != null && y_loppu != null){
                     ReverseGeocodeResult loppu = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x_loppu, y_loppu, sade, palautusarvot).orElse(null);
                     tulos.setX(loppu.getX());
                     tulos.setY(loppu.getY());
+                    tulos.setKatunumero(loppu.getKatunumero());
                     tulos.setDistance(loppu.getDistance());
+
                 }
         return tulos.toString();
     }
@@ -233,7 +246,7 @@ public class ViitekehysmuunninPalveluController {
             }
             
             if("geocode".equalsIgnoreCase(haku)){
-                List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, katunumero_loppu, sade, palautusarvot);
+                List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, sade, palautusarvot);
                 return geocode.toString();
             }
             if("reversegeocode".equalsIgnoreCase(haku)){
@@ -244,6 +257,7 @@ public class ViitekehysmuunninPalveluController {
                     tulos.setX(loppu.getX());
                     tulos.setY(loppu.getY());
                     tulos.setDistance(loppu.getDistance());
+                    tulos.setKatunumero(loppu.getKatunumero());
                 }
                 return tulos.toString();
             }
@@ -255,8 +269,7 @@ public class ViitekehysmuunninPalveluController {
     //Muunnos-rajapinta
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
     public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
-        @RequestParam(name = "json", required = true) String json,
-        @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
+        @RequestParam(name = "json", required = true) String json) throws VkmVirheException {
 
             VkmRequest vkmreq = new VkmRequest(haku,json);
             InParameters[] data = vkmreq.getData();
@@ -287,6 +300,8 @@ public class ViitekehysmuunninPalveluController {
                 	}
                     out.add(tulos);
                 }
+
+
                 return out.toString();
                 
             }
@@ -318,18 +333,21 @@ public class ViitekehysmuunninPalveluController {
                     for(int j=0;j<viivamainenTieosoiteHaku.size();j++){
                         out.add(viivamainenTieosoiteHaku.get(j));
                     }
+                    out.add(viivamainenTieosoiteHaku);
                     
                 }
+                OutParameters test = new OutParameters();
                 return out.toString();
             }
             
             if("geocode".equalsIgnoreCase(haku)){
                 
                 for(int i=0;i<data.length;i++){
-                    List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].katunumero_loppu, data[i].sade, data[i].palautusarvot);
+                    List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
                     for(int j=0;j<geocode.size();j++){
                         out.add(geocode.get(j));
                     }
+                    out.add(geocode);
                     
                 }
                 return out.toString();
@@ -345,7 +363,7 @@ public class ViitekehysmuunninPalveluController {
                         tulos.setX(loppu.getX());
                         tulos.setY(loppu.getY());
                         tulos.setDistance(loppu.getDistance());
-                        tulos.setKatunumeroLoppu(loppu.getKatunumeroLoppu());
+                        tulos.setKatunumero(loppu.getKatunumero());
                     }
                     out.add(tulos);
                 }

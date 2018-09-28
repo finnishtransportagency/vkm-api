@@ -14,14 +14,16 @@ public class GeocodeRequest extends VkmData {
 	private Integer kuntakoodi;
 	private String katunimi;
 	private Integer katunumero;
+	private Integer katunumero_loppu;
 	private Integer sade;
 	private String palautusarvot;
 
-	public GeocodeRequest(String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer sade, String palautusarvot) {
+	public GeocodeRequest(String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer katunumero_loppu, Integer sade, String palautusarvot) {
 		super(tunniste);
 		this.kuntakoodi = kuntakoodi;
 		this.katunimi = katunimi;
 		this.katunumero = katunumero;
+		this.katunumero_loppu = katunumero_loppu;
 		this.sade = sade;
 		this.palautusarvot = palautusarvot;
 	}
