@@ -27,10 +27,12 @@ pipeline {
     }
     environment {
         VKM_CORE_PATH = "work/vkm-core"
-        // VKM_CORE_REF = "refs/heads/vkm-uusi"
-        VKM_CORE_REF = "refs/heads/jenkinsfile-temp"
+        VKM_CORE_REF = "refs/heads/vkm-uusi"
+        DB_VKM_URL = credentials("DB_VKM_URL")
+        DB_VKM_CRED = credentials("DB_VKM_CRED")
     }
     stages {
+     // say hep
         stage("Prepare") {
             parallel {
                 stage("Docker") {
@@ -76,8 +78,13 @@ pipeline {
                     def group_id = pom.groupId
                     def extension = pom.packaging
                     def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
+                    def config = "src/main/resources/application.properties"
 
                     STAGE_BUILD_CMD = [
+                        "sed -i 's/DB_VKM_CRED_USR/${env.DB_VKM_CRED_USR}/g' ${config}",
+                        "sed -i 's/DB_VKM_CRED_PSW/${env.DB_VKM_CRED_PSW}/g' ${config}",
+                        "sed -i 's|DB_VKM_URL|${env.DB_VKM_URL}|g' ${config}",
+                        [
                         "mvn",
                         "clean",
                         "install",
@@ -85,7 +92,8 @@ pipeline {
                         "-DskipTests",
                         "--batch-mode",
                         "--file ${pom_path}"
-                    ].join(" ")
+                        ].join(" ")
+                    ].join(" && ")
 
                     STAGE_PUBLISH_CMD = [
                         "mvn",
