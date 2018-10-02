@@ -67,7 +67,7 @@ pipeline {
 
                     STAGE_ACK_PARAMETERS = [
                         choice(choices: target_environment, description: "Deploy target.", name: "target_environemnt"),
-						choice(choices: params.action, description: "Action", name: action)
+						choice(choices: params.action, description: "Action", name: "action")
                     ]
 
                     def config_source = "src/main/resources/application-ci.properties"
