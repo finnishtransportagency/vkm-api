@@ -27,12 +27,11 @@ pipeline {
     }
     environment {
         VKM_CORE_PATH = "work/vkm-core"
-        VKM_CORE_REF = "refs/heads/vkm-uusi"
+        VKM_CORE_REF = "*/vkm-uusi"
         DB_VKM_URL = credentials("DB_VKM_URL")
         DB_VKM_CRED = credentials("DB_VKM_CRED")
     }
     stages {
-     // say hep
         stage("Prepare") {
             parallel {
                 stage("Docker") {
