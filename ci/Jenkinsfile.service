@@ -190,12 +190,6 @@ pipeline {
             }
         }
         stage("Prepare") {
-            agent {
-                docker {
-                    image "ptpapp-vkm-api-maven"
-                    reuseNode true
-                }
-            }
             when {
                 expression {
                     get_environment()?.equals("dev")
