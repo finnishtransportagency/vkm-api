@@ -137,7 +137,7 @@ pipeline {
 							version: artifact_version
 						]
 
-						ansible_extravars.put("ptpapp_deploy_springboot", JsonOutput.toJson(ansible_deploy)
+						ansible_extravars.put("ptpapp_deploy_springboot", JsonOutput.toJson(ansible_deploy))
 
 					}
 
