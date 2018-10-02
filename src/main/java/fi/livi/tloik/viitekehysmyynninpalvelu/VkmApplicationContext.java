@@ -37,9 +37,9 @@ public class VkmApplicationContext {
         properties.put(VkmLib.JDBC_URL_PROPERTY, env.getProperty("fi.livi.vkm.jdbc.url"));
         properties.put(VkmLib.JDBC_USER_PROPERTY, env.getProperty("fi.livi.vkm.jdbc.user"));
         properties.put(VkmLib.JDBC_PASSWORD_PROPERTY, env.getProperty("fi.livi.vkm.jdbc.pass"));
-        properties.put(VkmLib.JDBC_TR_URL_PROPERTY, env.getProperty("fi.livi.tr.jdbc.tr.url"));
-        properties.put(VkmLib.JDBC_TR_USER_PROPERTY, env.getProperty("fi.livi.tr.jdbc.tr.user"));
-        properties.put(VkmLib.JDBC_TR_PASSWORD_PROPERTY, env.getProperty("fi.livi.tr.jdbc.tr.pass"));
+        properties.put(VkmLib.JDBC_TR_URL_PROPERTY, env.getProperty("fi.livi.tr.jdbc.url"));
+        properties.put(VkmLib.JDBC_TR_USER_PROPERTY, env.getProperty("fi.livi.tr.jdbc.user"));
+        properties.put(VkmLib.JDBC_TR_PASSWORD_PROPERTY, env.getProperty("fi.livi.tr.jdbc.pass"));
         properties.put(VkmLib.SHOW_SQL_PROPERTY, env.getProperty("fi.livi.vkm.hibernate.show_sql"));
         return properties;
     }
