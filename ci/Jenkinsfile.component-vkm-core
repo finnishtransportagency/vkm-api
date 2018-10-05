@@ -54,7 +54,7 @@ pipeline {
                         }
                     }
                 }
-                stage("VKM-CORE") {
+                stage("vkm-core") {
                     steps {
                         checkout(
                             changelog: false,
