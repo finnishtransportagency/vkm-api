@@ -80,7 +80,7 @@ pipeline {
                     def artifact_version = get_version(pom.version)
                     def group_id = pom.groupId
                     def extension = pom.packaging
-                    def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
+                    def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}${artifact_version}.${extension}"
                     STAGE_BUILD_CMD = [
                         "mvn",
                         "clean",
