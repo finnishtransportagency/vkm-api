@@ -80,16 +80,25 @@ pipeline {
                     def artifact_version = get_version(pom.version)
                     def group_id = pom.groupId
                     def extension = pom.packaging
-                    def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}${artifact_version}.${extension}"
+                    def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
                     STAGE_BUILD_CMD = [
-                        "mvn",
-                        "clean",
-                        "install",
-                        "-Dmaven.test.skip=true",
-                        "-DskipTests",
-                        "--batch-mode",
-                        "--file ${pom_path}"
-                    ].join(" ")
+                        [
+                            "mvn",
+                            "versions:set",
+                            "-DnewVersion=${artifact_version}",
+                            "--batch-mode"
+                            "--file ${pom_path}"
+                        ].join(" "),
+                        [
+                            "mvn",
+                            "clean",
+                            "install",
+                            "-Dmaven.test.skip=true",
+                            "-DskipTests",
+                            "--batch-mode",
+                            "--file ${pom_path}"
+                        ].join(" ")
+                    ].join(" && ")
 
                     STAGE_PUBLISH_CMD = [
                         "mvn",
