@@ -1,10 +1,8 @@
-import groovy.json.JsonOutput
-
 def get_environment() {
     if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
     if (BRANCH_NAME.equals("develop")) { return "dev" }
-    // if (BRANCH_NAME.equals("master")) { return "prod" }
-    // if (BRANCH_NAME.startsWith("release-")) { return "test" }
+    if (BRANCH_NAME.equals("master")) { return "prod" }
+    if (BRANCH_NAME.startsWith("release-")) { return "test" }
     return ""
 }
 
@@ -64,6 +62,9 @@ def get_robotframework_hosts()  {
 
 pipeline {
     agent any
+    environment {
+        NOTIFY_SLACK_SUBJECT = "${JOB_NAME} - <${RUN_DISPLAY_URL}|${BUILD_DISPLAY_NAME}>"
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: "25"))
         disableConcurrentBuilds()
@@ -77,6 +78,8 @@ pipeline {
             }
             steps {
                 script {
+                    def pom = readMavenPom()
+                    def artifact_id = pom.artifactId
 
                     STAGE_TEST_CMD = [
                         get_robotframework_hosts().collect {
@@ -89,7 +92,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-80-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/dr-report",
+                                "--variable URL:${it}/vkm-api",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "), 
@@ -104,7 +107,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/dr-report",
+                                "--variable URL:${it}/vkm-api",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -120,7 +123,7 @@ pipeline {
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
                                 "--variable PROXY:${http_proxy}",
-                                "--variable URL:${it}/dr-report",
+                                "--variable URL:${it}/vkm-api",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -134,6 +137,7 @@ pipeline {
                             "output-*.xml"
                         ].join(" ")
                     ].minus('').join(" && ")
+
                     STAGE_TEST_STEP = [
                         $class: "RobotPublisher",
                         disableArchiveOutput: false,
@@ -151,6 +155,7 @@ pipeline {
         }
         stage("Docker") {
             when {
+                beforeAgent true
                 expression {
                     get_environment()?.trim()
                 }
@@ -175,7 +180,7 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
@@ -189,6 +194,7 @@ pipeline {
                 }
             }
             when {
+                beforeAgent true
                 expression {
                     get_environment()?.trim()
                 }
@@ -198,29 +204,30 @@ pipeline {
                 step(STAGE_TEST_STEP)
             }
             post {
+                always {
+                    archiveArtifacts(
+                        allowEmptyArchive: true,
+                        artifacts: "*.html"
+                    )
+                }
                 failure {
                     slackSend(
                         color: "danger",
                         message: "${NOTIFY_SLACK_SUBJECT} - Stage ${STAGE_NAME} failure!\nCheck <${BUILD_URL}console|console>!"
                     )
                 }
-                unstable {
-                    slackSend(
-                        color: "warning",
-                        message: "${NOTIFY_SLACK_SUBJECT} - Stage ${STAGE_NAME} failure!\nCheck <${BUILD_URL}console|console>!"
-                    )
-                }
             }
         }
     }
-
     post {
         always {
-            slackSend(
-                color: currentBuild.currentResult.equals("SUCCESS") ? "good" : "danger",
-                message: "${env.NOTIFY_SLACK_SUBJECT}\nJob ${currentBuild.currentResult}! More info <${BUILD_URL}|here>."
-            )
             deleteDir()
+        }
+        unstable {
+            slackSend(
+                color: "warning",
+                message: "${NOTIFY_SLACK_SUBJECT} - State of service is unstable!\nCheck <${BUILD_URL}console|console>!"
+            )
         }
     }
 }
