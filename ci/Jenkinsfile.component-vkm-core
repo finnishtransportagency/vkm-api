@@ -1,4 +1,5 @@
 def get_environment() {
+    if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
     if (BRANCH_NAME.equals("develop")) { return "dev" }
     if (BRANCH_NAME.equals("master")) { return "prod" }
     if (BRANCH_NAME.startsWith("release-")) { return "test" }
@@ -7,8 +8,6 @@ def get_environment() {
 
 def get_version(version) {
     def version_xyz = version.tokenize('-').first()
-    echo version_xyz
-    if (get_environment().equals("jenkinsfile-temp")) { return "${version_xyz}-SNAPSHOT" }
     if (get_environment().equals("dev")) { return "${version_xyz}-SNAPSHOT" }
     if (get_environment().equals("prod")) { return "${version_xyz}" }
     if (get_environment().equals("test")) { return "${version_xyz}-RC-SNAPSHOT" }
@@ -30,6 +29,12 @@ pipeline {
     }
     stages {
         stage("Prepare") {
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             parallel {
                 stage("Docker") {
                     steps {
@@ -73,13 +78,18 @@ pipeline {
             }
         }
         stage("Setup") {
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             steps {
                 script {
                     def pom_path = "${VKM_CORE_PATH}/pom.xml"
                     def pom = readMavenPom(file: pom_path)
                     def artifact_id = pom.artifactId
                     def artifact_version = get_version(pom.version)
-                    echo artifact_version
                     def group_id = pom.groupId
                     def extension = pom.packaging
                     def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
@@ -122,6 +132,12 @@ pipeline {
                     reuseNode true
                 }
             }
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             steps {
                 sh STAGE_BUILD_CMD
             }
@@ -139,6 +155,12 @@ pipeline {
                 docker {
                     image "ptpapp-vkm-core-maven"
                     reuseNode true
+                }
+            }
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
                 }
             }
             steps {
