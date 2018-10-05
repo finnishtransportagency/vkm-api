@@ -89,7 +89,7 @@ pipeline {
                         "-DskipTests",
                         "--batch-mode",
                         "--file ${pom_path}"
-                    ].join(" && ")
+                    ].join(" ")
 
                     STAGE_PUBLISH_CMD = [
                         "mvn",
