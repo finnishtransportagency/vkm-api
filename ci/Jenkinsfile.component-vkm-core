@@ -86,7 +86,7 @@ pipeline {
                             "mvn",
                             "versions:set",
                             "-DnewVersion=${artifact_version}",
-                            "--batch-mode"
+                            "--batch-mode",
                             "--file ${pom_path}"
                         ].join(" "),
                         [
