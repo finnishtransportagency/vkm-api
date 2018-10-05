@@ -108,7 +108,7 @@ pipeline {
                         "-Durl=${repository_url}",
                         "--batch-mode"
                     ].join(" ")
-                    
+
                     STAGE_ANSIBLE_PARAMETERS = [
                         inventory: "/data1/ansible/inventories/ptpapp",
                         playbook: "/data1/ansible/ptpapp.yml",
