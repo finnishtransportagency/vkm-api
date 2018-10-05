@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
 
-                    def pom = readMavenPom(file: 'pom.xml')
+                    def pom = readMavenPom()
 
                     def target_environment = get_environment()
 
@@ -66,8 +66,8 @@ pipeline {
                     def repository_url = "http://livibuild03.vally.local/nexus/repository/ptp"
 
                     STAGE_ACK_PARAMETERS = [
-                        choice(choices: target_environment, description: "Deploy target.", name: "target_environemnt"),
-						choice(choices: params.action, description: "Action", name: "action")
+                        choice(choices: target_environment, description: "Environment", name: "target_environemnt"),
+                        choice(choices: params.action, description: "Action", name: "action")
                     ]
 
                     def config_source = "src/main/resources/application-ci.properties"
@@ -75,12 +75,12 @@ pipeline {
 
                     STAGE_BUILD_CMD = [
                         "cp ${config_source} ${config}",
-                        "sed -i 's/DB_VKM_CRED_USR/${env.DB_VKM_CRED_USR}/g' ${config}",
-                        "sed -i 's/DB_VKM_CRED_PSW/${env.DB_VKM_CRED_PSW}/g' ${config}",
-                        "sed -i 's|DB_VKM_URL|${env.DB_VKM_URL}|g' ${config}",
-                        "sed -i 's/DB_TR_CRED_USR/${env.DB_TR_CRED_USR}/g' ${config}",
-                        "sed -i 's/DB_TR_CRED_PSW/${env.DB_TR_CRED_PSW}/g' ${config}",
-                        "sed -i 's|DB_TR_URL|${env.DB_TR_URL}|g' ${config}",
+                        "sed -i 's/DB_VKM_CRED_USR/${DB_VKM_CRED_USR}/g' ${config}",
+                        "sed -i 's/DB_VKM_CRED_PSW/${DB_VKM_CRED_PSW}/g' ${config}",
+                        "sed -i 's/DB_VKM_URL/${DB_VKM_URL}/g' ${config}",
+                        "sed -i 's/DB_TR_CRED_USR/${DB_TR_CRED_USR}/g' ${config}",
+                        "sed -i 's/DB_TR_CRED_PSW/${DB_TR_CRED_PSW}/g' ${config}",
+                        "sed -i 's/DB_TR_URL/${DB_TR_URL}/g' ${config}",
                         [
                             "mvn",
                             "-f", "pom.xml",
@@ -109,39 +109,38 @@ pipeline {
                         "--batch-mode"
                     ].join(" ")
                     
-					STAGE_ANSIBLE_PARAMETERS = [
+                    STAGE_ANSIBLE_PARAMETERS = [
                         inventory: "/data1/ansible/inventories/ptpapp",
                         playbook: "/data1/ansible/ptpapp.yml",
                         vaultCredentialsId: "vaultpass-ptp",
                         tags: params.action
-					]
-
-					def ansible_extravars = [
-						ptpapp_service_springboot: artifact_id,
-						ptpapp_target: get_environment()
-					]
-
-					if (params.action.equals("service-deploy-springboot")) {
+                    ]
+                    
+                    def ansible_extravars = [
+                        ptpapp_service_springboot: artifact_id,
+                        ptpapp_target: get_environment()
+                    ]
+                    
+                    if (params.action.equals("service-deploy-springboot")) {
 
                         STAGE_ACK_PARAMETERS.addAll([
-							choice(choices: artifact_id, description: "Artifact ID", name: "artifact_id"),
-	                        choice(choices: artifact_version, description: "Artifact version", name: "artifact_version"),
-    	                    choice(choices: group_id, description: "Group ID", name: "group_id")
-						])
-
-						def ansible_deploy = [
-							artifact_id: artifact_id,
-							extension: extension,
-							group_id: group_id,
-							repository_url: repository_url,
-							version: artifact_version
-						]
-
-						ansible_extravars.put("ptpapp_deploy_springboot", JsonOutput.toJson(ansible_deploy))
-
-					}
-
-					STAGE_ANSIBLE_PARAMETERS.put("extraVars", ansible_extravars)
+                            choice(choices: artifact_id, description: "Artifact ID", name: "artifact_id"),
+                            choice(choices: artifact_version, description: "Artifact version", name: "artifact_version"),
+                            choice(choices: group_id, description: "Group ID", name: "group_id")
+                        ])
+                        
+                        def ansible_deploy = [
+                            artifact_id: artifact_id,
+                            extension: extension,
+                            group_id: group_id,
+                            repository_url: repository_url,
+                            version: artifact_version
+                        ]
+                        
+                        ansible_extravars.put("ptpapp_deploy_springboot", JsonOutput.toJson(ansible_deploy))
+                    
+                    }
+                    STAGE_ANSIBLE_PARAMETERS.put("extraVars", ansible_extravars)
                 }
             }
         }
@@ -151,14 +150,16 @@ pipeline {
                 timeout(time: 5, unit: "MINUTES")
             }
             when {
+                beforeAgent true
                 expression {
-                    get_environment()?.trim() && !get_pollSCM_trigger().trim()
+                    (get_environment()?.trim() && !get_pollSCM_trigger().trim()) ||
+                    (get_environment()?.trim() && !params.action.equals("service-deploy-springboot"))
                 }
             }
             steps {
                 slackSend(
                     color: "warning",
-                    message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} requires acknowledgement! Visit <${RUN_DISPLAY_URL}|here> and verify!"
+                    message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} requires acknowledgement! Visit <${RUN_DISPLAY_URL}|here> and verify!"
                 )
                 input(
                     message: "Proceed with following settings?",
@@ -169,21 +170,22 @@ pipeline {
                 aborted {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted because acknowledgement timeout exceeded or user action!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted because acknowledgement timeout exceeded or user action!"
                     )
                 }
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
         }
         stage("Docker") {
             when {
+                beforeAgent true
                 expression {
-                    get_environment()?.trim()
+                    get_environment()?.trim() && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
@@ -206,15 +208,16 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
         }
         stage("Prepare") {
             when {
+                beforeAgent true
                 expression {
-                    get_environment()?.equals("dev")
+                    get_environment()?.trim() && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
@@ -228,7 +231,7 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
@@ -241,8 +244,9 @@ pipeline {
                 }
             }
             when {
+                beforeAgent true
                 expression {
-                    get_environment()?.trim()
+                    get_environment()?.trim() && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
@@ -252,7 +256,7 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
@@ -265,13 +269,13 @@ pipeline {
             when {
                 beforeAgent true
                 expression {
-                    get_environment().equals("prod")
+                    get_environment().equals("prod") && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
                 slackSend(
                     color: "warning",
-                    message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} requires confirmation! Visit <${RUN_DISPLAY_URL}|here> and verify!"
+                    message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} requires confirmation! Visit <${RUN_DISPLAY_URL}|here> and verify!"
                 )
                 input STAGE_CONFIRM_TEXT
             }
@@ -279,13 +283,13 @@ pipeline {
                 aborted {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted because confirmation timeout exceeded or user action!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted because confirmation timeout exceeded or user action!"
                     )
                 }
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
@@ -300,7 +304,7 @@ pipeline {
             when {
                 beforeAgent true
                 expression {
-                    get_environment()?.trim()
+                    get_environment()?.trim() && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
@@ -310,7 +314,7 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
                     )
                 }
             }
@@ -328,18 +332,39 @@ pipeline {
                 failure {
                     slackSend(
                         color: "danger",
-                        message: "${env.NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} failure! Check <${BUILD_URL}console|console>!"
+                    )
+                }
+            }
+        }
+        stage("Test") {
+            when {
+                expression {
+                    get_environment()?.trim() && !params.action.equals("service-stop")
+                }
+            }
+            steps {
+                build(
+                    job: "ptpapp/vkm-api/test/${BRANCH_NAME}",
+                    propagate: false,
+                    wait: params.action.endsWith("start") ? true : false
+                )
+            }
+            post {
+                failure {
+                    slackSend(
+                        color: "danger",
+                        message: "${NOTIFY_SLACK_SUBJECT} - Stage ${STAGE_NAME} failure!\nCheck <${BUILD_URL}console|console>!"
                     )
                 }
             }
         }
     }
-
     post {
         always {
             slackSend(
                 color: currentBuild.currentResult.equals("SUCCESS") ? "good" : "danger",
-                message: "${env.NOTIFY_SLACK_SUBJECT}\nJob ${currentBuild.currentResult}! More info <${BUILD_URL}|here>."
+                message: "${NOTIFY_SLACK_SUBJECT}\nJob ${currentBuild.currentResult}! More info <${BUILD_URL}|here>."
             )
             deleteDir()
         }
