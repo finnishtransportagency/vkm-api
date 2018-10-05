@@ -10,14 +10,15 @@ Test Teardown  Delete All Sessions
 
 *** Test Cases ***
 
-Check API
+Check API - tieosoitevali
   [Tags]  API  Requirement
-  Check API path   swagger-ui.html
+  &{params}  Create Dictionary  tie=70397
+  Check API path   vkm/tieosoitevali  ${params}
 
 *** Keywords ***
 
 Check API path
-  [Arguments]  ${path}
-  Get API Request  ${URL_CTX}/${path} 
+  [Arguments]  ${path}  ${params}
+  Get API Request  ${URL_CTX}/${path}  ${params}
   Get API Request Should Have Succeed
 

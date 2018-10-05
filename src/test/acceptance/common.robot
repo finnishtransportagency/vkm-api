@@ -38,5 +38,5 @@ Initialize
   Wait Until Keyword Succeeds  3x  10 sec  Ensure that service is responsive
 
 Ensure that service is responsive
-  Get API Request  ${URL_CTX}
+  Get API Request  ${URL_CTX}/swagger-ui.html
   Get API Request Should Have Succeed
