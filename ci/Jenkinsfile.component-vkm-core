@@ -79,6 +79,7 @@ pipeline {
                     def pom = readMavenPom(file: pom_path)
                     def artifact_id = pom.artifactId
                     def artifact_version = get_version(pom.version)
+                    echo artifact_version
                     def group_id = pom.groupId
                     def extension = pom.packaging
                     def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
