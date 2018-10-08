@@ -1,7 +1,3 @@
-def notify(message,color) {
-    slackSend(color: "${color}", message: "${JOB_NAME} - <${RUN_DISPLAY_URL}|${BUILD_DISPLAY_NAME}> - ${message}")
-}
-
 def get_environment() {
     if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
     if (BRANCH_NAME.equals("develop")) { return "dev" }
@@ -12,7 +8,6 @@ def get_environment() {
 
 def get_version(version) {
     def version_xyz = version.tokenize('-').first()
-    if (get_environment().equals("jenkinsfile-temp")) { return "${version_xyz}-SNAPSHOT" }
     if (get_environment().equals("dev")) { return "${version_xyz}-SNAPSHOT" }
     if (get_environment().equals("prod")) { return "${version_xyz}" }
     if (get_environment().equals("test")) { return "${version_xyz}-RC-SNAPSHOT" }
@@ -28,9 +23,18 @@ pipeline {
     environment {
         VKM_CORE_PATH = "work/vkm-core"
         VKM_CORE_REF = "refs/heads/vkm-uusi"
+        DB_VKM_URL = credentials("DB_VKM_URL")
+        DB_VKM_CRED = credentials("DB_VKM_CRED")
+        NOTIFY_SLACK_SUBJECT = "${JOB_NAME} - <${RUN_DISPLAY_URL}|${BUILD_DISPLAY_NAME}>"
     }
     stages {
         stage("Prepare") {
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             parallel {
                 stage("Docker") {
                     steps {
@@ -64,8 +68,22 @@ pipeline {
                     }
                 }
             }
+            post {
+                failure {
+                    slackSend(
+                        color: "danger",
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted! Check <${BUILD_URL}console|console>!"
+                    )
+                }
+            }
         }
         stage("Setup") {
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             steps {
                 script {
                     def pom_path = "${VKM_CORE_PATH}/pom.xml"
@@ -75,23 +93,29 @@ pipeline {
                     def group_id = pom.groupId
                     def extension = pom.packaging
                     def jar_path = "${VKM_CORE_PATH}/target/${artifact_id}-${artifact_version}.${extension}"
-
                     STAGE_BUILD_CMD = [
-                        "mvn",
-                        "clean",
-                        "install",
-                        "-Dmaven.test.skip=true",
-                        "-DskipTests",
-                        "--batch-mode",
-                        "--file ${pom_path}"
-                    ].join(" ")
+                        [
+                            "mvn",
+                            "versions:set",
+                            "-DnewVersion=${artifact_version}",
+                            "--batch-mode",
+                            "--file ${pom_path}"
+                        ].join(" "),
+                        [
+                            "mvn",
+                            "clean",
+                            "install",
+                            "-Dmaven.test.skip=true",
+                            "-DskipTests",
+                            "--batch-mode",
+                            "--file ${pom_path}"
+                        ].join(" ")
+                    ].join(" && ")
 
                     STAGE_PUBLISH_CMD = [
                         "mvn",
                         "deploy:deploy-file",
                         "-Dfile=${jar_path}",
-                        "-DgroupId=fi.livi.vkm",
-                        "-Dpackaging=${jar_path.tokenize('.').last()}",
                         "-DpomFile=${pom_path}",
                         "-DrepositoryId=nexus3",
                         "-Durl=http://livibuild03.vally.local/nexus/repository/ptp",
@@ -108,13 +132,21 @@ pipeline {
                     reuseNode true
                 }
             }
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             steps {
                 sh STAGE_BUILD_CMD
-                echo "dummy"
             }
             post {
                 failure {
-                    notify("Stage 'Build': failure!","danger")
+                    slackSend(
+                        color: "danger",
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted! Check <${BUILD_URL}console|console>!"
+                    )
                 }
             }
         }
@@ -125,26 +157,32 @@ pipeline {
                     reuseNode true
                 }
             }
+            when {
+                beforeAgent true
+                expression {
+                    get_environment()?.trim()
+                }
+            }
             steps {
                 sh STAGE_PUBLISH_CMD
-                echo "dummy"
             }
             post {
                 failure {
-                    notify("Stage 'Publish': failure!","danger")
+                    slackSend(
+                        color: "danger",
+                        message: "${NOTIFY_SLACK_SUBJECT}\nStage ${STAGE_NAME} aborted! Check <${BUILD_URL}console|console>!"
+                    )
                 }
             }
         }
     }
     post {
-        // always {
-        //     deleteDir()
-        // }
-        failure {
-            notify("Job failure!\nCheck <${BUILD_URL}console|console>!","danger")
-        }
-        success {
-            notify("Job success!","good")
+        always {
+            slackSend(
+                color: currentBuild.currentResult.equals("SUCCESS") ? "good" : "danger",
+                message: "${NOTIFY_SLACK_SUBJECT}\nJob ${currentBuild.currentResult}! More info <${BUILD_URL}|here>."
+            )
+            deleteDir()
         }
     }
 }
