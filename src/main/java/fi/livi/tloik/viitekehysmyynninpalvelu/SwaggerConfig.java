@@ -18,7 +18,7 @@ public class SwaggerConfig {
                 .enableUrlTemplating(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("fi.livi.tloik.viitekehysmyynninpalvelu.controller"))
-                .paths(PathSelectors.regex("/vkm.*"))
+                .paths(PathSelectors.any())
                 .build();
 
     }

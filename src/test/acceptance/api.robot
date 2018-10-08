@@ -13,7 +13,7 @@ Test Teardown  Delete All Sessions
 Check API - tieosoitevali
   [Tags]  API  Requirement
   &{params}  Create Dictionary  tie=70397
-  Check API path   vkm/tieosoitevali  ${params}
+  Check API path   tieosoitevali  ${params}
 
 *** Keywords ***
 
