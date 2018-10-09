@@ -26,3 +26,7 @@ nbdist/
 src/main/resources/application.properties
 
 build.sh
+
+/src/main/resources/logs/log.log
+
+logs/

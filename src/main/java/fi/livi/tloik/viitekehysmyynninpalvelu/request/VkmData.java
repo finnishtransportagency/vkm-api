@@ -18,15 +18,25 @@ public abstract class VkmData {
 
 	protected static final String JSON_LET = "let";
 
-	protected static final String JSON_AJORATA = "ajorata";
+	protected static final String JSON_AJORATA = "ajoradat";
 
 	protected static final String JSON_VALIMATKA = "valimatka";
+	
+	protected static final String JSON_TILANNEPVM = "tilannepvm";
+	
+	protected static final String JSON_KOHDEPVM = "kohdepvm";
 
 	protected static final String JSON_X = "x";
 
 	protected static final String JSON_Y = "y";
 
 	protected static final String JSON_Z = "z";
+
+	protected static final String JSON_X_LOPPU = "x_loppu";
+
+	protected static final String JSON_Y_LOPPU = "y_loppu";
+
+	protected static final String JSON_Z_LOPPU = "z_loppu";
 
 	protected static final String JSON_SADE = "sade";
 	
@@ -53,6 +63,7 @@ public abstract class VkmData {
 	// Geocode
 	protected static final String JSON_KATUNIMI = "katunimi";
 	protected static final String JSON_KATUNUMERO = "katunumero";
+	protected static final String JSON_KATUNUMERO_LOPPU = "katunumero_loppu";
 	// Geocode
 	//******************************************************
 	protected static final String JSON_RAIDE_TEXT = "raide_text";
