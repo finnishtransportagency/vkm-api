@@ -217,7 +217,7 @@ pipeline {
             when {
                 beforeAgent true
                 expression {
-                    get_environment()?.trim() && params.action.equals("service-deploy-springboot")
+                    get_environment().equals("dev") && params.action.equals("service-deploy-springboot")
                 }
             }
             steps {
