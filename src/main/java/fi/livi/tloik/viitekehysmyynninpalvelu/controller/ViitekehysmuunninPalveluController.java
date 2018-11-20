@@ -10,12 +10,14 @@ import org.geolatte.geom.C3DM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 //import org.springframework.format.annotation;
+import org.springframework.web.servlet.ModelAndView;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.OutParameters;
@@ -26,6 +28,8 @@ import fi.livi.vkm.dto.ReverseGeocodeResult;
 import fi.livi.vkm.dto.VkmTieosoite;
 import fi.livi.vkm.util.TrDbUtil;
 import fi.livi.vkm.util.VkmUtil;
+import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Tämä on tehty testausta varten.
@@ -33,7 +37,7 @@ import fi.livi.vkm.util.VkmUtil;
  */
 @RestController
 @Configurable
-@RequestMapping("vkm")
+@RequestMapping("/")
 @ControllerAdvice
 public class ViitekehysmuunninPalveluController {
 
@@ -45,6 +49,12 @@ public class ViitekehysmuunninPalveluController {
     @Autowired
     private Environment env;
 
+    @RequestMapping(method = RequestMethod.GET)
+    @ApiIgnore
+	public ModelAndView swaggerUi(ModelMap model) {
+    	return new ModelAndView("redirect:/swagger-ui.html", model);
+	}
+    
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method= RequestMethod.GET)
     public String haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "x", required = true) Double x,
