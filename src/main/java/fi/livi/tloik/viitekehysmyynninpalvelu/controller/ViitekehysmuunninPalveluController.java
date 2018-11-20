@@ -149,7 +149,7 @@ public class ViitekehysmuunninPalveluController {
     }
     
     @RequestMapping(value = "reversegeocode", params = { "x", "y"  }, method= RequestMethod.GET)
-    public String geocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
+    public String reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
             @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
             @RequestParam(name = "katunimi", required = false) String katunimi,
             @RequestParam(name = "x", required = true) Double x,
@@ -175,96 +175,8 @@ public class ViitekehysmuunninPalveluController {
         return tulos.toString();
     }
 
-    //Rakennetaan yleishakua, kopioitu tieosoite_to_koordista
-    //Lisätään if ehdot eri hauille
-    //Vastaa VKM Tieosoite-rajapintaa
-    @RequestMapping(value = "Yleishaku", method= RequestMethod.GET)
-    public Object yleisHakuTest(@RequestParam(name = "Haku", required = true) String haku,
-            @RequestParam(name = "tunniste", required = false) String tunniste,
-            @RequestParam(name = "x", required = false) Double x,
-            @RequestParam(name = "y", required = false) Double y,
-            @RequestParam(name = "z", required = false) Double z,
-            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
-            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
-            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
-            @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
-            @RequestParam(name = "tie", required = false) Integer tie,
-            @RequestParam(name = "osa", required = false) Integer osa,
-            @RequestParam(name = "etaisyys", required = false) Integer etaisyys,
-            @RequestParam(name = "losa", required = false) Integer losa,
-            @RequestParam(name = "let", required = false) Integer let,
-            @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
-            @RequestParam(name = "katunimi", required = false) String katunimi,
-            @RequestParam(name = "katunumero", required = false) Integer katunumero,
-            @RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
-            @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
-                
-
-                if(sade == null){
-                    sade = DEFAULT_SADE;
-                }
-                if(z == null){
-                    z = 0.0;
-                }
-                
-                if(z_loppu == null){
-                    z_loppu = 0.0;
-                }
-                
-
-            //haun valinta parametrien perusteella
-            if("xyhaku".equalsIgnoreCase(haku)){
-                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
-                VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
-                
-                if (x_loppu != null && y_loppu != null && z_loppu != null){
-                    VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
-                    tulos.setX(loppu.getX());
-                    tulos.setY(loppu.getY());
-                    tulos.setZ(loppu.getZ());
-                    tulos.setDistance(loppu.getDistance());
-                }
-                return tulos.toString();
-            }
-            if("tieosoitehaku".equalsIgnoreCase(haku)){
-                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
-                List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade,palautusarvot);
-                return pistemainenTieosoiteHaku.toString();
-            }
-            if("tieosoitevali".equalsIgnoreCase(haku)) {
-                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
-                int alkuOsa = Optional.ofNullable(osa).orElse(0);
-                int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(0);
-                int loppuOsa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
-                int loppuEtaisyys = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
-    
-                List<fi.livi.vkm.dto.VkmTieosoiteVali> pistemainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
-                loppuOsa, loppuEtaisyys, notNullAjoradat,sade, palautusarvot);
-                return pistemainenTieosoiteHaku.toString();
-            }
-            
-            if("geocode".equalsIgnoreCase(haku)){
-                List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, sade, palautusarvot);
-                return geocode.toString();
-            }
-            if("reversegeocode".equalsIgnoreCase(haku)){
-                ReverseGeocodeResult tulos = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x, y, sade, palautusarvot).orElse(null);
-
-                if (x_loppu != null && y_loppu != null){
-                    ReverseGeocodeResult loppu = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x_loppu, y_loppu, sade, palautusarvot).orElse(null);
-                    tulos.setX(loppu.getX());
-                    tulos.setY(loppu.getY());
-                    tulos.setDistance(loppu.getDistance());
-                    tulos.setKatunumero(loppu.getKatunumero());
-                }
-                return tulos.toString();
-            }
-            else {
-                return null;
-            }
-    }
+    //TODO
+    //Otetaan "haku" pois ja haetaan se sen sijaan jsonista
 
     //Muunnos-rajapinta
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
