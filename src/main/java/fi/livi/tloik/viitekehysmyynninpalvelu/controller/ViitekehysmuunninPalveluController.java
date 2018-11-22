@@ -80,6 +80,8 @@ public class ViitekehysmuunninPalveluController {
                     z_loppu = 0.0;
                 } 
 
+                System.out.println(z+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
 
                 if (x_loppu != null && y_loppu != null && z_loppu != null){
@@ -252,21 +254,20 @@ public class ViitekehysmuunninPalveluController {
                 for(int i=0;i<data.length;i++){
                     List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
                     data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].palautusarvot);
-                    for(int j=0;j<viivamainenTieosoiteHaku.size();j++){
+                    for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
                         out.add(viivamainenTieosoiteHaku.get(j));
                     }
                     out.add(viivamainenTieosoiteHaku);
                     
                 }
-                OutParameters test = new OutParameters();
                 return out.toString();
             }
             
+            //TODO: loppukatunumero
             if("geocode".equalsIgnoreCase(haku)){
-                
                 for(int i=0;i<data.length;i++){
                     List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
-                    for(int j=0;j<geocode.size();j++){
+                    for(int j=1;j<geocode.size();j++){
                         out.add(geocode.get(j));
                     }
                     out.add(geocode);
