@@ -2,8 +2,12 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
@@ -20,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.OutParameters;
+import fi.livi.tloik.viitekehysmyynninpalvelu.dto.VkmTieosoiteVali;
 import fi.livi.tloik.viitekehysmyynninpalvelu.request.VkmRequest;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
@@ -42,6 +46,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class ViitekehysmuunninPalveluController {
 
     private static final Integer DEFAULT_SADE = 100;
+    private static final List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
 
     @Autowired
     private IViitekehysmuunnin palveluNG;
@@ -56,7 +61,7 @@ public class ViitekehysmuunninPalveluController {
 	}
     
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method= RequestMethod.GET)
-    public String haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
+    public VkmTieosoite haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "x", required = true) Double x,
             @RequestParam(name = "y", required = true) Double y,
             @RequestParam(name = "z", required = false) Double z,
@@ -78,10 +83,11 @@ public class ViitekehysmuunninPalveluController {
                 }
                 if(z_loppu == null){
                     z_loppu = 0.0;
-                } 
-
-                System.out.println(z+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
+                }
+                if(palautusarvot == null){
+                    palautusarvot = DEFAULT_PALAUTUSARVOT;
+                }
+                
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, palautusarvot).orElse(null);
 
                 if (x_loppu != null && y_loppu != null && z_loppu != null){
@@ -91,12 +97,14 @@ public class ViitekehysmuunninPalveluController {
                     tulos.setZ(loppu.getZ());
                     tulos.setDistance(loppu.getDistance());
                 }
+            
                 
-        return tulos.toString();
+                
+        return tulos;
     }
 
     @RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
-    public String haeTieosoitteella(@RequestParam(name = "tunniste", required = false) String tunniste,
+    public List<fi.livi.vkm.dto.VkmTieosoite> haeTieosoitteella(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "tie", required = true) Integer tie,
             @RequestParam(name = "osa", required = true) Integer osa,
             @RequestParam(name = "etaisyys", required = true) Integer etaisyys,
@@ -107,12 +115,17 @@ public class ViitekehysmuunninPalveluController {
         if(sade == null){
             sade = DEFAULT_SADE;
         }
+        if(palautusarvot == null){
+            palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }
+
         List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade,palautusarvot);
-        return pistemainenTieosoiteHaku.toString();
+        return pistemainenTieosoiteHaku;
     }
 
+    //yhdellä numrerolla (50) tulee ajoradat 1 ja 0 molemmat ulos, tarkoituskin?
     @RequestMapping(value = "tieosoitevali", method= RequestMethod.GET)
-    public String haeKokoTie(@RequestParam(name = "tunniste", required = false) String tunniste,
+    public List<fi.livi.vkm.dto.VkmTieosoiteVali> haeKokoTie(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "tie", required = true) Integer tie,
             @RequestParam(name = "osa", required = false) Integer osa,
             @RequestParam(name = "etaisyys", required = false) Integer etaisyys,
@@ -129,13 +142,18 @@ public class ViitekehysmuunninPalveluController {
         if(sade == null){
             sade = DEFAULT_SADE;
         }
+        if(palautusarvot == null){
+            palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }
+
         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
                 loppuOsa, loppuEtaisyys, notNullAjoradat, sade, palautusarvot);
-        return viivamainenTieosoiteHaku.toString();
+        return viivamainenTieosoiteHaku;
     }
 
+    //X ja Y loppu tulee kahteen kertaan!
     @RequestMapping(value = "geocode", params = { "kuntakoodi", "katunimi", "katunumero" }, method= RequestMethod.GET)
-    public String geocode( @RequestParam(name = "tunniste", required = false) String tunniste,
+    public List<fi.livi.vkm.dto.GeocodeResult>  geocode( @RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "kuntakoodi", required = true) Integer kuntakoodi,
             @RequestParam(name = "katunimi", required = true) String katunimi,
             @RequestParam(name = "katunumero", required = true) Integer katunumero,
@@ -145,6 +163,10 @@ public class ViitekehysmuunninPalveluController {
                 if(sade == null){
                     sade = DEFAULT_SADE;
                 }
+                if(palautusarvot == null){
+                    palautusarvot = DEFAULT_PALAUTUSARVOT;
+                }
+
         List<fi.livi.vkm.dto.GeocodeResult> tulos = palveluNG.geocode(tunniste, kuntakoodi, katunimi, katunumero, sade, palautusarvot);
             
         if(katunumero_loppu != null){
@@ -157,11 +179,11 @@ public class ViitekehysmuunninPalveluController {
             }
 
         }
-        return tulos.toString();
+        return tulos;
     }
     
     @RequestMapping(value = "reversegeocode", params = { "x", "y"  }, method= RequestMethod.GET)
-    public String reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
+    public ReverseGeocodeResult reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
             @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
             @RequestParam(name = "katunimi", required = false) String katunimi,
             @RequestParam(name = "x", required = true) Double x,
@@ -173,6 +195,10 @@ public class ViitekehysmuunninPalveluController {
                 if(sade == null){
                     sade = DEFAULT_SADE;
                 }
+                if(palautusarvot == null){
+                    palautusarvot = DEFAULT_PALAUTUSARVOT;
+                }
+
 
                 ReverseGeocodeResult tulos = palveluNG.reverseGeocode(tunniste, kuntakoodi, katunimi, x, y, sade, palautusarvot).orElse(null);
 
@@ -184,12 +210,13 @@ public class ViitekehysmuunninPalveluController {
                     tulos.setDistance(loppu.getDistance());
 
                 }
-        return tulos.toString();
+        return tulos;
     }
 
     //TODO
     //Otetaan "haku" pois ja haetaan se sen sijaan jsonista
 
+    //Ei toimi odotetulla tavalla
     //Muunnos-rajapinta
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
     public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
@@ -202,7 +229,11 @@ public class ViitekehysmuunninPalveluController {
             //haun valinta parametrien perusteella
             if("xyhaku".equalsIgnoreCase(haku)){
                 
+                
                 for(int i=0;i<data.length;i++){
+                    System.out.println(data[i].x);
+                    System.out.println(data[i].y);
+                    System.out.println(data[i].palautusarvot);
                     VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(
                         data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade,data[i].palautusarvot).orElse(null);
                     
@@ -224,9 +255,9 @@ public class ViitekehysmuunninPalveluController {
                 	}
                     out.add(tulos);
                 }
+                
 
-
-                return out.toString();
+                return out;
                 
             }
             if("tieosoitehaku".equalsIgnoreCase(haku)){
@@ -247,7 +278,7 @@ public class ViitekehysmuunninPalveluController {
                     }
                     
                 }
-                return out.toString();
+                return out;
             }
             if("tieosoitevali".equalsIgnoreCase(haku)){
                 
@@ -260,20 +291,31 @@ public class ViitekehysmuunninPalveluController {
                     out.add(viivamainenTieosoiteHaku);
                     
                 }
-                return out.toString();
+                return out;
             }
             
             //TODO: loppukatunumero
             if("geocode".equalsIgnoreCase(haku)){
                 for(int i=0;i<data.length;i++){
                     List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
+                    if(data[i].katunumero_loppu != null){
+                        List<fi.livi.vkm.dto.GeocodeResult> loppu = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero_loppu, data[i].sade, data[i].palautusarvot);
+                        for(int k = 0;k < geocode.size();k++)
+                        {
+                            geocode.get(k).setX(loppu.get(k).getX());
+                            geocode.get(k).setY(loppu.get(k).getY());
+                            geocode.get(k).setKatunumeroLoppu(loppu.get(k).getKatunumero());
+                        }
+            
+                    }
+                    
                     for(int j=1;j<geocode.size();j++){
                         out.add(geocode.get(j));
                     }
                     out.add(geocode);
                     
                 }
-                return out.toString();
+                return out;
             }
             
             if("reversegeocode".equalsIgnoreCase(haku)){
@@ -290,7 +332,7 @@ public class ViitekehysmuunninPalveluController {
                     }
                     out.add(tulos);
                 }
-                return out.toString();
+                return out;
             }
             else {
                 return "Virheellinen haku-parametri!";

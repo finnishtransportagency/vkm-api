@@ -2,9 +2,12 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.assertj.core.util.Lists;
 
@@ -12,6 +15,7 @@ import org.assertj.core.util.Lists;
 public class InParameters {
 
     public Integer DEFAULT_SADE = 100;
+    public List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
 
     public Double x;
     public Double y;
@@ -56,7 +60,13 @@ public class InParameters {
         } else {
             this.sade = sade;
         }
-        this.palautusarvot = toIntegerList(palautusarvot);
+        if(palautusarvot == null){
+            this.palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }else {
+            System.out.println(palautusarvot+"STRING PALAUTUSARVOT");
+            this.palautusarvot = toIntegerList(palautusarvot);
+            System.out.println(palautusarvot+"INTEGER LIST");
+        }
     }
 
     //geocode
@@ -71,7 +81,11 @@ public class InParameters {
         } else {
             this.sade = sade;
         }
-        this.palautusarvot = toIntegerList(palautusarvot);
+        if(palautusarvot == null){
+            this.palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }else {
+            this.palautusarvot = toIntegerList(palautusarvot);
+        }
     }
 
     //xyhaku
@@ -109,7 +123,19 @@ public class InParameters {
         //muuntaa stringin interger listiksi tulevaa hakau varten
         this.vaylat = toIntegerList(vaylat);
         this.tunniste = tunniste;
-        this.palautusarvot = toIntegerList(palautusarvot);
+        
+        System.out.println("TULI INPARAMS"+palautusarvot);
+        if(palautusarvot == null){
+            
+            System.out.println("STRING PALAUTUSARVOT OLI NULL");
+            this.palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }else {
+            
+            System.out.println(palautusarvot+"STRING PALAUTUSARVOT");
+            this.palautusarvot = toIntegerList(palautusarvot);
+            System.out.println(this.palautusarvot+"INTEGER LIST");
+        }
+        System.out.println(this.palautusarvot+"!!!!!!!!!!!!");
     }
 
     //tieosoitehaku
@@ -133,6 +159,13 @@ public class InParameters {
         } else {
             this.sade = sade;
         }
+        if(palautusarvot == null){
+            this.palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }
+        else {
+            this.palautusarvot = toIntegerList(palautusarvot);
+        }
+
         
     }
 
@@ -153,7 +186,12 @@ public class InParameters {
         } else {
             this.sade = sade;
         }
-        this.palautusarvot = toIntegerList(palautusarvot);
+        if(palautusarvot == null){
+            this.palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }
+        else {
+            this.palautusarvot = toIntegerList(palautusarvot);
+        }
         
     }
 
@@ -165,17 +203,10 @@ public class InParameters {
 	 * @return
 	 */
 	public static List<Integer> toIntegerList(String test){
-        List<Integer> list = new ArrayList<Integer>();
-        if(test != null){
-            Scanner scanner = new Scanner(test);
-            while (scanner.hasNextInt()) {
-                list.add(scanner.nextInt());
-                }
-                scanner.close();
-        } else {
-            list = null;
-        }
-		return list;
+        List<Integer> palautusarvot = Stream.of(test.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+		return palautusarvot;
 	}
 
 
