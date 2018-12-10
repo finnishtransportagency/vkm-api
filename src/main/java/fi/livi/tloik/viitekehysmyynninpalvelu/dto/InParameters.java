@@ -105,12 +105,7 @@ public class InParameters {
         this.tie = tie;
         this.osa = osa;
         this.tilannepvm = tilannepvm;
-        //jos ei annettu, asetetaan kuluva päivä
-        if (kohdepvm == null){
-            this.kohdepvm = LocalDate.now();
-        } else {
-            this.kohdepvm = kohdepvm;
-        }
+        this.kohdepvm = kohdepvm;
         List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1);
 
         this.ajoradat = notNullAjoradat;
@@ -136,12 +131,7 @@ public class InParameters {
         this.osa = osa;
         this.etaisyys = etaisyys;
         this.tilannepvm = tilannepvm;
-        //jos ei annettu, asetetaan kuluva päivä
-        if (kohdepvm == null){
-            this.kohdepvm = LocalDate.now();
-        } else {
-            this.kohdepvm = kohdepvm;
-        }
+        this.kohdepvm = kohdepvm;
         List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1);
         this.ajoradat = notNullAjoradat;
         if(sade == null){

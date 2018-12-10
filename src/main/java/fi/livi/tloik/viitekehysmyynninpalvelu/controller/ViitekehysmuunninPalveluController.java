@@ -249,8 +249,9 @@ public class ViitekehysmuunninPalveluController {
                     if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
                 		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
                 		tulos.setTieosoite(kohde);
-                	} else {
-                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
+                    }
+                    else if (data[i].tilannepvm != null) {
+                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, LocalDate.now());
                 		tulos.setTieosoite(kohde);
                     }
                     out.add(tulos);
@@ -270,8 +271,8 @@ public class ViitekehysmuunninPalveluController {
                     	if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
                     		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
                     		tulos.setTieosoite(kohde);
-                    	} else {
-                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
+                    	} else if (data[i].tilannepvm != null) {
+                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, LocalDate.now());
                     		tulos.setTieosoite(kohde);
                     	}
                         out.add(tulos);
