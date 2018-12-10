@@ -63,9 +63,7 @@ public class InParameters {
         if(palautusarvot == null){
             this.palautusarvot = DEFAULT_PALAUTUSARVOT;
         }else {
-            System.out.println(palautusarvot+"STRING PALAUTUSARVOT");
             this.palautusarvot = toIntegerList(palautusarvot);
-            System.out.println(palautusarvot+"INTEGER LIST");
         }
     }
 
@@ -113,9 +111,9 @@ public class InParameters {
         } else {
             this.kohdepvm = kohdepvm;
         }
-        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
-        this.ajoradat = notNullAjoradat;
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1);
 
+        this.ajoradat = notNullAjoradat;
         this.x_loppu = x_loppu;
         this.y_loppu = y_loppu;
         this.z_loppu = z_loppu;
@@ -123,19 +121,11 @@ public class InParameters {
         //muuntaa stringin interger listiksi tulevaa hakau varten
         this.vaylat = toIntegerList(vaylat);
         this.tunniste = tunniste;
-        
-        System.out.println("TULI INPARAMS"+palautusarvot);
         if(palautusarvot == null){
-            
-            System.out.println("STRING PALAUTUSARVOT OLI NULL");
             this.palautusarvot = DEFAULT_PALAUTUSARVOT;
         }else {
-            
-            System.out.println(palautusarvot+"STRING PALAUTUSARVOT");
             this.palautusarvot = toIntegerList(palautusarvot);
-            System.out.println(this.palautusarvot+"INTEGER LIST");
         }
-        System.out.println(this.palautusarvot+"!!!!!!!!!!!!");
     }
 
     //tieosoitehaku
@@ -152,7 +142,7 @@ public class InParameters {
         } else {
             this.kohdepvm = kohdepvm;
         }
-        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1);
         this.ajoradat = notNullAjoradat;
         if(sade == null){
             this.sade = DEFAULT_SADE;
@@ -177,7 +167,7 @@ public class InParameters {
         this.etaisyys = Optional.ofNullable(etaisyys).orElse(0);
         this.tilannepvm = tilannepvm;
         this.kohdepvm = kohdepvm;
-        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1, 2);
+        List<Integer> notNullAjoradat = toIntegerList(ajoradat) != null ? toIntegerList(ajoradat) : Lists.newArrayList(0, 1);
         this.ajoradat = notNullAjoradat;
         this.losa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
         this.let = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
@@ -203,10 +193,16 @@ public class InParameters {
 	 * @return
 	 */
 	public static List<Integer> toIntegerList(String test){
-        List<Integer> palautusarvot = Stream.of(test.split(","))
+        List<Integer> palautus = new ArrayList<>(); 
+        if(test != null){
+            palautus = Stream.of(test.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-		return palautusarvot;
+        } else {
+            palautus = null;
+        }
+        
+		return palautus;
 	}
 
 

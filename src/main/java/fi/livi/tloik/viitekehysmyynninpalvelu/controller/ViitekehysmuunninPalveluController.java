@@ -74,7 +74,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
-                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
+                List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
                 if(sade == null){
                     sade = DEFAULT_SADE;
                 }
@@ -134,7 +134,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
-        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1, 2);
+        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
         int alkuOsa = Optional.ofNullable(osa).orElse(0);
         int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(0);
         int loppuOsa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
@@ -252,7 +252,7 @@ public class ViitekehysmuunninPalveluController {
                 	} else {
                 		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
                 		tulos.setTieosoite(kohde);
-                	}
+                    }
                     out.add(tulos);
                 }
                 
