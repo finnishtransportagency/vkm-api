@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import fi.livi.tloik.viitekehysmyynninpalvelu.dto.InParameters;
-import fi.livi.tloik.viitekehysmyynninpalvelu.dto.VkmTieosoiteVali;
 import fi.livi.tloik.viitekehysmyynninpalvelu.request.VkmRequest;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.ReverseGeocodeResult;
 import fi.livi.vkm.dto.VkmTieosoite;
+import fi.livi.vkm.dto.VkmTieosoiteVali;
 import fi.livi.vkm.util.TrDbUtil;
 import fi.livi.vkm.util.VkmUtil;
 import io.swagger.annotations.ApiModelProperty;
@@ -76,7 +76,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
                 if(sade == null){
-                    sade = DEFAULT_SADE;
+                    sade = DEFAULT_SADE; 
                 }
                 if(z == null){
                     z = 0.0;
@@ -234,27 +234,35 @@ public class ViitekehysmuunninPalveluController {
                     System.out.println(data[i].x);
                     System.out.println(data[i].y);
                     System.out.println(data[i].palautusarvot);
-                    VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(
+                    VkmTieosoite xyhaku = palveluNG.xyTieosoiteHaku(
                         data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade,data[i].palautusarvot).orElse(null);
                     
                     if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
                         VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
                             data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].palautusarvot).orElse(null);
-                        tulos.setX(loppu.getX());
-                        tulos.setY(loppu.getY());
-                        tulos.setZ(loppu.getZ());
-                        tulos.setDistance(loppu.getDistance());
+                            xyhaku.setX(loppu.getX());
+                            xyhaku.setY(loppu.getY());
+                            xyhaku.setZ(loppu.getZ());
+                            xyhaku.setDistance(loppu.getDistance());
                     }
                     
                     if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
-                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
-                		tulos.setTieosoite(kohde);
+                		VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, xyhaku, data[i].tilannepvm, data[i].kohdepvm);
+                		xyhaku.setTieosoite(tr);
                     }
-                    else if (data[i].tilannepvm != null) {
-                		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, LocalDate.now());
-                		tulos.setTieosoite(kohde);
-                    }
-                    out.add(tulos);
+                    //Halutaanko hakea tr aina?
+                    else{
+                        if (data[i].tilannepvm != null) {
+                            VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, xyhaku, data[i].tilannepvm, LocalDate.now());
+                            xyhaku.setTieosoite(tr);
+                        }
+                        else{
+                            VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, xyhaku, LocalDate.now(), LocalDate.now());
+                            xyhaku.setTieosoite(tr);
+                        }
+
+                    } 
+                    out.add(xyhaku);
                 }
                 
 
@@ -269,12 +277,21 @@ public class ViitekehysmuunninPalveluController {
                     for(int j=0;j<pistemainenTieosoiteHaku.size();j++){
                     	VkmTieosoite tulos = pistemainenTieosoiteHaku.get(j);
                     	if(data[i].tilannepvm != null && data[i].kohdepvm != null) {
-                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
-                    		tulos.setTieosoite(kohde);
-                    	} else if (data[i].tilannepvm != null) {
-                    		VkmTieosoite kohde = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, LocalDate.now());
-                    		tulos.setTieosoite(kohde);
-                    	}
+                    		VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, data[i].kohdepvm);
+                    		tulos.setTieosoite(tr);
+                        }
+                        //Halutaanko hakea tr aina? 
+                        else{
+                            if (data[i].tilannepvm != null) {
+                                VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, data[i].tilannepvm, LocalDate.now());
+                                tulos.setTieosoite(tr);
+                            }
+                            else{
+                                VkmTieosoite tr = TrDbUtil.getTieosoitteenHistoriaFromTr(env, tulos, LocalDate.now(), LocalDate.now());
+                                tulos.setTieosoite(tr);
+                            }
+    
+                        } 
                         out.add(tulos);
                     }
                     
