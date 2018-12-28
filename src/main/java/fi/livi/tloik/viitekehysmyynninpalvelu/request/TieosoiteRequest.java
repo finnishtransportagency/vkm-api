@@ -43,7 +43,7 @@ public class TieosoiteRequest extends VkmData {
 							VkmUtil.getJsonLocalDate(params, JSON_TILANNEPVM),
 							VkmUtil.getJsonLocalDate(params, JSON_KOHDEPVM),
 							params.getInt(JSON_SADE),
-							params.getString(JSON_PALAUTUSARVOT)
+							VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
 							
                 
                 
