@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.time.format.DateTimeFormatter;
 
 import javax.naming.NamingException;
 
@@ -50,6 +51,9 @@ public class ViitekehysmuunninPalveluController {
 
     private static final Integer DEFAULT_SADE = 100;
     private static final List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    public LocalDate tilannepvm;
+    public LocalDate kohdepvm;
 
     @Autowired
     private IViitekehysmuunnin palveluNG;
@@ -76,8 +80,8 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "z_loppu", required = false) Double z_loppu,
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
             @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "tilannepvm", required = false) LocalDate tilannepvm,
-            @RequestParam(name = "kohdepvm", required = false) LocalDate kohdepvm,
+            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
                 if(sade == null){
@@ -92,6 +96,13 @@ public class ViitekehysmuunninPalveluController {
                 if(palautusarvot == null){
                     palautusarvot = DEFAULT_PALAUTUSARVOT;
                 }
+                if (tilannepvmAsString != null) {
+                	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+                }
+                if (kohdepvmAsString != null) {
+                	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+                }
+                
                 
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, tilannepvm, kohdepvm, env, palautusarvot).orElse(null);
 
@@ -114,8 +125,8 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "etaisyys", required = true) Integer etaisyys,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "tilannepvm", required = false) LocalDate tilannepvm,
-            @RequestParam(name = "kohdepvm", required = false) LocalDate kohdepvm,
+            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
         if(sade == null){
@@ -124,7 +135,13 @@ public class ViitekehysmuunninPalveluController {
         if(palautusarvot == null){
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
-
+        if (tilannepvmAsString != null) {
+        	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+        }
+        if (kohdepvmAsString != null) {
+        	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+        }
+        
         List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
         return pistemainenTieosoiteHaku;
     }
@@ -139,8 +156,8 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "let", required = false) Integer let,
             @RequestParam(name = "sade", required = false) Integer sade,
             @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "tilannepvm", required = false) LocalDate tilannepvm,
-            @RequestParam(name = "kohdepvm", required = false) LocalDate kohdepvm,
+            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException, NamingException, SQLException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
         int alkuOsa = Optional.ofNullable(osa).orElse(0);
@@ -152,6 +169,12 @@ public class ViitekehysmuunninPalveluController {
         }
         if(palautusarvot == null){
             palautusarvot = DEFAULT_PALAUTUSARVOT;
+        }
+        if (tilannepvmAsString != null) {
+        	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+        }
+        if (kohdepvmAsString != null) {
+        	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
         }
 
         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
