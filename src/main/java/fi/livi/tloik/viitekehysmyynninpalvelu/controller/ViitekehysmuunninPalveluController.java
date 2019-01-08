@@ -84,6 +84,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
+
                 if(sade == null){
                     sade = DEFAULT_SADE; 
                 }
@@ -99,8 +100,14 @@ public class ViitekehysmuunninPalveluController {
                 if (tilannepvmAsString != null) {
                 	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
                 }
+                else {
+                    tilannepvm = null;
+                }
                 if (kohdepvmAsString != null) {
                 	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+                }
+                else {
+                    kohdepvm = null;
                 }
                 
                 
@@ -136,10 +143,16 @@ public class ViitekehysmuunninPalveluController {
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
         if (tilannepvmAsString != null) {
-        	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+        }
+        else {
+            tilannepvm = null;
         }
         if (kohdepvmAsString != null) {
-        	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+            kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+        }
+        else {
+            kohdepvm = null;
         }
         
         List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
@@ -171,10 +184,16 @@ public class ViitekehysmuunninPalveluController {
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
         if (tilannepvmAsString != null) {
-        	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+        }
+        else {
+            tilannepvm = null;
         }
         if (kohdepvmAsString != null) {
-        	kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+            kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+        }
+        else {
+            kohdepvm = null;
         }
 
         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
