@@ -12,12 +12,14 @@ import javax.naming.NamingException;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +58,7 @@ public class ViitekehysmuunninPalveluController {
     public LocalDate tilannepvm;
     public LocalDate kohdepvm;
 
+    
     @Autowired
     private IViitekehysmuunnin palveluNG;
     
