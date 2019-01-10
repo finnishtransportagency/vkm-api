@@ -38,6 +38,7 @@ import fi.livi.vkm.util.TrDbUtil;
 import fi.livi.vkm.util.VkmUtil;
 import io.swagger.annotations.ApiModelProperty;
 import springfox.documentation.annotations.ApiIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Tämä on tehty testausta varten.
@@ -154,7 +155,6 @@ public class ViitekehysmuunninPalveluController {
         else {
             kohdepvm = null;
         }
-        
         List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
         return pistemainenTieosoiteHaku;
     }
