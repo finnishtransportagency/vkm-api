@@ -1,12 +1,18 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu;
 
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.PropertiesAlustusException;
@@ -18,6 +24,15 @@ public class VkmApplicationContext {
 
     @Autowired
     private Environment env;
+    
+    @Autowired
+    private Jackson2ObjectMapperBuilder builder;
+
+    @PostConstruct
+    public void postConstruct() {
+        this.builder.serializers(new LocalDateSerializer(new DateTimeFormatterBuilder()
+                .appendPattern("dd.MM.yyyy").toFormatter()));
+    }
 
     @Bean
     public IViitekehysmuunnin viitekehysmuunninNGPalvelu() {
