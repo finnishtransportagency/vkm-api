@@ -17,6 +17,8 @@ public class InParameters {
     public Integer DEFAULT_SADE = 100;
     public List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
 
+    public String haku;
+
     public Double x;
     public Double y;
     public Double z;
@@ -47,7 +49,8 @@ public class InParameters {
 
 
     //reversegeocode
-    public InParameters(String tunniste, Integer kuntakoodi, String katunimi, Double x, Double y, Double x_loppu, Double y_loppu, Integer sade, String palautusarvot){
+    public InParameters(String haku, String tunniste, Integer kuntakoodi, String katunimi, Double x, Double y, Double x_loppu, Double y_loppu, Integer sade, String palautusarvot){
+        this.haku = haku;
         this.tunniste = tunniste;
         this.kuntakoodi = kuntakoodi;
         this.katunimi = katunimi;
@@ -68,7 +71,8 @@ public class InParameters {
     }
 
     //geocode
-    public InParameters(String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer katunumero_loppu, Integer sade, String palautusarvot){
+    public InParameters(String haku, String tunniste, Integer kuntakoodi, String katunimi, Integer katunumero, Integer katunumero_loppu, Integer sade, String palautusarvot){
+        this.haku = haku;
         this.tunniste = tunniste;
         this.kuntakoodi = kuntakoodi;
         this.katunimi = katunimi;
@@ -87,7 +91,8 @@ public class InParameters {
     }
 
     //xyhaku
-    public InParameters( String tunniste, Double x, Double y, Double z, Integer tie, Integer osa, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Double x_loppu, Double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot){
+    public InParameters( String haku, String tunniste, Double x, Double y, Double z, Integer tie, Integer osa, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Double x_loppu, Double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot){
+        this.haku = haku;
         if(sade == null){
             this.sade = DEFAULT_SADE;
         } else {
@@ -124,8 +129,8 @@ public class InParameters {
     }
 
     //tieosoitehaku
-    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer sade, String palautusarvot){
-        
+    public InParameters(String haku, String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer sade, String palautusarvot){
+        this.haku = haku;
         this.tunniste = tunniste;
         this.tie = tie;
         this.osa = osa;
@@ -150,7 +155,8 @@ public class InParameters {
     }
 
     //tieosoitevali
-    public InParameters(String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer losa, Integer let, Integer sade, String palautusarvot){
+    public InParameters(String haku, String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer losa, Integer let, Integer sade, String palautusarvot){
+        this.haku = haku;
         this.tunniste = tunniste;
         this.tie = tie;
         this.osa = Optional.ofNullable(osa).orElse(0);

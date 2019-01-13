@@ -2,6 +2,8 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
 import fi.livi.vkm.util.VkmUtil;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,16 +33,14 @@ public class ReverseGeocodeRequest extends VkmData {
 		this.palautusarvot = palautusarvot;
 	}
 
-    public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
+    public static ArrayList<InParameters> fromJson(JSONArray jsonArray) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("reversegeocode");
+			ArrayList<InParameters> result = new ArrayList<InParameters>();
 		
-			InParameters[] result = new InParameters[array.length()];
-		
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject params = array.getJSONObject(i);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject params = jsonArray.getJSONObject(i);
 				
-				result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+				result.add(new InParameters("reversegeocode",VkmUtil.getJsonString(params, JSON_TUNNISTE),
 				VkmUtil.getJsonInteger(params, JSON_KUNTAKOODI),
 				VkmUtil.getJsonString(params, JSON_KATUNIMI),
                 params.getDouble(JSON_X),
@@ -52,7 +52,7 @@ public class ReverseGeocodeRequest extends VkmData {
                 
                 
                 
-                );
+                ));
 				
 			}
 			return result;

@@ -2,6 +2,8 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
 import fi.livi.vkm.util.VkmUtil;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,16 +34,14 @@ public class TieosoiteValiRequest extends VkmData {
 		this.palautusarvot = palautusarvot;
 	}
 
-    public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
+    public static ArrayList<InParameters> fromJson(JSONArray jsonArray) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("tieosoitevali");
+			ArrayList<InParameters> result = new ArrayList<InParameters>();
 		
-			InParameters[] result = new InParameters[array.length()];
-		
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject params = array.getJSONObject(i);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject params = jsonArray.getJSONObject(i);
 				// Tietyyppi = 0. Tätä parametria ei lainkaan tarvita pyynnöissä, mutta sen on oltava olemassa TieosoiteAjorata-luokassa vastauksia varten.
-                result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+                result.add(new InParameters("tieosoitevali", VkmUtil.getJsonString(params, JSON_TUNNISTE),
 				params.getInt(JSON_TIE),
 				VkmUtil.getJsonInteger(params, JSON_OSA),
 				VkmUtil.getJsonInteger(params, JSON_ETAISYYS), 
@@ -52,7 +52,7 @@ public class TieosoiteValiRequest extends VkmData {
 				VkmUtil.getJsonInteger(params, JSON_LET),
 				VkmUtil.getJsonInteger(params, JSON_SADE),
 				VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
-                );
+                ));
 				
 			}
 			return result;

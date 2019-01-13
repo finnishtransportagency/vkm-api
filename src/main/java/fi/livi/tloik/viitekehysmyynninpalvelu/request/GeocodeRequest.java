@@ -2,6 +2,8 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
 import fi.livi.vkm.util.VkmUtil;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,16 +31,14 @@ public class GeocodeRequest extends VkmData {
 	}
 
 
-    public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
+    public static ArrayList<InParameters> fromJson(JSONArray jsonArray) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("geocode");
+			ArrayList<InParameters> result = new ArrayList<InParameters>();
 		
-			InParameters[] result = new InParameters[array.length()];
-		
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject params = array.getJSONObject(i);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject params = jsonArray.getJSONObject(i);
 				
-                result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+                result.add(new InParameters("geocode", VkmUtil.getJsonString(params, JSON_TUNNISTE),
                 params.getInt(JSON_KUNTAKOODI),
                 params.getString(JSON_KATUNIMI), 
 				params.getInt(JSON_KATUNUMERO),
@@ -48,7 +48,7 @@ public class GeocodeRequest extends VkmData {
                 
                 
                 
-                );
+                ));
 				
 			}
 			return result;

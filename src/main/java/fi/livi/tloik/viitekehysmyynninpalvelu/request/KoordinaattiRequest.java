@@ -1,6 +1,7 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.request;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +12,11 @@ import fi.livi.vkm.util.VkmUtil;
 
 public class KoordinaattiRequest extends VkmData{
 
+	/**
+	 *
+	 */
+
+	private static final String XYHAKU = "xyhaku";
 	private double x;
 	private double y;
 	private Double z;
@@ -43,14 +49,14 @@ public class KoordinaattiRequest extends VkmData{
 	}
 
 	
-    public static InParameters[] fromJson(JSONObject jsonData) throws JSONException {
+    public static ArrayList<InParameters> fromJson(JSONArray jsonArray) throws JSONException {
 		try{
-			JSONArray array = jsonData.getJSONArray("xyhaku");
-			InParameters[] result = new InParameters[array.length()];
+			//JSONArray array = jsonData.getJSONArray("xyhaku");
+			ArrayList<InParameters> result = new ArrayList<InParameters>();
 		
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject params = array.getJSONObject(i);
-				result[i] = new InParameters(VkmUtil.getJsonString(params, JSON_TUNNISTE),
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject params = jsonArray.getJSONObject(i);
+				result.add(new InParameters(XYHAKU,VkmUtil.getJsonString(params, JSON_TUNNISTE),
 				params.getDouble(JSON_X),
 				params.getDouble(JSON_Y),
 				VkmUtil.getJsonDouble(params, JSON_Z),
@@ -65,7 +71,7 @@ public class KoordinaattiRequest extends VkmData{
 				VkmUtil.getJsonInteger(params, JSON_SADE),
 				VkmUtil.getJsonString(params, JSON_VAYLAT),
 				VkmUtil.getJsonString(params, JSON_PALAUTUSARVOT)
-                );
+                ));
 			}
 			return result;
 		}catch (Exception e){

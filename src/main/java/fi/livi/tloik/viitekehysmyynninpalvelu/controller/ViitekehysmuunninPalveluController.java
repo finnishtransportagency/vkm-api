@@ -2,16 +2,13 @@ package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.time.format.DateTimeFormatter;
 
 import javax.naming.NamingException;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
@@ -33,10 +30,7 @@ import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.ReverseGeocodeResult;
 import fi.livi.vkm.dto.VkmTieosoite;
-import fi.livi.vkm.dto.VkmTieosoiteVali;
-import fi.livi.vkm.util.TrDbUtil;
 import fi.livi.vkm.util.VkmUtil;
-import io.swagger.annotations.ApiModelProperty;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
@@ -57,17 +51,17 @@ public class ViitekehysmuunninPalveluController {
 
     @Autowired
     private IViitekehysmuunnin palveluNG;
-    
+
     @Autowired
     private Environment env;
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiIgnore
-	public ModelAndView swaggerUi(ModelMap model) {
-    	return new ModelAndView("redirect:/swagger-ui.html", model);
-	}
-    
-    @RequestMapping(value = "xyhaku", params = { "x", "y" }, method= RequestMethod.GET)
+    public ModelAndView swaggerUi(ModelMap model) {
+        return new ModelAndView("redirect:/swagger-ui.html", model);
+    }
+
+    @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public VkmTieosoite haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "x", required = true) Double x,
             @RequestParam(name = "y", required = true) Double y,
@@ -269,100 +263,82 @@ public class ViitekehysmuunninPalveluController {
     //Ei toimi odotetulla tavalla
     //Muunnos-rajapinta
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
-    public Object muunnin(@RequestParam(name = "Haku", required = true) String haku,
-        @RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
+    public Object muunnin(@RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
 
-            VkmRequest vkmreq = new VkmRequest(haku,json);
+            VkmRequest vkmreq = new VkmRequest(json);
             InParameters[] data = vkmreq.getData();
             List out = new ArrayList();
-
-            //haun valinta parametrien perusteella
-            if("xyhaku".equalsIgnoreCase(haku)){
-                
-                
-                for(int i=0;i<data.length;i++){
-                    VkmTieosoite xyhaku = palveluNG.xyTieosoiteHaku(
-                        data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot).orElse(null);
+            for(int i=0;i<data.length;i++){
+                //haun valinta parametrien perusteella
+                if("xyhaku".equalsIgnoreCase(data[i].haku)){
                     
-                    if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
-                        VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
-                            data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot).orElse(null);
-                            xyhaku.setX(loppu.getX());
-                            xyhaku.setY(loppu.getY());
-                            xyhaku.setZ(loppu.getZ());
-                            xyhaku.setDistance(loppu.getDistance());
-                    }
-                    out.add(xyhaku);
-                }
-                return out;
-                
-            }
-            if("tieosoitehaku".equalsIgnoreCase(haku)){
-                
-                for(int i=0;i<data.length;i++){
-                    List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku
-                    (data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys, Lists.newArrayList(data[i].ajoradat),data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot);
-                    out.add(pistemainenTieosoiteHaku);
-                }
-                return out;
-            }
-            if("tieosoitevali".equalsIgnoreCase(haku)){
-                
-                for(int i=0;i<data.length;i++){
-                    List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
-                    data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot);
-                    /*for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
-                        out.add(viivamainenTieosoiteHaku.get(j));
-                    }*/
-                    out.add(viivamainenTieosoiteHaku);
-                    
-                }
-                return out;
-            }
-            
-            //TODO: loppukatunumero
-            if("geocode".equalsIgnoreCase(haku)){
-                for(int i=0;i<data.length;i++){
-                    List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
-                    if(data[i].katunumero_loppu != null){
-                        List<fi.livi.vkm.dto.GeocodeResult> loppu = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero_loppu, data[i].sade, data[i].palautusarvot);
-                        for(int k = 0;k < geocode.size();k++)
-                        {
-                            geocode.get(k).setX(loppu.get(k).getX());
-                            geocode.get(k).setY(loppu.get(k).getY());
-                            geocode.get(k).setKatunumeroLoppu(loppu.get(k).getKatunumero());
+                        VkmTieosoite xyhaku = palveluNG.xyTieosoiteHaku(
+                            data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot).orElse(null);
+                        
+                        if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
+                            VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
+                                data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot).orElse(null);
+                                xyhaku.setX(loppu.getX());
+                                xyhaku.setY(loppu.getY());
+                                xyhaku.setZ(loppu.getZ());
+                                xyhaku.setDistance(loppu.getDistance());
                         }
-            
-                    }
-                    
-                    for(int j=1;j<geocode.size();j++){
-                        out.add(geocode.get(j));
-                    }
-                    out.add(geocode);
+                        out.add(xyhaku);
                     
                 }
-                return out;
-            }
-            
-            if("reversegeocode".equalsIgnoreCase(haku)){
+                if("tieosoitehaku".equalsIgnoreCase(data[i].haku)){
+                        List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku
+                        (data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys, Lists.newArrayList(data[i].ajoradat),data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot);
+                        out.add(pistemainenTieosoiteHaku);
+                    
+                }
+                if("tieosoitevali".equalsIgnoreCase(data[i].haku)){
+                    
+                        List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
+                        data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot);
+                        /*for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
+                            out.add(viivamainenTieosoiteHaku.get(j));
+                        }*/
+                        out.add(viivamainenTieosoiteHaku);
+                        
+                }
                 
-                for(int i=0;i<data.length;i++){
-                    ReverseGeocodeResult tulos = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x, data[i].y, data[i].sade, data[i].palautusarvot).orElse(null);
-
-                    if (data[i].x_loppu != null && data[i].y_loppu != null){
-                        ReverseGeocodeResult loppu = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x_loppu, data[i].y_loppu, data[i].sade, data[i].palautusarvot).orElse(null);
-                        tulos.setX(loppu.getX());
-                        tulos.setY(loppu.getY());
-                        tulos.setDistance(loppu.getDistance());
-                        tulos.setKatunumero(loppu.getKatunumero());
-                    }
-                    out.add(tulos);
+                //TODO: loppukatunumero
+                if("geocode".equalsIgnoreCase(data[i].haku)){
+                        List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
+                        if(data[i].katunumero_loppu != null){
+                            List<fi.livi.vkm.dto.GeocodeResult> loppu = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero_loppu, data[i].sade, data[i].palautusarvot);
+                            for(int k = 0;k < geocode.size();k++)
+                            {
+                                geocode.get(k).setX(loppu.get(k).getX());
+                                geocode.get(k).setY(loppu.get(k).getY());
+                                geocode.get(k).setKatunumeroLoppu(loppu.get(k).getKatunumero());
+                            }
+                
+                        }
+                        
+                        for(int j=1;j<geocode.size();j++){
+                            out.add(geocode.get(j));
+                        }
+                        out.add(geocode);
+                        
                 }
-                return out;
-            }
-            else {
-                return "Virheellinen haku-parametri!";
-            }
+                
+                if("reversegeocode".equalsIgnoreCase(data[i].haku)){
+                    
+                        ReverseGeocodeResult tulos = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x, data[i].y, data[i].sade, data[i].palautusarvot).orElse(null);
+
+                        if (data[i].x_loppu != null && data[i].y_loppu != null){
+                            ReverseGeocodeResult loppu = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x_loppu, data[i].y_loppu, data[i].sade, data[i].palautusarvot).orElse(null);
+                            tulos.setX(loppu.getX());
+                            tulos.setY(loppu.getY());
+                            tulos.setDistance(loppu.getDistance());
+                            tulos.setKatunumero(loppu.getKatunumero());
+                        }
+                        out.add(tulos);
+                }
+        }
+        return out;
             
     }
 
