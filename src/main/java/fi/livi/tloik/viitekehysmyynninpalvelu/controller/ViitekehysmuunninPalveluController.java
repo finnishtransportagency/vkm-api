@@ -10,13 +10,10 @@ import java.util.Optional;
 
 import javax.naming.NamingException;
 
-<<<<<<< HEAD
-=======
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
->>>>>>> 6f87eae23cb9c7ce40bc31071c856739a484b276
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
 import org.springframework.beans.factory.annotation.Autowired;
