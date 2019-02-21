@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
 
@@ -69,7 +70,7 @@ public class ViitekehysmuunninPalveluController {
     }
 
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
-    public VkmTieosoite haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
+    public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "x", required = true) Double x,
             @RequestParam(name = "y", required = true) Double y,
             @RequestParam(name = "z", required = false) Double z,
@@ -122,8 +123,11 @@ public class ViitekehysmuunninPalveluController {
                     tulos.setDistance(loppu.getDistance());
                 }
                 
+                //Viedään json-objekti listaan ja palautetaan listana eri rajapintojen json-palautusten yhdenmukaisuuden vuoksi
+                List<fi.livi.vkm.dto.VkmTieosoite> tulosInList = new ArrayList<>();
+                tulosInList.add(tulos);
                 
-        return tulos;
+        return tulosInList;
     }
 
     @RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
@@ -233,7 +237,7 @@ public class ViitekehysmuunninPalveluController {
     }
     
     @RequestMapping(value = "reversegeocode", params = { "x", "y"  }, method= RequestMethod.GET)
-    public ReverseGeocodeResult reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
+    public List<fi.livi.vkm.dto.ReverseGeocodeResult> reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
             @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
             @RequestParam(name = "katunimi", required = false) String katunimi,
             @RequestParam(name = "x", required = true) Double x,
@@ -260,7 +264,11 @@ public class ViitekehysmuunninPalveluController {
                     tulos.setDistance(loppu.getDistance());
 
                 }
-        return tulos;
+                
+              //Viedään json-objekti listaan ja palautetaan listana eri rajapintojen json-palautusten yhdenmukaisuuden vuoksi
+                List<fi.livi.vkm.dto.ReverseGeocodeResult> tulosInList = new ArrayList<>();
+                tulosInList.add(tulos);
+        return tulosInList;
     }
 
     //TODO
@@ -289,6 +297,7 @@ public class ViitekehysmuunninPalveluController {
                                 xyhaku.setZ(loppu.getZ());
                                 xyhaku.setDistance(loppu.getDistance());
                         }
+                        Object tempStore = new Object();
                         out.add(xyhaku);
                     
                 }
@@ -344,7 +353,19 @@ public class ViitekehysmuunninPalveluController {
                         out.add(tulos);
                 }
         }
-        return out;
+        //Muokataan palautuksesta objektien lista, ei listojen lista
+        List outInner = new ArrayList();
+        for (int i = 0; i < out.size(); i++) {
+        	if (out.get(i) instanceof List) {
+        		for (int j = 0; j < ((List)out.get(i)).size(); j++) {
+        			outInner.add((((List) out.get(i)).get(j)));
+        		}
+        	}
+        	else {
+        		outInner.add(out.get(i));
+        	}
+        }
+        return outInner;
             
     }
 
