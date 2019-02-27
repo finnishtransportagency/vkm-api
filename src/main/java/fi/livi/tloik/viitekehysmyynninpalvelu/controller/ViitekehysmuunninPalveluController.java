@@ -68,6 +68,13 @@ public class ViitekehysmuunninPalveluController {
     public ModelAndView swaggerUi(ModelMap model) {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
+    
+    
+    @RequestMapping(value = "postKysely", params = { "json" }, method = RequestMethod.POST)
+    public Object postMetodi(@RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
+        System.out.println(json);
+    	return muunnin(json);
+    }
 
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
