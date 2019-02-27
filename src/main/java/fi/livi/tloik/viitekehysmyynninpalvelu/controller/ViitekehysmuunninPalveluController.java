@@ -69,13 +69,98 @@ public class ViitekehysmuunninPalveluController {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
     
-    /*
+
     @RequestMapping(value = "postKysely", params = { "json" }, method = RequestMethod.POST)
     public Object postMetodi(@RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
-        System.out.println(json);
-    	return muunnin(json);
+        //System.out.println(json);
+    	//return muunnin(json);
+    	VkmRequest vkmreq = new VkmRequest(json);
+        InParameters[] data = vkmreq.getData();
+        List out = new ArrayList();
+        for(int i=0;i<data.length;i++){
+            //haun valinta parametrien perusteella
+            if("xyhaku".equalsIgnoreCase(data[i].haku)){
+                
+                    VkmTieosoite xyhaku = palveluNG.xyTieosoiteHaku(
+                        data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot).orElse(null);
+                    
+                    if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
+                        VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
+                            data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot).orElse(null);
+                            xyhaku.setX(loppu.getX());
+                            xyhaku.setY(loppu.getY());
+                            xyhaku.setZ(loppu.getZ());
+                            xyhaku.setDistance(loppu.getDistance());
+                    }
+                    out.add(xyhaku);
+                
+            }
+            if("tieosoitehaku".equalsIgnoreCase(data[i].haku)){
+                    List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku
+                    (data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys, Lists.newArrayList(data[i].ajoradat),data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot);
+                    out.add(pistemainenTieosoiteHaku);
+                
+            }
+            if("tieosoitevali".equalsIgnoreCase(data[i].haku)){
+                
+                    List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
+                    data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot);
+                    /*for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
+                        out.add(viivamainenTieosoiteHaku.get(j));
+                    }*/
+                    out.add(viivamainenTieosoiteHaku);
+                    
+            }
+            
+            //TODO: loppukatunumero
+            if("geocode".equalsIgnoreCase(data[i].haku)){
+                    List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
+                    if(data[i].katunumero_loppu != null){
+                        List<fi.livi.vkm.dto.GeocodeResult> loppu = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero_loppu, data[i].sade, data[i].palautusarvot);
+                        for(int k = 0;k < geocode.size();k++)
+                        {
+                            geocode.get(k).setX(loppu.get(k).getX());
+                            geocode.get(k).setY(loppu.get(k).getY());
+                            geocode.get(k).setKatunumeroLoppu(loppu.get(k).getKatunumero());
+                        }
+            
+                    }
+                    
+                    for(int j=1;j<geocode.size();j++){
+                        out.add(geocode.get(j));
+                    }
+                    out.add(geocode);
+                    
+            }
+            
+            if("reversegeocode".equalsIgnoreCase(data[i].haku)){
+                
+                    ReverseGeocodeResult tulos = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x, data[i].y, data[i].sade, data[i].palautusarvot).orElse(null);
+
+                    if (data[i].x_loppu != null && data[i].y_loppu != null){
+                        ReverseGeocodeResult loppu = palveluNG.reverseGeocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].x_loppu, data[i].y_loppu, data[i].sade, data[i].palautusarvot).orElse(null);
+                        tulos.setX(loppu.getX());
+                        tulos.setY(loppu.getY());
+                        tulos.setDistance(loppu.getDistance());
+                        tulos.setKatunumero(loppu.getKatunumero());
+                    }
+                    out.add(tulos);
+            }
     }
-    */
+    //Muokataan palautuksesta objektien lista, ei listojen lista
+    List outInner = new ArrayList();
+    for (int i = 0; i < out.size(); i++) {
+    	if (out.get(i) instanceof List) {
+    		for (int j = 0; j < ((List)out.get(i)).size(); j++) {
+    			outInner.add((((List) out.get(i)).get(j)));
+    		}
+    	}
+    	else {
+    		outInner.add(out.get(i));
+    	}
+    }
+    return outInner;
+    }
 
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
@@ -305,7 +390,6 @@ public class ViitekehysmuunninPalveluController {
                                 xyhaku.setZ(loppu.getZ());
                                 xyhaku.setDistance(loppu.getDistance());
                         }
-                        Object tempStore = new Object();
                         out.add(xyhaku);
                     
                 }
