@@ -69,11 +69,11 @@ public class ViitekehysmuunninPalveluController {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
     
-
+/*
     @RequestMapping(value = "postKysely", params = { "json" }, method = RequestMethod.POST)
     public Object postMetodi(@RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
-        //System.out.println(json);
-    	//return muunnin(json);
+        System.out.println(json);
+    	return muunnin(json);
     	VkmRequest vkmreq = new VkmRequest(json);
         InParameters[] data = vkmreq.getData();
         List out = new ArrayList();
@@ -105,14 +105,14 @@ public class ViitekehysmuunninPalveluController {
                 
                     List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
                     data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot);
-                    /*for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
-                        out.add(viivamainenTieosoiteHaku.get(j));
-                    }*/
+    //for(int j=1;j<viivamainenTieosoiteHaku.size();j++){
+    //out.add(viivamainenTieosoiteHaku.get(j));
+                    }
                     out.add(viivamainenTieosoiteHaku);
                     
             }
             
-            //TODO: loppukatunumero
+    //TODO: loppukatunumero
             if("geocode".equalsIgnoreCase(data[i].haku)){
                     List<fi.livi.vkm.dto.GeocodeResult> geocode = palveluNG.geocode(data[i].tunniste, data[i].kuntakoodi, data[i].katunimi, data[i].katunumero, data[i].sade, data[i].palautusarvot);
                     if(data[i].katunumero_loppu != null){
@@ -161,6 +161,7 @@ public class ViitekehysmuunninPalveluController {
     }
     return outInner;
     }
+*/
 
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
