@@ -19,7 +19,7 @@ public class KoordinaattiRequest extends VkmData{
 	private static final String XYHAKU = "xyhaku";
 	private double x;
 	private double y;
-	private Double z;
+	private double z;
 	private Integer tie;
 	private Integer osa;
 	private LocalDate tilannepvm;
@@ -27,12 +27,12 @@ public class KoordinaattiRequest extends VkmData{
 	private String ajoradat;
 	private double x_loppu;
 	private double y_loppu;
-	private Double z_loppu;
+	private double z_loppu;
 	private Integer sade;
 	private String vaylat;
 	private String palautusarvot;
 
-	public KoordinaattiRequest(String tunniste, double x, double y, Double z, Integer tie, Integer osa, String ajoradat, double x_loppu, double y_loppu, Double z_loppu, Integer sade, String vaylat, String palautusarvot) {
+	public KoordinaattiRequest(String tunniste, double x, double y, double z, Integer tie, Integer osa, String ajoradat, double x_loppu, double y_loppu, double z_loppu, Integer sade, String vaylat, String palautusarvot) {
 		super(tunniste);
 		this.x = x;
 		this.y = y;

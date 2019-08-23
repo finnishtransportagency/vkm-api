@@ -126,7 +126,7 @@ public class InParameters {
         }else {
             this.palautusarvot = toIntegerList(palautusarvot);
         }
-    }
+    }	
 
     //tieosoitehaku
     public InParameters(String haku, String tunniste, Integer tie, Integer osa, Integer etaisyys, String ajoradat, LocalDate tilannepvm, LocalDate kohdepvm, Integer sade, String palautusarvot){

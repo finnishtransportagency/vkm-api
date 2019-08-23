@@ -1,5 +1,7 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
+import javax.swing.JOptionPane;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Configurable
 @RequestMapping("/")
 @ControllerAdvice
+
 public class ViitekehysmuunninPalveluController {
 
     private static final Integer DEFAULT_SADE = 100;
@@ -83,10 +86,9 @@ public class ViitekehysmuunninPalveluController {
     public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
     	
     	String json = request.getParameter("json");
-    	return muunnin(json);
-               
+    	return muunnin(json);           
     }
-
+    
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "x", required = true) Double x,
@@ -107,6 +109,9 @@ public class ViitekehysmuunninPalveluController {
 
                 if(sade == null){
                     sade = DEFAULT_SADE; 
+                }
+                if(sade == 0) {
+                	throw new VkmVirheException("Virheellinen sade arvo.");
                 }
                 if(z == null){
                     z = 0.0;
@@ -130,8 +135,8 @@ public class ViitekehysmuunninPalveluController {
                     kohdepvm = null;
                 }
                 
-                
                 VkmTieosoite tulos = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x, y, z), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, tilannepvm, kohdepvm, env, palautusarvot).orElse(null);
+
 
                 if (x_loppu != null && y_loppu != null && z_loppu != null){
                     VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(tunniste, doublesToPoint(x_loppu, y_loppu, z_loppu), tie, osa,  Lists.newArrayList(notNullAjoradat), vaylan_luonne, sade, tilannepvm, kohdepvm, env, palautusarvot).orElse(null);
@@ -145,10 +150,14 @@ public class ViitekehysmuunninPalveluController {
                 List<fi.livi.vkm.dto.VkmTieosoite> tulosInList = new ArrayList<>();
                 tulosInList.add(tulos);
                 
-        return tulosInList;
+                if(tulos == null) {
+                	throw new VkmVirheException("Tieosoitetta ei löytynyt.");
+                }
+
+                return tulosInList;         
     }
 
-    @RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
+	@RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeTieosoitteella(@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "tie", required = true) Integer tie,
             @RequestParam(name = "osa", required = true) Integer osa,
@@ -220,6 +229,7 @@ public class ViitekehysmuunninPalveluController {
 
         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, alkuEtaisyys,
                 loppuOsa, loppuEtaisyys, notNullAjoradat, sade, tilannepvm, kohdepvm, env, palautusarvot);
+        
         return viivamainenTieosoiteHaku;
     }
 
@@ -306,7 +316,7 @@ public class ViitekehysmuunninPalveluController {
                     
                         VkmTieosoite xyhaku = palveluNG.xyTieosoiteHaku(
                             data[i].tunniste,doublesToPoint(data[i].x,data[i].y,data[i].z), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env,data[i].palautusarvot).orElse(null);
-                        
+                       
                         if (data[i].x_loppu != null && data[i].y_loppu != null && data[i].z_loppu != null){
                             VkmTieosoite loppu = palveluNG.xyTieosoiteHaku(data[i].tunniste, doublesToPoint(data[i].x_loppu,
                                 data[i].y_loppu, data[i].z_loppu), data[i].tie, data[i].osa, Lists.newArrayList(data[i].ajoradat), data[i].vaylat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot).orElse(null);
@@ -325,7 +335,7 @@ public class ViitekehysmuunninPalveluController {
                     
                 }
                 if("tieosoitevali".equalsIgnoreCase(data[i].haku)){
-                    
+                	
                         List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(data[i].tunniste, data[i].tie, data[i].osa, data[i].etaisyys,
                         data[i].losa, data[i].let, data[i].ajoradat, data[i].sade, data[i].tilannepvm, data[i].kohdepvm, env, data[i].palautusarvot);
                         /*for(int j=1;j<viivamainenTieosoiteHaku.size();j++){

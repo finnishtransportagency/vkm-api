@@ -12,11 +12,12 @@ public class VkmTieosoite {
     public final Double x;
     public final Double y;
 
+
     public String maakunta;
     public String kuntakoodi;
     public String urakka_alue;
     public String ely;
-
+    
     public VkmTieosoite(Integer tie, Integer osa, Integer etaisyys, Integer ajorata, Point koordinaatti) {
         this.tie = tie;
         this.osa = osa;
