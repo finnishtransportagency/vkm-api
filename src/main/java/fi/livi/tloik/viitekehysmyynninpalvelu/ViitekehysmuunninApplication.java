@@ -18,7 +18,6 @@ public class ViitekehysmuunninApplication {
 //            System.out.println(beanName);
 //        }
 
-
     }
 
 }
