@@ -12,7 +12,6 @@ public class VkmTieosoite {
     public final Double x;
     public final Double y;
 
-
     public String maakunta;
     public String kuntakoodi;
     public String urakka_alue;
