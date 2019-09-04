@@ -203,11 +203,12 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException, NamingException, SQLException {
-        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
-        int alkuOsa = Optional.ofNullable(osa).orElse(0);
-        int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(0);
+        List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);                
+        int alkuOsa = Optional.ofNullable(osa).orElse(Integer.MIN_VALUE);
+        int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(Integer.MIN_VALUE);
         int loppuOsa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
         int loppuEtaisyys = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
+                    
         if(sade == null){
             sade = DEFAULT_SADE;
         }
