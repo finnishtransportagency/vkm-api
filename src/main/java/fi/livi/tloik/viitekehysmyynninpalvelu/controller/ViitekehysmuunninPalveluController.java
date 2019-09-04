@@ -82,12 +82,12 @@ public class ViitekehysmuunninPalveluController {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
     
-    @RequestMapping(value = "muunnin-post", method = RequestMethod.POST)
-    public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
-    	
-    	String json = request.getParameter("json");
-    	return muunnin(json);           
-    }
+//    @RequestMapping(value = "muunnin-post", method = RequestMethod.POST)
+//    public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
+//    	
+//    	String json = request.getParameter("json");
+//    	return muunnin(json);           
+//    }
     
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
