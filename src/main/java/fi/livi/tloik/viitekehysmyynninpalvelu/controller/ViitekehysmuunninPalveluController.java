@@ -66,6 +66,7 @@ public class ViitekehysmuunninPalveluController {
     private static final Integer DEFAULT_SADE = 100;
     private static final List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final Integer DEFAULT_TILANNEPVM_MIN_VUOSI = 1980;
     public LocalDate tilannepvm;
     public LocalDate kohdepvm;
 
@@ -82,12 +83,12 @@ public class ViitekehysmuunninPalveluController {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
     
-    @RequestMapping(value = "muunnin-post", method = RequestMethod.POST)
-    public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
-    	
-    	String json = request.getParameter("json");
-    	return muunnin(json);           
-    }
+//    @RequestMapping(value = "muunnin-post", method = RequestMethod.POST)
+//    public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
+//    	
+//    	String json = request.getParameter("json");
+//    	return muunnin(json);           
+//    }
     
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
     public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
@@ -122,8 +123,13 @@ public class ViitekehysmuunninPalveluController {
                 if(palautusarvot == null){
                     palautusarvot = DEFAULT_PALAUTUSARVOT;
                 }
+                
                 if (tilannepvmAsString != null) {
                 	tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+                	
+                    if(tilannepvm.getYear() < DEFAULT_TILANNEPVM_MIN_VUOSI || tilannepvm.isAfter(LocalDate.now())) {
+                    	throw new VkmVirheException("Aineistoa ei ole saatavilla kyseisellä tilannepäivämäärällä");
+                    }
                 }
                 else {
                     tilannepvm = null;
@@ -174,8 +180,13 @@ public class ViitekehysmuunninPalveluController {
         if(palautusarvot == null){
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
+        
         if (tilannepvmAsString != null) {
             tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            
+            if(tilannepvm.getYear() < DEFAULT_TILANNEPVM_MIN_VUOSI || tilannepvm.isAfter(LocalDate.now())) {
+            	throw new VkmVirheException("Aineistoa ei ole saatavilla kyseisellä tilannepäivämäärällä");
+            }
         }
         else {
             tilannepvm = null;
@@ -215,8 +226,13 @@ public class ViitekehysmuunninPalveluController {
         if(palautusarvot == null){
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
+        
         if (tilannepvmAsString != null) {
             tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            
+            if(tilannepvm.getYear() < DEFAULT_TILANNEPVM_MIN_VUOSI || tilannepvm.isAfter(LocalDate.now())) {
+            	throw new VkmVirheException("Aineistoa ei ole saatavilla kyseisellä tilannepäivämäärällä");
+            }
         }
         else {
             tilannepvm = null;
