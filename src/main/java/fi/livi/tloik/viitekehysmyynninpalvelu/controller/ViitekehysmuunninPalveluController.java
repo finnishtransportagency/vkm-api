@@ -83,6 +83,7 @@ public class ViitekehysmuunninPalveluController {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
     
+    
 //    @RequestMapping(value = "muunnin-post", method = RequestMethod.POST)
 //    public Object handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException {
 //    	
