@@ -1,3 +1,12 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+
+import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 public class ResultParameters{
 
 	public String geometria;
@@ -53,7 +62,7 @@ public class ResultParameters{
 	
 	
 	//Constructor
-    public ResultParameters() {
+    public ResultParameters() throws JsonParseException, JsonMappingException, IOException {
 		setAllToNull();
     }
 
@@ -259,8 +268,8 @@ public class ResultParameters{
 	//
 	//Setters
 	
-	public void setGeometria(String geometria) {
-		this.geometria = geometria;
+	public void setGeometria(String geom) {
+		this.geometria = geom;
 	}
 	
 	public void setTunniste(String tunniste) {
@@ -463,7 +472,7 @@ public class ResultParameters{
 	//
 	//Other methods
 	
-	private void setAllToNull() {
+	private void setAllToNull() throws JsonParseException, JsonMappingException, IOException {
 		setGeometria(null);
 		setTunniste(null);
 		setX(null);
@@ -519,56 +528,110 @@ public class ResultParameters{
 }
 
 
-/*** Setteri-lista liitettäväksi testimetodeihin *****
+/*** Testikeissin pohja --- Liitä testikansiossa siihen rajapintaluokkaan, jota haluat testata
 
-//expected.setGeometria(String geometria);
-//expected.setTunniste(String tunniste);
-//expected.setX(Double x);
-//expected.setY(Double y);
-//expected.setZ(Double z);
-//expected.setX_loppu(Double x_loppu);
-//expected.setY_loppu(Double y_loppu);
-//expected.setZ_loppu(Double z_loppu);
-//expected.setValimatka(Double valimatka);
-//expected.setValimatka_loppu(Double valimatka_loppu);
-//expected.setTie(Integer tie);
-//expected.setAjr(Integer ajr);
-//expected.setAosa(Integer aosa);
-//expected.setAet(Integer aet);
-//expected.setL_tie(Integer l_tie);
-//expected.setL_ajr(Integer l_ajr);
-//expected.setLosa(Integer losa);
-//expected.setLet(Integer let);
-//expected.setLink_id(Integer link_id);
-//expected.setM_arvo(Double m_arvo);
-//expected.setLink_id_loppu(Integer link_id_loppu);
-//expected.setM_arvo_loppu(Double m_arvo_loppu);
-//expected.setKuntakoodi(Integer kuntakoodi);
-//expected.setKuntanimi(String kuntanimi);
-//expected.setKatunimi(String katunimi);
-//expected.setKatunimi_se(String katunimi_se);
-//expected.setKatunumero(Integer katunumero);
-//expected.setKatunimi_loppu(String katunimi_loppu);
-//expected.setKatunimi_se_loppu(String katunimi_se_loppu);
-//expected.setKatunumero_loppu(Integer katunumero_loppu);
-//expected.setPituus(Double pituus);
-//expected.setVaylan_luonne(Integer vaylan_luonne);
-//expected.setTietyyppi(Integer tietyyppi);
-//expected.setVaylan_luonne_loppu(Integer vaylan_luonne_loppu);
-//expected.setTietyyppi_loppu(Integer tietyyppi_loppu);
-//expected.setEly(Integer ely);
-//expected.setElynimi(String elynimi);
-//expected.setMaakuntakoodi(Integer maakuntakoodi);
-//expected.setMaakuntanimi(String maakuntanimi);
-//expected.setUalue(Integer ualue);
-//expected.setUaluenimi(String ualuenimi);
-//expected.setKuntakoodi_loppu(Integer kuntakoodi_loppu);
-//expected.setKuntanimi_loppu(String kuntanimi_loppu);
-//expected.setMaakuntakoodi_loppu(Integer maakuntakoodi_loppu);
-//expected.setMaakuntanimi_loppu(String maakuntanimi_loppu);
-//expected.setEly_loppu(Integer ely_loppu);
-//expected.setElynimi_loppu(String elynimi_loppu);
-//expected.setUalue_loppu(Integer ualue_loppu);
-//expected.setUaluenimi_loppu(String ualuenimi_loppu);
+		@Test
+		public void testNameOfTest() {
+			
+			// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
+			
+			Query q = new Query(BaseUrl);
+			
+			//q.addToQuery("tunniste", "");
+			//q.addToQuery("x", "");
+			//q.addToQuery("y", "");
+			//q.addToQuery("z", "");
+			//q.addToQuery("sade", "");
+			//q.addToQuery("tie", "");
+			//q.addToQuery("ajr", "");
+			//q.addToQuery("aosa", "");
+			//q.addToQuery("aet", "");
+			//q.addToQuery("tilannepvm", "");
+			//q.addToQuery("kohdepvm", "");
+			//q.addToQuery("link_id", "");
+			//q.addToQuery("m_arvo", "");
+			//q.addToQuery("kuntakoodi", "");
+			//q.addToQuery("katunimi", "");
+			//q.addToQuery("katunumero", "");
+			//q.addToQuery("tietyyppi", "");
+			//q.addToQuery("vaylan_luonne", "");
+			//q.addToQuery("ely", "");
+			//q.addToQuery("ualue", "");
+			//q.addToQuery("maakuntakoodi", "");
+			
+			//q.addToQuery("x_loppu", "");
+			//q.addToQuery("y_loppu", "");
+			//q.addToQuery("z_loppu", "");
+			//q.addToQuery("losa", "");
+			//q.addToQuery("let", "");
+			//q.addToQuery("link_id_loppu", "");
+			//q.addToQuery("m_arvo_loppu", "");
+			//q.addToQuery("katunumero_loppu", "");
+			
+			//q.addToQuery("palautusarvot", "");
+			//q.addToQuery("json", "");
+			
+			RequestResponse testInfo = new RequestResponse( q.getQuery().toString() );
+			
+			// ANNETAAN ODOTETUT OUT-PARAMETRIT
+		
+			ResultParameters expected = new ResultParameters();
+			
+			//expected.setTunniste();
+			//expected.setX();
+			//expected.setY();
+			//expected.setZ();
+			//expected.setValimatka();
+			//expected.setTie();
+			//expected.setAjr();
+			//expected.setAosa();
+			//expected.setAet();
+			//expected.setLink_id();
+			//expected.setM_arvo();
+			//expected.setKuntakoodi();
+			//expected.setKuntanimi();
+			//expected.setKatunimi();
+			//expected.setKatunimi_se();
+			//expected.setKatunumero();
+			//expected.setTietyyppi();
+			//expected.setVaylan_luonne();
+			//expected.setMaakuntakoodi();
+			//expected.setMaakuntanimi();
+			//expected.setEly();
+			//expected.setElynimi();
+			//expected.setUalue();
+			//expected.setUaluenimi();
+		
+			//expected.setGeometria();
+			//expected.setPituus();
+			//expected.setX_loppu();
+			//expected.setY_loppu();
+			//expected.setZ_loppu();
+			//expected.setValimatka_loppu();
+			//expected.setL_tie();
+			//expected.setL_ajr();
+			//expected.setLosa();
+			//expected.setLet();
+			//expected.setLink_id_loppu();
+			//expected.setM_arvo_loppu();
+			//expected.setKuntakoodi_loppu();
+			//expected.setKuntanimi_loppu();
+			//expected.setKatunimi_loppu();
+			//expected.setKatunimi_se_loppu();
+			//expected.setKatunumero_loppu();
+			//expected.setTietyyppi_loppu();
+			//expected.setVaylan_luonne_loppu();
+			//expected.setMaakuntakoodi_loppu();
+			//expected.setMaakuntanimi_loppu();
+			//expected.setEly_loppu();
+			//expected.setElynimi_loppu();
+			//expected.setUalue_loppu();
+			//expected.setUaluenimi_loppu();
+			
+			// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
+		
+			assertThat(testInfo.result).isEqualToComparingFieldByField(expected);
+		
+		}
 
-******************************************************/
+***/

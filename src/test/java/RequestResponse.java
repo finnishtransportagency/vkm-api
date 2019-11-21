@@ -9,16 +9,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RequestResponse {
 	
 	String query;
 	String response;
+	String json;
+	String geom;
 	ResultParameters result = new ResultParameters();
 	
 	public RequestResponse(String url) throws IOException {
 		query = url;
 		response = getResponse(url);
-		result = getResult(response);	
+		json = getJson(response);
+		result = getResult(json);
+		result.setGeometria(geom);
 	}
 	
 	private String getResponse(String query) throws IOException {
@@ -42,14 +49,19 @@ public class RequestResponse {
 		return staticContent = content.toString();
 	}
 	
-	private ResultParameters getResult(String rawJson) throws JsonParseException, JsonMappingException, IOException {
+	private String getJson(String response) {
+		response = response.replaceAll(System.lineSeparator(), "");
+		response = removeBracketsFromEnds(response);
+		response = extractGeometry(response);
+		return response;
+	}
+	
+	private ResultParameters getResult(String json) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		ResultParameters ready = new ResultParameters();
 		
-		rawJson = rawJson.replaceAll(System.lineSeparator(), "");
-		rawJson = removeBracketsFromEnds(rawJson);
+		return ready = mapper.readValue(json, ResultParameters.class);
 		
-		return ready = mapper.readValue(rawJson, ResultParameters.class);
 	}
 	
 	private static String removeBracketsFromEnds(String process) {
@@ -79,6 +91,24 @@ public class RequestResponse {
 		}
 		
 		return process;
+	}
+	
+	private String extractGeometry(String json) {
+		String regexGeom = ",\"geometria\".*.]]]}";
+		Pattern r = Pattern.compile(regexGeom);
+		Matcher m = r.matcher(json);
+		
+		if (m.find()) {
+			geom = json;
+			String regexOtherStart = ".*.\"geometria\":";
+			String regexOtherEnd = "]]]}.*.";
+			geom = geom.replaceAll(regexOtherStart, "");
+			geom = geom.replaceAll(regexOtherEnd, "]]]}");
+			
+			json = json.replaceAll(regexGeom, "");
+		}
+		
+		return json;
 	}
 
 }
