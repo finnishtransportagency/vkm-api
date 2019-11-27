@@ -134,7 +134,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "y", required = true) Double y,
 //            @RequestParam(name = "z", required = false) Double z,
             @RequestParam(name = "tie", required = false) Integer tie,
-            @RequestParam(name = "osa", required = false) Integer osa,
+            @RequestParam(name = "aosa", required = false) Integer osa,
             @RequestParam(name = "ajr", required = false) List<Integer> ajr,
             @RequestParam(name = "x_loppu", required = false) Double x_loppu,
             @RequestParam(name = "y_loppu", required = false) Double y_loppu,
@@ -250,7 +250,7 @@ public class ViitekehysmuunninPalveluController {
     public List<fi.livi.vkm.dto.VkmTieosoiteVali> haeKokoTie(
     		@RequestParam(name = "tunniste", required = false) String tunniste,
             @RequestParam(name = "tie", required = true) Integer tie,
-            @RequestParam(name = "osa", required = false) Integer osa,
+            @RequestParam(name = "aosa", required = false) Integer osa,
             @RequestParam(name = "aet", required = false) Integer aet,
             @RequestParam(name = "losa", required = false) Integer losa,
             @RequestParam(name = "let", required = false) Integer let,
