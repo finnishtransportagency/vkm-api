@@ -420,7 +420,7 @@ public class ResultParameters{
 		this.maakuntakoodi = maakuntakoodi;
 	}
 
-		//Tämä poistetaan kun maakuntakoodi palautuu kaikissa rajapinnoissa lukuna
+		//Tämä poistetaan kun maakuntakoodi palautuu geocodessakin lukuna
 		public void setMaakuntakoodi(String maakuntakoodi) {
 			this.maakuntakoodi = Integer.parseInt(maakuntakoodi);
 		}
@@ -444,7 +444,8 @@ public class ResultParameters{
 	public void setKuntanimi_loppu(String kuntanimi_loppu) {
 		this.kuntanimi_loppu = kuntanimi_loppu;
 	}
-
+		
+	//Huom. myös maakuntakoodi_loppu palautuu geocodessa merkkinä
 	public void setMaakuntakoodi_loppu(Integer maakuntakoodi_loppu) {
 		this.maakuntakoodi_loppu = maakuntakoodi_loppu;
 	}

@@ -56,8 +56,8 @@ public class TestGeocode {
 		ResultParameters expected = new ResultParameters();
 		
 		expected.setTunniste("1");
-		expected.setX(240214.19300316524);
-		expected.setY(6711264.68319082);
+		expected.setX(240225.935025337);
+		expected.setY(6711297.2857944);
 		//expected.setZ();
 		//expected.setValimatka();
 		//expected.setTie();
@@ -160,8 +160,8 @@ public class TestGeocode {
 		ResultParameters expected = new ResultParameters();
 		
 		expected.setTunniste("1");
-		expected.setX(240214.19300316524);
-		expected.setY(6711264.68319082);
+		expected.setX(240225.935025337);
+		expected.setY(6711297.2857944);
 		//expected.setZ();
 		//expected.setValimatka();
 		//expected.setTie();
@@ -186,8 +186,8 @@ public class TestGeocode {
 		
 		//expected.setGeometria();
 		//expected.setPituus();
-		expected.setX_loppu(239950.85235890833);
-		expected.setY_loppu(6711089.989459409);
+		expected.setX_loppu(239864.321025651);
+		expected.setY_loppu(6711039.09479221);
 		//expected.setZ_loppu();
 		//expected.setValimatka_loppu();
 		//expected.setL_tie();

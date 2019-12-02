@@ -22,7 +22,7 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("sade", "");
 		q.addToQuery("tie", "10");
 		q.addToQuery("ajr", "1");
-		q.addToQuery("osa", "2"); //Huom. tulisi olla aosa
+		q.addToQuery("aosa", "2");
 		q.addToQuery("aet", "0");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
@@ -126,7 +126,7 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("sade", "");
 		q.addToQuery("tie", "10");
 		q.addToQuery("ajr", "1");
-		q.addToQuery("osa", "2"); //Huom. pitäisi olla aosa
+		q.addToQuery("aosa", "2");
 		q.addToQuery("aet", "0");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
@@ -334,7 +334,7 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("sade", "");
 		q.addToQuery("tie", "1");
 		//q.addToQuery("ajr", "");
-		q.addToQuery("osa", "36"); // Huom. pitäisi olla aosa
+		q.addToQuery("aosa", "36");
 		//q.addToQuery("aet", "");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
