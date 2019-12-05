@@ -175,6 +175,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
+        List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku;
         if(sade == null){
             sade = DEFAULT_SADE;
         }
@@ -198,7 +199,12 @@ public class ViitekehysmuunninPalveluController {
         else {
             kohdepvm = null;
         }
-        List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
+        if (tilannepvm == null) {
+        	pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
+        } else {
+        	if (kohdepvm == null) kohdepvm = LocalDate.now();
+        	pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHistoriaHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
+        }
         return pistemainenTieosoiteHaku;
     }
 
