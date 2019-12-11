@@ -77,8 +77,8 @@ public class TestXY {
 		expected.setMaakuntanimi("Uusimaa");
 		expected.setEly(1);
 		//expected.setElynimi();
-		expected.setUalue(131);
-		expected.setUaluenimi("Vantaa 14-19");
+		expected.setUalue(400);
+		expected.setUaluenimi("Kunta hoitaa");
 
 		//expected.setGeometria();
 		//expected.setPituus();
@@ -181,8 +181,8 @@ public class TestXY {
 		expected.setMaakuntanimi("Uusimaa");
 		expected.setEly(1);
 		//expected.setElynimi();
-		expected.setUalue(131);
-		expected.setUaluenimi("Vantaa 14-19");
+		expected.setUalue(400);
+		expected.setUaluenimi("Kunta hoitaa");
 
 		//expected.setGeometria();
 		//expected.setPituus();
@@ -494,8 +494,8 @@ public class TestXY {
 		expected.setMaakuntanimi("Uusimaa");
 		expected.setEly(1);
 		//expected.setElynimi();
-		expected.setUalue(131);
-		expected.setUaluenimi("Vantaa 14-19");
+		expected.setUalue(400);
+		expected.setUaluenimi("Kunta hoitaa");
 
 		//expected.setGeometria();
 		//expected.setPituus();
@@ -520,8 +520,8 @@ public class TestXY {
 		expected.setMaakuntanimi_loppu("Uusimaa");
 		expected.setEly_loppu(1);
 		//expected.setElynimi_loppu();
-		expected.setUalue_loppu(131);
-		expected.setUaluenimi_loppu("Vantaa 14-19");
+		expected.setUalue_loppu(400);
+		expected.setUaluenimi_loppu("Kunta hoitaa");
 		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 

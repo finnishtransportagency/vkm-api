@@ -75,7 +75,7 @@ public class TestGeocode {
 		//expected.setVaylan_luonne();
 		expected.setMaakuntakoodi(2);
 		expected.setMaakuntanimi("Varsinais-Suomi");
-		//expected.setEly();
+		expected.setEly(2);
 		//expected.setElynimi();
 		//expected.setUalue();
 		//expected.setUaluenimi();
@@ -179,7 +179,7 @@ public class TestGeocode {
 		//expected.setVaylan_luonne();
 		expected.setMaakuntakoodi(2);
 		expected.setMaakuntanimi("Varsinais-Suomi");
-		//expected.setEly();
+		expected.setEly(2);
 		//expected.setElynimi();
 		//expected.setUalue();
 		//expected.setUaluenimi();
@@ -205,7 +205,7 @@ public class TestGeocode {
 		//expected.setVaylan_luonne_loppu();
 		expected.setMaakuntakoodi_loppu(2);
 		expected.setMaakuntanimi_loppu("Varsinais-Suomi");
-		//expected.setEly_loppu();
+		expected.setEly_loppu(2);
 		//expected.setElynimi_loppu();
 		//expected.setUalue_loppu();
 		//expected.setUaluenimi_loppu();
