@@ -68,9 +68,7 @@ public class ViitekehysmuunninPalveluController {
     private static final Integer MIN_SADE = 1;
     private static final List<Integer> DEFAULT_PALAUTUSARVOT = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private static final Integer DEFAULT_TILANNEPVM_MIN_VUOSI = 1980;
-    public LocalDate tilannepvm;
-    public LocalDate kohdepvm;
+    private static final Integer DEFAULT_TILANNEPVM_MIN_VUOSI = 1900;
 
     
     @Autowired
@@ -255,19 +253,40 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "losa", required = false) Integer losa,
             @RequestParam(name = "let", required = false) Integer let,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
-            @RequestParam(name = "ajr", required = false) List<Integer> ajr
+            @RequestParam(name = "ajr", required = false) List<Integer> ajr,
+            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString
     		) throws VkmVirheException, NamingException, SQLException {
     	List<Integer> notNullAjoradat = ajr != null ? ajr : Lists.newArrayList(0, 1);
     	int alkuOsa = Optional.ofNullable(osa).orElse(Integer.MIN_VALUE);
     	int loppuOsa = Optional.ofNullable(losa).orElse(Integer.MAX_VALUE);
 		int alkuEtaisyys = Optional.ofNullable(aet).orElse(Integer.MIN_VALUE);
 		int loppuEtaisyys = Optional.ofNullable(let).orElse(Integer.MAX_VALUE);
+		LocalDate tilannepvm;
+	    LocalDate kohdepvm;
     	
     	if(palautusarvot == null) {
     		palautusarvot = DEFAULT_PALAUTUSARVOT;
     	}
+    	
+    	if (tilannepvmAsString != null) {
+            tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            
+            if(tilannepvm.getYear() < DEFAULT_TILANNEPVM_MIN_VUOSI || tilannepvm.isAfter(LocalDate.now())) {
+            	throw new VkmVirheException("Aineistoa ei ole saatavilla kyseisellä tilannepäivämäärällä");
+            }
+        }
+        else {
+            tilannepvm = null;
+        }
+        if (kohdepvmAsString != null) {
+            kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+        }
+        else {
+            kohdepvm = null;
+        }
 
-        List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, loppuOsa, alkuEtaisyys, loppuEtaisyys, notNullAjoradat, palautusarvot);
+        List<fi.livi.vkm.dto.VkmTieosoiteVali> viivamainenTieosoiteHaku = palveluNG.viivamainenTieosoiteHaku(tunniste, tie, alkuOsa, loppuOsa, alkuEtaisyys, loppuEtaisyys, notNullAjoradat, palautusarvot, tilannepvm, kohdepvm);
         
         return viivamainenTieosoiteHaku;
     }
@@ -278,15 +297,43 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "aosa", required = true) Integer osa,
             @RequestParam(name = "aet", required = true) Integer aet,
             @RequestParam(name = "ajr", required = false) List<Integer> ajr,
+            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @RequestParam(name= "kohdepvm", required = false) String kohdepvmAsString,
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
+		LocalDate tilannepvm;
+	    LocalDate kohdepvm;
         List<Integer> notNullAjoradat = ajr != null ? ajr : Lists.newArrayList(0, 1);
 
         if(palautusarvot == null){
             palautusarvot = DEFAULT_PALAUTUSARVOT;
         }
-
-        List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, aet, Lists.newArrayList(notNullAjoradat), palautusarvot);
-        return pistemainenTieosoiteHaku;
+        
+        if (tilannepvmAsString != null) {
+            tilannepvm = LocalDate.parse(tilannepvmAsString, DATE_FORMAT);
+            
+            if(tilannepvm.getYear() < DEFAULT_TILANNEPVM_MIN_VUOSI || tilannepvm.isAfter(LocalDate.now())) {
+            	throw new VkmVirheException("Aineistoa ei ole saatavilla kyseisellä tilannepäivämäärällä");
+            }
+        }
+        else {
+            tilannepvm = null;
+        }
+        if (kohdepvmAsString != null) {
+            kohdepvm = LocalDate.parse(kohdepvmAsString, DATE_FORMAT);
+        }
+        else {
+            kohdepvm = null;
+        }
+        
+        if (tilannepvm == null) {
+        	List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, aet, Lists.newArrayList(notNullAjoradat), palautusarvot);
+        	return pistemainenTieosoiteHaku;
+        }
+        else {
+        	if (kohdepvm == null) kohdepvm = LocalDate.now();
+        	List<fi.livi.vkm.dto.VkmTieosoite> pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHistoriaHaku(tunniste, tie, osa, aet, Lists.newArrayList(notNullAjoradat), tilannepvm, kohdepvm, palautusarvot);
+        	return pistemainenTieosoiteHaku;
+        }
     }
 
     
