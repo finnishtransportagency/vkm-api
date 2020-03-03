@@ -49,6 +49,7 @@ import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.ReverseGeocodeResult;
 import fi.livi.vkm.dto.VkmTieosoite;
 import fi.livi.vkm.util.VkmUtil;
+import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -92,20 +93,22 @@ public class ViitekehysmuunninPalveluController {
 //    }
     
     @RequestMapping(value = "xyhaku", params = { "x", "y" }, method = RequestMethod.GET)
-    public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(@RequestParam(name = "tunniste", required = false) String tunniste,
-            @RequestParam(name = "x", required = true) Double x,
-            @RequestParam(name = "y", required = true) Double y,
-            @RequestParam(name = "z", required = false) Double z,
-            @RequestParam(name = "tie", required = false) Integer tie,
-            @RequestParam(name = "osa", required = false) Integer osa,
-            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
-            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
-            @RequestParam(name = "z_loppu", required = false) Double z_loppu,
-            @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
-            @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
-            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+    public List<fi.livi.vkm.dto.VkmTieosoite> haeKoordinaatilla(
+    		@ApiParam(value = " ")@RequestParam(name = "tunniste", required = false) String tunniste,
+            @ApiParam(value = " ", required = true)@RequestParam(name = "x") Double x,
+            @ApiParam(value = " ", required = true)@RequestParam(name = "y") Double y,
+            @ApiParam(value = " ")@RequestParam(name = "z", required = false) Double z,
+            @ApiParam(value = " ")@RequestParam(name = "tie", required = false) Integer tie,
+            @ApiParam(value = " ")@RequestParam(name = "osa", required = false) Integer osa,
+            @ApiParam(value = " ")@RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
+            @ApiParam(value = " ")@RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            @ApiParam(value = " ")@RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            @ApiParam(value = " ")@RequestParam(name = "z_loppu", required = false) Double z_loppu,
+            @ApiParam(value = " ")@RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
+            @ApiParam(value = "Oletusarvo 100")@RequestParam(name = "sade", required = false) Integer sade,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
                 List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);
 
@@ -165,14 +168,16 @@ public class ViitekehysmuunninPalveluController {
     }
 
 	@RequestMapping(value = "tieosoitehaku", params = { "tie", "osa", "etaisyys" }, method= RequestMethod.GET)
-    public List<fi.livi.vkm.dto.VkmTieosoite> haeTieosoitteella(@RequestParam(name = "tunniste", required = false) String tunniste,
-            @RequestParam(name = "tie", required = true) Integer tie,
-            @RequestParam(name = "osa", required = true) Integer osa,
-            @RequestParam(name = "etaisyys", required = true) Integer etaisyys,
-            @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
-            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+    public List<fi.livi.vkm.dto.VkmTieosoite> haeTieosoitteella(
+    		@ApiParam(value = " ")@RequestParam(name = "tunniste", required = false) String tunniste,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "tie") Integer tie,
+            @ApiParam(value = " ", required = true)@RequestParam(name = "osa") Integer osa,
+            @ApiParam(value = " ", required = true)@RequestParam(name = "etaisyys") Integer etaisyys,
+            @ApiParam(value = " ")@RequestParam(name = "sade", required = false) Integer sade,
+            @ApiParam(value = " ")@RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.emptyList();
         if(sade == null){
@@ -204,17 +209,19 @@ public class ViitekehysmuunninPalveluController {
 
     //yhdellä numrerolla (50) tulee ajoradat 1 ja 0 molemmat ulos, tarkoituskin?
     @RequestMapping(value = "tieosoitevali", method= RequestMethod.GET)
-    public List<fi.livi.vkm.dto.VkmTieosoiteVali> haeKokoTie(@RequestParam(name = "tunniste", required = false) String tunniste,
-            @RequestParam(name = "tie", required = true) Integer tie,
-            @RequestParam(name = "osa", required = false) Integer osa,
-            @RequestParam(name = "etaisyys", required = false) Integer etaisyys,
-            @RequestParam(name = "losa", required = false) Integer losa,
-            @RequestParam(name = "let", required = false) Integer let,
-            @RequestParam(name = "sade", required = false) Integer sade,
-            @RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
-            @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
-            @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
-            @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException, NamingException, SQLException {
+    public List<fi.livi.vkm.dto.VkmTieosoiteVali> haeKokoTie(
+            @ApiParam(value = " ")@RequestParam(name = "tunniste", required = false) String tunniste,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "tie") Integer tie,
+            @ApiParam(value = " ")@RequestParam(name = "osa", required = false) Integer osa,
+            @ApiParam(value = " ")@RequestParam(name = "etaisyys", required = false) Integer etaisyys,
+            @ApiParam(value = " ")@RequestParam(name = "losa", required = false) Integer losa,
+            @ApiParam(value = " ")@RequestParam(name = "let", required = false) Integer let,
+            @ApiParam(value = "Oletusarvo 100")@RequestParam(name = "sade", required = false) Integer sade,
+            @ApiParam(value = " ")@RequestParam(name = "ajoradat", required = false) List<Integer> ajoradat,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")@RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
+    		@RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException, NamingException, SQLException {
         List<Integer> notNullAjoradat = ajoradat != null ? ajoradat : Lists.newArrayList(0, 1);                
         int alkuOsa = Optional.ofNullable(osa).orElse(Integer.MIN_VALUE);
         int alkuEtaisyys = Optional.ofNullable(etaisyys).orElse(Integer.MIN_VALUE);
@@ -253,12 +260,14 @@ public class ViitekehysmuunninPalveluController {
 
     //X ja Y loppu tulee kahteen kertaan!
     @RequestMapping(value = "geocode", params = { "kuntakoodi", "katunimi", "katunumero" }, method= RequestMethod.GET)
-    public List<fi.livi.vkm.dto.GeocodeResult>  geocode( @RequestParam(name = "tunniste", required = false) String tunniste,
-            @RequestParam(name = "kuntakoodi", required = true) Integer kuntakoodi,
-            @RequestParam(name = "katunimi", required = true) String katunimi,
-            @RequestParam(name = "katunumero", required = true) Integer katunumero,
-            @RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
-            @RequestParam(name = "sade", required = false) Integer sade,
+    public List<fi.livi.vkm.dto.GeocodeResult>  geocode( 
+    		@ApiParam(value = " ")@RequestParam(name = "tunniste", required = false) String tunniste,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "kuntakoodi") Integer kuntakoodi,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "katunimi") String katunimi,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "katunumero") Integer katunumero,
+    		@ApiParam(value = " ")@RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
+    		@ApiParam(value = " ")@RequestParam(name = "sade", required = false) Integer sade,
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot ) throws VkmVirheException {
                 if(sade == null){
                     sade = DEFAULT_SADE;
@@ -283,14 +292,16 @@ public class ViitekehysmuunninPalveluController {
     }
     
     @RequestMapping(value = "reversegeocode", params = { "x", "y"  }, method= RequestMethod.GET)
-    public List<fi.livi.vkm.dto.ReverseGeocodeResult> reversegeocode(@RequestParam(name = "tunniste", required = false) String tunniste, 
-            @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
-            @RequestParam(name = "katunimi", required = false) String katunimi,
-            @RequestParam(name = "x", required = true) Double x,
-            @RequestParam(name = "y", required = true) Double y,
-            @RequestParam(name = "x_loppu", required = false) Double x_loppu,
-            @RequestParam(name = "y_loppu", required = false) Double y_loppu,
-            @RequestParam(name = "sade", required = false) Integer sade,
+    public List<fi.livi.vkm.dto.ReverseGeocodeResult> reversegeocode(
+    		@ApiParam(value = " ")@RequestParam(name = "tunniste", required = false) String tunniste, 
+    		@ApiParam(value = " ")@RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
+    		@ApiParam(value = " ")@RequestParam(name = "katunimi", required = false) String katunimi,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "x") Double x,
+    		@ApiParam(value = " ", required = true)@RequestParam(name = "y") Double y,
+    		@ApiParam(value = " ")@RequestParam(name = "x_loppu", required = false) Double x_loppu,
+    		@ApiParam(value = " ")@RequestParam(name = "y_loppu", required = false) Double y_loppu,
+    		@ApiParam(value = " ")@RequestParam(name = "sade", required = false) Integer sade,
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot) throws VkmVirheException {
                 if(sade == null){
                     sade = DEFAULT_SADE;
@@ -323,7 +334,7 @@ public class ViitekehysmuunninPalveluController {
     //Ei toimi odotetulla tavalla
     //Muunnos-rajapinta
     @RequestMapping(value = "muunnin", method= RequestMethod.GET)
-    public Object muunnin(@RequestParam(name = "json", required = true) String json) throws VkmVirheException, NamingException, SQLException {
+    public Object muunnin(@ApiParam(value = " ", required = true)@RequestParam(name = "json") String json) throws VkmVirheException, NamingException, SQLException {
 
             VkmRequest vkmreq = new VkmRequest(json);
             InParameters[] data = vkmreq.getData();
