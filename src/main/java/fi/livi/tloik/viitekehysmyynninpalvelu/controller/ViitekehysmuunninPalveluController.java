@@ -208,7 +208,7 @@ public class ViitekehysmuunninPalveluController {
         	pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
         } else {
         	if (kohdepvm == null) kohdepvm = LocalDate.now();
-        	pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHistoriaHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
+        	pistemainenTieosoiteHaku = palveluNG.pistemainenTieosoiteHaku(tunniste, tie, osa, etaisyys, Lists.newArrayList(notNullAjoradat),sade, tilannepvm, kohdepvm, env, palautusarvot);
         }
         return pistemainenTieosoiteHaku;
     }
