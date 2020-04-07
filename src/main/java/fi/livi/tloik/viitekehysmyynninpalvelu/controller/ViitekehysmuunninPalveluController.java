@@ -82,6 +82,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
+
             @RequestParam(name = "losa", required = false) Integer losa,
             @RequestParam(name = "let", required = false) Integer let,
             
