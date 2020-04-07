@@ -1,0 +1,19 @@
+server.port = 8889
+server.context-path=/vkm-api
+logging.file=./logs/vkm-api.log
+
+# jdbc.X
+fi.livi.vkm.jdbc.driverClassName=oracle.jdbc.OracleDriver
+fi.livi.vkm.jdbc.url=jdbc:oracle:thin:@<ip>:<port>/<sn>
+fi.livi.vkm.jdbc.user=<user>
+fi.livi.vkm.jdbc.pass=<password>
+
+# jdbc.tr
+jdbc.tr.driverClassName=oracle.jdbc.pool.OracleDataSource
+jdbc.tr.url=jdbc:oracle:thin:@<ip>:<port>/<sn>
+jdbc.tr.user=<user>
+jdbc.tr.pass=<password>
+
+# hibernate.X
+fi.livi.vkm.hibernate.dialect=org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect
+fi.livi.vkm.hibernate.show_sql=false

@@ -7,8 +7,10 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 
 @Configuration
 public class JtsConfig {
+	
     @Bean
     public JtsModule jtsModule() {
         return new JtsModule();
     }
+    
 }
