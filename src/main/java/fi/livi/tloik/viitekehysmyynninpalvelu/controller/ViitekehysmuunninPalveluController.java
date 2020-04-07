@@ -1,4 +1,4 @@
-﻿package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
+package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
