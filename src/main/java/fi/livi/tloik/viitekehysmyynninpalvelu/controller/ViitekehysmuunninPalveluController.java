@@ -1,4 +1,4 @@
-package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
+﻿package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -59,6 +59,7 @@ public class ViitekehysmuunninPalveluController {
     }
    
     
+
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
     public FeatureCollection yleisRajapinta(
     		
@@ -205,6 +206,7 @@ public class ViitekehysmuunninPalveluController {
     			}
     			
                 List<geoJsonWrapper> tulos = new ArrayList<geoJsonWrapper>();
+
                 
                 if (kyselyLista.size() > 1) {
                 	for (int i = 0; i < kyselyLista.size(); i++) {
