@@ -75,12 +75,9 @@ pipeline {
 
                     STAGE_BUILD_CMD = [
                         "cp ${config_source} ${config}",
-                        "sed -i 's|DB_VKM_CRED_USR|ptk|g' ${config}",
-                        "sed -i 's|DB_VKM_CRED_PSW|maalis21|g' ${config}",
-                        "sed -i 's|DB_VKM_URL|jdbc:oracle:thin:@lividwr01n1L.vally.local:1521/ptjtest|g' ${config}",
-                        //"sed -i 's|DB_VKM_CRED_USR|${DB_VKM_CRED_USR}|g' ${config}",
-                        //"sed -i 's|DB_VKM_CRED_PSW|${DB_VKM_CRED_PSW}|g' ${config}",
-                        //"sed -i 's|DB_VKM_URL|${DB_VKM_URL}|g' ${config}",
+                        "sed -i 's|DB_VKM_CRED_USR|${DB_VKM_CRED_USR}|g' ${config}",
+                        "sed -i 's|DB_VKM_CRED_PSW|${DB_VKM_CRED_PSW}|g' ${config}",
+                        "sed -i 's|DB_VKM_URL|${DB_VKM_URL}|g' ${config}",
                         "sed -i 's|DB_TR_CRED_USR|${DB_TR_CRED_USR}|g' ${config}",
                         "sed -i 's|DB_TR_CRED_PSW|${DB_TR_CRED_PSW}|g' ${config}",
                         "sed -i 's|DB_TR_URL|${DB_TR_URL}|g' ${config}",
