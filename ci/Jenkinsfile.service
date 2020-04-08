@@ -24,9 +24,9 @@ def get_version(version) {
 pipeline {
     agent any
     environment {
-    	DB_VKM_URL = "jdbc:oracle:thin:@lividwr01n1L.vally.local:1521/ptjtest"
-        DB_VKM_CRED_USR = "ptk"
-        DB_VKM_CRED_PSW = "maalis21"
+    	DB_VKM_URL = 'jdbc:oracle:thin:@lividwr01n1L.vally.local:1521/ptjtest'
+        DB_VKM_CRED_USR = 'ptk'
+        DB_VKM_CRED_PSW = 'maalis21'
         //DB_VKM_URL = credentials("DB_VKM_URL")
         //DB_VKM_CRED = credentials("DB_VKM_CRED")
         DB_TR_URL = credentials("DB_TR_URL")
