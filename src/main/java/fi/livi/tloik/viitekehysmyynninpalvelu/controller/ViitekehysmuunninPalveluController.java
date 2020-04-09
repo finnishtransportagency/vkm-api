@@ -206,15 +206,9 @@ public class ViitekehysmuunninPalveluController {
     			}
     			
                 List<geoJsonWrapper> tulos = new ArrayList<geoJsonWrapper>();
-
-                
-                if (kyselyLista.size() > 1) {
-                	for (int i = 0; i < kyselyLista.size(); i++) {
-                		if (kyselyLista.get(i).getTunniste() == null) {
-                			kyselyLista.get(i).setTunniste("MUUNNOS" + (i+1));
-                		}
-                	}
-                		
+                               
+                for (int i = 0; i < kyselyLista.size(); i++) {
+                	kyselyLista.get(i).setJsonLabel("MUUNNOS" + (i+1));
                 }
                 
                 for (InParameters inParametrit : kyselyLista) {
