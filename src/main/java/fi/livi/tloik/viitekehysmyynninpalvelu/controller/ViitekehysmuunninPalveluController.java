@@ -6,7 +6,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import javax.naming.NamingException;
 import org.assertj.core.util.Lists;
 import org.geolatte.geom.C3DM;
@@ -206,23 +213,27 @@ public class ViitekehysmuunninPalveluController {
     			}
     			
                 List<geoJsonWrapper> tulos = new ArrayList<geoJsonWrapper>();
-                               
+                              
                 for (int i = 0; i < kyselyLista.size(); i++) {
                 	kyselyLista.get(i).setJsonLabel("MUUNNOS" + (i+1));
                 }
-                
+                 
                 for (InParameters inParametrit : kyselyLista) {
                 	List<geoJsonWrapper> tempStore = palveluNG.muunnosController(inParametrit);
                 	for (geoJsonWrapper response : tempStore) {
                 		tulos.add(response);
                 	}
                 }
-
-                return new FeatureCollection(tulos);
                 
+                
+         return new FeatureCollection(tulos);
     }
+       
     
 }
+    
+    
+
     
 //    @RequestMapping(value = "xyhaku", method = RequestMethod.GET)
 //    public void haeKoordinaatilla(
