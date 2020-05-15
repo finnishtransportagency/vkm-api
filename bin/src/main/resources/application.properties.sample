@@ -1,5 +1,5 @@
 server.port = 8889
-server.context-path=/vkm-api
+server.context-path=/viitekehysmuunnin
 logging.file=./logs/vkm-api.log
 
 # jdbc.X
