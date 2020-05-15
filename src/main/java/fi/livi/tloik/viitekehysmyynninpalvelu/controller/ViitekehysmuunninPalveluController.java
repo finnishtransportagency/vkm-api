@@ -113,7 +113,7 @@ public class ViitekehysmuunninPalveluController {
             
             @ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku, oletus 'false'")
             @RequestParam(name = "valihaku", required = false) String valihaku,
-            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria")
+            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria, 6=lineaarilokaatio")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
     		@RequestParam(name = "json", required = false) String json
     		)
