@@ -43,7 +43,7 @@ import fi.livi.vkm.dto.geoJsonWrapper;
 import fi.livi.vkm.util.VkmUtil;
 import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
-
+//
 
 @RestController
 @Configurable
