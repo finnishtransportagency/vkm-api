@@ -1,6 +1,6 @@
 def get_environment() {
     if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
-    if (BRANCH_NAME.equals("develop")) { return "dev" }
+    if (BRANCH_NAME.equals("test")) { return "dev" }
     if (BRANCH_NAME.equals("master")) { return "prod" }
     if (BRANCH_NAME.startsWith("release-")) { return "test" }
     return ""
@@ -92,7 +92,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-80-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "), 
@@ -107,7 +107,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -123,7 +123,7 @@ pipeline {
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
                                 "--variable PROXY:${http_proxy}",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
