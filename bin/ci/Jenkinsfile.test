@@ -188,7 +188,7 @@ pipeline {
         stage("Test") {
             agent {
                 docker {
-                    image "ptpapp-vkm-api-python"
+                    image "ptpapp-viitekehysmuunnin-python"
                     args "--network host"
                     reuseNode true
                 }
