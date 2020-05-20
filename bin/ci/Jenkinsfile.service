@@ -199,7 +199,7 @@ pipeline {
                         "--build-arg JENKINS_UID=${jenkins_uid}"
                     ].join(" ")
                     docker.build(
-                        "ptpapp-vkm-api-maven",
+                        "ptpapp-viitekehysmuunnin-maven",
                         "${build_args} -f ci/Dockerfile.maven ci"
                     )
                 }
