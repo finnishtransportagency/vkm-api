@@ -83,16 +83,16 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "sade", required = false) Integer sade,
             
             @RequestParam(name = "tie", required = false) Integer tie,
-            @RequestParam(name = "ajr", required = false) List<Integer> ajr,
-            @RequestParam(name = "aosa", required = false) Integer aosa,
-            @RequestParam(name = "aet", required = false) Integer aet,
+            @RequestParam(name = "ajorata", required = false) List<Integer> ajr,
+            @RequestParam(name = "osa", required = false) Integer aosa,
+            @RequestParam(name = "etaisyys", required = false) Integer aet,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
 
-            @RequestParam(name = "losa", required = false) Integer losa,
-            @RequestParam(name = "let", required = false) Integer let,
+            @RequestParam(name = "osa_loppu", required = false) Integer losa,
+            @RequestParam(name = "etaisyys_loppu", required = false) Integer let,
             
             @RequestParam(name = "link_id", required = false) Integer link_id,
             @RequestParam(name = "m_arvo", required = false) Double m_arvo,
@@ -115,10 +115,24 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "valihaku", required = false) String valihaku,
             @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria, 6=lineaarilokaatio")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
-    		@RequestParam(name = "json", required = false) String json
+    		@RequestParam(name = "json", required = false) String json,
+    		
+    		// Aliakset tietyille in-parametreille
+    		@RequestParam(name = "ajr", required = false) @ApiIgnore List<Integer> ajr2,
+    		@RequestParam(name = "aosa", required = false) @ApiIgnore Integer aosa2,
+            @RequestParam(name = "aet", required = false) @ApiIgnore Integer aet2,
+            @RequestParam(name = "losa", required = false) @ApiIgnore Integer losa2,
+            @RequestParam(name = "let", required = false) @ApiIgnore Integer let2
     		)
     
             throws JSONException {
+    	
+    			//Aliasten käsittely
+    			ajr = (ajr == null && ajr2 != null) ? ajr2 : ajr;
+    			aosa = (aosa == null && aosa2 != null) ? aosa2 : aosa;
+    			aet = (aet == null && aet2 != null) ? aet2 : aet;
+    			losa = (losa == null && losa2 != null) ? losa2 : losa;
+    			let = (let == null && let2 != null) ? let2 : let;
     	
     			List<InParameters> kyselyLista = new ArrayList<InParameters>();
     			InParameters kysely;
@@ -167,11 +181,11 @@ public class ViitekehysmuunninPalveluController {
     						z_vaihtelu = VkmUtil.getJsonDouble(jsonData, "z_yla");
     						sade = VkmUtil.getJsonInteger(jsonData, "sade");
     						tie = VkmUtil.getJsonInteger(jsonData, "tie");
-    						ajr =  VkmUtil.getJsonString(jsonData, "ajr") != null ? VkmUtil.toIntegerList(jsonData.getString("ajr")) : null;
-    						aosa = VkmUtil.getJsonInteger(jsonData, "aosa");
-    						aet = VkmUtil.getJsonInteger(jsonData, "aet");
-    						losa = VkmUtil.getJsonInteger(jsonData, "losa");
-    						let = VkmUtil.getJsonInteger(jsonData, "let");
+    						ajr =  VkmUtil.getJsonString(jsonData, "ajorata") != null ? VkmUtil.toIntegerList(jsonData.getString("ajorata")) : null;
+    						aosa = VkmUtil.getJsonInteger(jsonData, "osa");
+    						aet = VkmUtil.getJsonInteger(jsonData, "etaisyys");
+    						losa = VkmUtil.getJsonInteger(jsonData, "osa_loppu");
+    						let = VkmUtil.getJsonInteger(jsonData, "etaisyys_loppu");
     						tilannepvmAsString = VkmUtil.getJsonString(jsonData, "tilannepvmAsString");
     						kohdepvmAsString = VkmUtil.getJsonString(jsonData, "kohdepvmAsString");
     						link_id = VkmUtil.getJsonInteger(jsonData, "link_id");
@@ -189,6 +203,13 @@ public class ViitekehysmuunninPalveluController {
     						maakuntakoodi = VkmUtil.getJsonInteger(jsonData, "maakuntakoodi");
     						valihaku = VkmUtil.getJsonString(jsonData, "valihaku");
     						palautusarvot =  VkmUtil.getJsonString(jsonData, "palautusarvot") != null ? VkmUtil.toIntegerList(jsonData.getString("palautusarvot")) : null;
+    						
+    						//Aliasten käsittely
+    						if (ajr == null) ajr =  VkmUtil.getJsonString(jsonData, "ajr") != null ? VkmUtil.toIntegerList(jsonData.getString("ajr")) : null;
+    						if (aosa == null) aosa = VkmUtil.getJsonInteger(jsonData, "aosa");
+    						if (aet == null) aet = VkmUtil.getJsonInteger(jsonData, "aet");
+    						if (losa == null) losa = VkmUtil.getJsonInteger(jsonData, "losa");
+    						if (let == null) let = VkmUtil.getJsonInteger(jsonData, "let");
     						
     						kysely = new InParameters(tunniste, 
 														x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
