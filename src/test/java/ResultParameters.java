@@ -8,8 +8,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class ResultParameters{
-
-	public String geometria;
+	
+	public String type;
+	public String coordinates;
 	public String tunniste;
 	public Double x;
 	public Double y;
@@ -20,13 +21,13 @@ public class ResultParameters{
 	public Double valimatka;
 	public Double valimatka_loppu;
 	public Integer tie;
-	public Integer ajr;
-	public Integer aosa;
-	public Integer aet;
-	public Integer l_tie;
-	public Integer l_ajr;
-	public Integer losa;
-	public Integer let;
+	public Integer ajorata;
+	public Integer osa;
+	public Integer etaisyys;
+	public Integer tie_loppu;
+	public Integer ajorata_loppu;
+	public Integer osa_loppu;
+	public Integer etaisyys_loppu;
 	public Integer link_id;
 	public Double m_arvo;
 	public Integer link_id_loppu;
@@ -58,6 +59,8 @@ public class ResultParameters{
 	public String elynimi_loppu;
 	public Integer ualue_loppu;
 	public String ualuenimi_loppu;
+	public Boolean katkoja;
+	public String virheet;
 	//public JSONObject json;
 	
 	
@@ -69,8 +72,16 @@ public class ResultParameters{
     //
     //Getters
     
-    public String getGeometria() {
-		return geometria;
+//    public String getGeometria() {
+//		return geometria;
+//	}
+    
+    public String getType() {
+		return type;
+	}
+	
+	public String getCoordinates() {
+		return coordinates;
 	}
     
     public String getTunniste() {
@@ -114,31 +125,31 @@ public class ResultParameters{
 	}
 
 	public Integer getAjr() {
-		return ajr;
+		return ajorata;
 	}
 
 	public Integer getAosa() {
-		return aosa;
+		return osa;
 	}
 
 	public Integer getAet() {
-		return aet;
+		return etaisyys;
 	}
 
 	public Integer getL_tie() {
-		return l_tie;
+		return tie_loppu;
 	}
 
 	public Integer getL_ajr() {
-		return l_ajr;
+		return ajorata_loppu;
 	}
 
 	public Integer getLosa() {
-		return losa;
+		return osa_loppu;
 	}
 
 	public Integer getLet() {
-		return let;
+		return etaisyys_loppu;
 	}
 
 	public Integer getLink_id() {
@@ -265,11 +276,27 @@ public class ResultParameters{
 		return ualuenimi_loppu;
 	}
 	
+	public String getVirheet() {
+		return virheet;
+	}
+	
+	public Boolean getKatkoja(Boolean katkoja) {
+		return katkoja;
+	}
+	
 	//
 	//Setters
 	
-	public void setGeometria(String geom) {
-		this.geometria = geom;
+//	public void setGeometria(String geom) {
+//		this.geometria = geom;
+//	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public void setCoordinates(String coordinates) {
+		this.coordinates = coordinates;
 	}
 	
 	public void setTunniste(String tunniste) {
@@ -313,31 +340,31 @@ public class ResultParameters{
 	}
 
 	public void setAjr(Integer ajr) {
-		this.ajr = ajr;
+		this.ajorata = ajr;
 	}
 
 	public void setAosa(Integer aosa) {
-		this.aosa = aosa;
+		this.osa = aosa;
 	}
 
 	public void setAet(Integer aet) {
-		this.aet = aet;
+		this.etaisyys = aet;
 	}
 
 	public void setL_tie(Integer l_tie) {
-		this.l_tie = l_tie;
+		this.tie_loppu = l_tie;
 	}
 
 	public void setL_ajr(Integer l_ajr) {
-		this.l_ajr = l_ajr;
+		this.ajorata_loppu = l_ajr;
 	}
 
 	public void setLosa(Integer losa) {
-		this.losa = losa;
+		this.osa_loppu = losa;
 	}
 
 	public void setLet(Integer let) {
-		this.let = let;
+		this.etaisyys_loppu = let;
 	}
 
 	public void setLink_id(Integer link_id) {
@@ -470,11 +497,21 @@ public class ResultParameters{
 		this.ualuenimi_loppu = ualuenimi_loppu;
 	}
 	
+	public void setVirheet(String virheet) {
+		this.virheet = virheet;
+	}
+	
+	public void setKatkoja(Boolean katkoja) {
+		this.katkoja = katkoja;
+	}
+	
 	//
 	//Other methods
 	
 	private void setAllToNull() throws JsonParseException, JsonMappingException, IOException {
-		setGeometria(null);
+		//setGeometria(null);
+		setType(null);
+		setCoordinates(null);
 		setTunniste(null);
 		setX(null);
 		setY(null);
@@ -524,6 +561,8 @@ public class ResultParameters{
 		setElynimi_loppu(null);
 		setUalue_loppu(null);
 		setUaluenimi_loppu(null);
+		setVirheet(null);
+		setKatkoja(null);
 	}
     
 }
@@ -532,7 +571,7 @@ public class ResultParameters{
 /*** Testikeissin pohja --- Liitä testikansiossa siihen rajapintaluokkaan, jota haluat testata
 
 		@Test
-		public void testNameOfTest() {
+		public void testNameOfTest() throws IOException {
 			
 			// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 			
@@ -542,11 +581,12 @@ public class ResultParameters{
 			//q.addToQuery("x", "");
 			//q.addToQuery("y", "");
 			//q.addToQuery("z", "");
+			//q.addToQuery("z_vaihtelu", "");
 			//q.addToQuery("sade", "");
 			//q.addToQuery("tie", "");
-			//q.addToQuery("ajr", "");
-			//q.addToQuery("aosa", "");
-			//q.addToQuery("aet", "");
+			//q.addToQuery("ajorata", "");
+			//q.addToQuery("osa", "");
+			//q.addToQuery("etaisyys", "");
 			//q.addToQuery("tilannepvm", "");
 			//q.addToQuery("kohdepvm", "");
 			//q.addToQuery("link_id", "");
@@ -563,12 +603,13 @@ public class ResultParameters{
 			//q.addToQuery("x_loppu", "");
 			//q.addToQuery("y_loppu", "");
 			//q.addToQuery("z_loppu", "");
-			//q.addToQuery("losa", "");
-			//q.addToQuery("let", "");
+			//q.addToQuery("osa_loppu", "");
+			//q.addToQuery("etaisyys_loppu", "");
 			//q.addToQuery("link_id_loppu", "");
 			//q.addToQuery("m_arvo_loppu", "");
 			//q.addToQuery("katunumero_loppu", "");
 			
+			//q.addToQuery("valihaku", "");
 			//q.addToQuery("palautusarvot", "");
 			//q.addToQuery("json", "");
 			
@@ -578,6 +619,8 @@ public class ResultParameters{
 		
 			ResultParameters expected = new ResultParameters();
 			
+			//expected.setType();
+			//expected.setCoordinates();
 			//expected.setTunniste();
 			//expected.setX();
 			//expected.setY();
@@ -628,6 +671,8 @@ public class ResultParameters{
 			//expected.setElynimi_loppu();
 			//expected.setUalue_loppu();
 			//expected.setUaluenimi_loppu();
+			//expected.setKatkoja();
+			//expected.setVirheet();
 			
 			// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 		
