@@ -530,6 +530,7 @@ public class TestXY {
 	
 	}
 	
+	@Test
 	public void testBasicXYAllResult() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
@@ -578,24 +579,24 @@ public class TestXY {
 	
 		ResultParameters expected = new ResultParameters();
 		
-		//expected.setType();
-		//expected.setCoordinates();
+		expected.setType("Point");
+		expected.setCoordinates("[354379.188452731,6687153.41772717]");
 		expected.setTunniste("1");
-		//expected.setX();
-		//expected.setY();
-		//expected.setZ();
-		//expected.setValimatka();
+		expected.setX(354379.188452731);
+		expected.setY(6687153.41772717);
+		expected.setZ(50.6060151514983);
+		expected.setValimatka(0.0);
 		expected.setTie(2);
 		expected.setAjr(1);
 		expected.setAosa(1);
 		expected.setAet(163);
 		expected.setLink_id(6124139);
-		expected.setM_arvo(162.191);
+		expected.setM_arvo(162.190963862547);
 		expected.setKuntakoodi(927);
 		expected.setKuntanimi("Vihti");
 		expected.setKatunimi("Porintie");
 		//expected.setKatunimi_se();
-		expected.setKatunumero(1);
+		expected.setKatunumero(53);
 		expected.setTietyyppi(1);
 		expected.setVaylan_luonne(11);
 		expected.setMaakuntakoodi(1);
