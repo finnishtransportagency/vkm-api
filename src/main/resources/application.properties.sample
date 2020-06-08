@@ -1,6 +1,6 @@
-server.port = 8889
-server.context-path=/vkm-api
-logging.file=./logs/vkm-api.log
+server.port = 8989
+server.context-path=/viitekehysmuunnin
+logging.file=./logs/viitekehysmuunnin.log
 
 # jdbc.X
 fi.livi.vkm.jdbc.driverClassName=oracle.jdbc.OracleDriver

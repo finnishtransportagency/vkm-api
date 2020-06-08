@@ -10,10 +10,10 @@ Test Teardown  Delete All Sessions
 
 *** Test Cases ***
 
-Check API - tieosoitevali
+Check API - muunna
   [Tags]  API  Requirement
   &{params}  Create Dictionary  tie=70397
-  Check API path   tieosoitevali  ${params}
+  Check API path   muunna  ${params}
 
 *** Keywords ***
 

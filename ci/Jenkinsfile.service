@@ -2,9 +2,9 @@ import groovy.json.JsonOutput
 
 def get_environment() {
     if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
-    if (BRANCH_NAME.equals("develop")) { return "dev" }
-    if (BRANCH_NAME.equals("master")) { return "prod" }
-    if (BRANCH_NAME.startsWith("release-")) { return "test" }
+    if (BRANCH_NAME.equals("kehitys")) { return "dev" }
+    if (BRANCH_NAME.equals("tuotanto")) { return "prod" }
+    if (BRANCH_NAME.startsWith("testiversio-")) { return "test" }
     return ""
 }
 
@@ -199,7 +199,7 @@ pipeline {
                         "--build-arg JENKINS_UID=${jenkins_uid}"
                     ].join(" ")
                     docker.build(
-                        "ptpapp-vkm-api-maven",
+                        "ptpapp-viitekehysmuunnin-maven",
                         "${build_args} -f ci/Dockerfile.maven ci"
                     )
                 }
@@ -222,7 +222,7 @@ pipeline {
             }
             steps {
                 build(
-                    job: "ptpapp/vkm-api/component-vkm-core/${BRANCH_NAME}",
+                    job: "ptpapp/viitekehysmuunnin/component-vkm-core/${BRANCH_NAME}",
                     propagate: true,
                     wait: true
                 )
@@ -239,7 +239,7 @@ pipeline {
         stage("Build") {
             agent {
                 docker {
-                    image "ptpapp-vkm-api-maven"
+                    image "ptpapp-viitekehysmuunnin-maven"
                     reuseNode true
                 }
             }
@@ -297,7 +297,7 @@ pipeline {
         stage("Publish") {
             agent {
                 docker {
-                    image "ptpapp-vkm-api-maven"
+                    image "ptpapp-viitekehysmuunnin-maven"
                     reuseNode true
                 }
             }
@@ -345,7 +345,7 @@ pipeline {
             }
             steps {
                 build(
-                    job: "ptpapp/vkm-api/test/${BRANCH_NAME}",
+                    job: "ptpapp/viitekehysmuunnin/test/${BRANCH_NAME}",
                     propagate: false,
                     wait: params.action.endsWith("start") ? true : false
                 )

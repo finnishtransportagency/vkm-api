@@ -22,7 +22,7 @@ Check HTTPD Routes
 
 Check HTTPD Header Exists
   [Arguments]  ${expected_header}
-  Check HTTPD Route Exists  /alive-check-vkm-api
+  Check HTTPD Route Exists  /alive-check-viitekehysmuunnin
   ${header}  Get From Dictionary  ${RESPONSE.headers}  ${expected_header}
   Should Not Be Empty  ${header}
 

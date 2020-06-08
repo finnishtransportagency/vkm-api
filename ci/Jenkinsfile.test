@@ -1,8 +1,8 @@
 def get_environment() {
     if (BRANCH_NAME.equals("jenkinsfile-temp")) { return "dev" }
-    if (BRANCH_NAME.equals("develop")) { return "dev" }
-    if (BRANCH_NAME.equals("master")) { return "prod" }
-    if (BRANCH_NAME.startsWith("release-")) { return "test" }
+    if (BRANCH_NAME.equals("kehitys")) { return "dev" }
+    if (BRANCH_NAME.equals("tuotanto")) { return "prod" }
+    if (BRANCH_NAME.startsWith("testiversio-")) { return "test" }
     return ""
 }
 
@@ -92,7 +92,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-80-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "), 
@@ -107,7 +107,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -123,7 +123,7 @@ pipeline {
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
                                 "--variable PROXY:${http_proxy}",
-                                "--variable URL:${it}/vkm-api",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -171,7 +171,7 @@ pipeline {
                         "--build-arg JENKINS_UID=${jenkins_uid}"
                     ].join(" ")
                     docker.build(
-                        "ptpapp-vkm-api-python",
+                        "ptpapp-viitekehysmuunnin-python",
                         "${build_args} -f ci/Dockerfile.python ci"
                     )
                 }
@@ -188,7 +188,7 @@ pipeline {
         stage("Test") {
             agent {
                 docker {
-                    image "ptpapp-vkm-api-python"
+                    image "ptpapp-viitekehysmuunnin-python"
                     args "--network host"
                     reuseNode true
                 }
