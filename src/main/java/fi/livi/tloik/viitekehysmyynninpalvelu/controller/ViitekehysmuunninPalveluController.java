@@ -246,6 +246,10 @@ public class ViitekehysmuunninPalveluController {
                 	}
                 }
                 
+                for (geoJsonWrapper t : tulos) {
+                	t.id = null;
+                }
+                
                 
          return new FeatureCollection(tulos);
     }
