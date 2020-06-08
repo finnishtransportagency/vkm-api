@@ -1,5 +1,5 @@
 server.port = 8989
-server.context-path=
+server.context-path=/viitekehysmuunnin/kehitys
 logging.file=./logs/viitekehysmuunnin.log
 
 # jdbc.X
