@@ -52,7 +52,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 public class ViitekehysmuunninPalveluController {
 
-    
+   // 
     @Autowired
     private IViitekehysmuunnin palveluNG;
 
