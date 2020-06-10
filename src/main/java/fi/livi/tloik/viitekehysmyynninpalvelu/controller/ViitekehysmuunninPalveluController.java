@@ -84,7 +84,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "tie", required = false) Integer tie,
             @RequestParam(name = "ajorata", required = false) List<Integer> ajr,
             @RequestParam(name = "osa", required = false) Integer aosa,
-            @RequestParam(name = "aet", required = false) Integer aet,
+            @RequestParam(name = "etaisyys", required = false) Integer aet,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
