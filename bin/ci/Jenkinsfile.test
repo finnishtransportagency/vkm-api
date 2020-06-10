@@ -92,7 +92,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-80-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/viitekehysmuunnin/kehitys",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "), 
@@ -107,7 +107,7 @@ pipeline {
                                 "--nostatusrc",
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
-                                "--variable URL:${it}/viitekehysmuunnin/kehitys",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
@@ -123,7 +123,7 @@ pipeline {
                                 "--output output-${it.tokenize('/').last()}.xml",
                                 "--report NONE",
                                 "--variable PROXY:${http_proxy}",
-                                "--variable URL:${it}/viitekehysmuunnin/kehitys",
+                                "--variable URL:${it}/viitekehysmuunnin",
                                 "src/test"
                             ].join(" ")
                         }.join(" && "),
