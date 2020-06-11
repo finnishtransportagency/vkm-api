@@ -5,7 +5,7 @@
 
   <groupId>fi.livi.ptp</groupId>
   <artifactId>viitekehysmuunnin</artifactId>
-  <version>0.0.6</version>
+  <version>0.0.7</version>
   <packaging>jar</packaging>
 
   <name>viitekehysmuunnin</name>
