@@ -22,15 +22,15 @@ def get_version(version) {
 }
 
 def get_database_url() {
-	if (get_environment().equals("dev")) { return "DB_VKM_TEST_URL" }
-	if (get_environment().equals("test")) { return "DB_VKM_TEST_URL" }
-	if (get_environment().equals("prod")) { return "DB_VKM_PROD_URL" }
+	if (get_environment().equals("dev")) { return ""DB_VKM_TEST_URL"" }
+	if (get_environment().equals("test")) { return ""DB_VKM_TEST_URL"" }
+	if (get_environment().equals("prod")) { return ""DB_VKM_PROD_URL"" }
 }
 
 def get_database_cred() {
-	if (get_environment().equals("dev")) { return "DB_VKM_TEST_CRED" }
-	if (get_environment().equals("test")) { return "DB_VKM_TEST_CRED" }
-	if (get_environment().equals("prod")) { return "DB_VKM_PROD_CRED" }
+	if (get_environment().equals("dev")) { return ""DB_VKM_TEST_CRED"" }
+	if (get_environment().equals("test")) { return ""DB_VKM_TEST_CRED"" }
+	if (get_environment().equals("prod")) { return ""DB_VKM_PROD_CRED"" }
 }
 
 pipeline {
