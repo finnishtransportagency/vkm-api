@@ -11,17 +11,6 @@ def get_version(version) {
     return "${version_xyz}-SNAPSHOT"
 }
 
-def get_database_url() {
-	if (get_environment().equals("dev")) { return credentials("DB_VKM_TEST_URL") }
-	if (get_environment().equals("test")) { return credentials("DB_VKM_TEST_URL") }
-	if (get_environment().equals("prod")) { return credentials("DB_VKM_PROD_URL") }
-}
-
-def get_database_cred() {
-	if (get_environment().equals("dev")) { return credentials("DB_VKM_TEST_CRED") }
-	if (get_environment().equals("test")) { return credentials("DB_VKM_TEST_CRED") }
-	if (get_environment().equals("prod")) { return credentials("DB_VKM_PROD_CRED") }
-}
 pipeline {
     agent any
     options {
@@ -31,8 +20,8 @@ pipeline {
     environment {
         VKM_CORE_PATH = "work/vkm-core"
         VKM_CORE_REF = "refs/heads/vkm-uusi-ci"
-        DB_VKM_URL = get_database_url()
-        DB_VKM_CRED = get_database_cred()
+        DB_VKM_URL = credentials("DB_VKM_TEST_URL")
+        DB_VKM_CRED = credentials("DB_VKM_TEST_URL")
         NOTIFY_SLACK_SUBJECT = "${JOB_NAME} - <${RUN_DISPLAY_URL}|${BUILD_DISPLAY_NAME}>"
     }
     stages {
