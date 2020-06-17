@@ -9,17 +9,17 @@ def get_environment() {
 def get_robotframework_dmz_external() {
     if (get_environment().equals("dev")) {
         String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return [
-          "https://kehitysjulkinen.liikennevirasto.fi"
+          "https://kehitysjulkinen.vayla.fi"
         ]
     }
     if (get_environment().equals("prod")) {
         String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return [
-          "https://julkinen.liikennevirasto.fi"
+          "https://julkinen.vayla.fi"
         ]
     }
     if (get_environment().equals("test")) {
       String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return [
-        "https://testijulkinen.liikennevirasto.fi"
+        "https://testijulkinen.vayla.fi"
       ]
     }
     String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return []
@@ -30,12 +30,12 @@ def get_robotframework_dmz_internal() {
     }
     if (get_environment().equals("prod")) {
         String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return [
-          "http://oag.liikennevirasto.fi"
+          "http://oag.vayla.fi"
         ]
     }
     if (get_environment().equals("test")) {
       String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return [
-        "http://testioag.liikennevirasto.fi"
+        "http://testioag.vayla.fi"
       ]
     }
     String nameofCurrMethod=new Object(){}.getClass().getEnclosingMethod().getName();System.out.println("Name of current method: "+nameofCurrMethod);return []
