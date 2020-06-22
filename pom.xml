@@ -31,17 +31,7 @@
       <artifactId>vkm-core</artifactId>
       <version>0.3.2-SNAPSHOT</version>
     </dependency>
-   <dependency>
-       <groupId>org.geotools</groupId>
-       <artifactId>gt-main</artifactId>
-       <version>22.2</version>
-   </dependency>
-   <!-- https://mvnrepository.com/artifact/org.geotools/gt-api -->
-    <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-api</artifactId>
-        <version>20.5</version>
-    </dependency>
+
     <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger2</artifactId>
