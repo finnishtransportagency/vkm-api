@@ -1,26 +1,12 @@
 package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import javax.naming.NamingException;
-import org.assertj.core.util.Lists;
-import org.geolatte.geom.C3DM;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
@@ -32,13 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fi.livi.vkm.dto.FeatureCollection;
 import fi.livi.vkm.dto.InParameters;
 import fi.livi.vkm.IViitekehysmuunnin;
-import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.geoJsonWrapper;
 import fi.livi.vkm.util.VkmUtil;
 import io.swagger.annotations.ApiParam;
