@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestRoadAdress {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitehaku/";
-	String BaseUrl = "http://localhost:8889/vkm-api/muunna/";
+	String BaseUrl = "http://localhost:8989/viitekehysmuunnin/muunna";
 	
 	@Test
 	public void testBasicRoadAdressQuery() throws IOException {

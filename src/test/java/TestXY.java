@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestXY {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/xyhaku/";
-	String BaseUrl = "http://localhost:8889/vkm-api/muunna/";
+	String BaseUrl = "http://localhost:8989/viitekehysmuunnin/muunna";
 	
 	@Test
 	public void testBasicXYQuery() throws IOException {

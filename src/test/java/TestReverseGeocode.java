@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestReverseGeocode {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/reversegeocode/";
-	String BaseUrl = "http://localhost:8889/vkm-api/muunna/";
+	String BaseUrl = "http://localhost:8989/viitekehysmuunnin/muunna";
 	
 	@Test
 	public void testBasicReverseGeocodeQuery() throws IOException {
