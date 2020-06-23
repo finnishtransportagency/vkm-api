@@ -43,7 +43,7 @@ public class ViitekehysmuunninPalveluController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiIgnore
     public ModelAndView swaggerUi(ModelMap model) {
-        return new ModelAndView("redirect:/swagger-ui.html", model);
+        return new ModelAndView("redirect:/swagger-ui.html#/viitekehysmuunnin-palvelu-controller", model);
     }
    
     
