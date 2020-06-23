@@ -1,4 +1,4 @@
-package fi.livi.tloik.viitekehysmyynninpalvelu.controller;
+package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 
 
 import java.util.ArrayList;

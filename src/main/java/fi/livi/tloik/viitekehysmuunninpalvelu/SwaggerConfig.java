@@ -1,4 +1,4 @@
-package fi.livi.tloik.viitekehysmyynninpalvelu;
+package fi.livi.tloik.viitekehysmuunninpalvelu;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enableUrlTemplating(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("fi.livi.tloik.viitekehysmyynninpalvelu.controller"))
+                .apis(RequestHandlerSelectors.basePackage("fi.livi.tloik.viitekehysmuunninpalvelu.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
