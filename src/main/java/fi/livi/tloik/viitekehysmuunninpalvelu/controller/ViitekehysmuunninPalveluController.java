@@ -50,7 +50,7 @@ public class ViitekehysmuunninPalveluController {
 
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
     public FeatureCollection yleisRajapinta(
-    		
+
     		@RequestParam(name = "tunniste", required = false) String tunniste, 
     		
     		@RequestParam(name = "x", required = false) Double x,
