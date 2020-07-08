@@ -12,12 +12,17 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class RequestResponse {
 	
 	String query;
 	String response;
 	String json;
 	String geom;
+	String type;
+	String coordinates;
 	ResultParameters result = new ResultParameters();
 	
 	public RequestResponse(String url) throws IOException {
@@ -25,7 +30,9 @@ public class RequestResponse {
 		response = getResponse(url);
 		json = getJson(response);
 		result = getResult(json);
-		result.setGeometria(geom);
+		result.setType(this.type);
+		result.setCoordinates(this.coordinates);
+		//result.setGeometria(geom);
 	}
 	
 	private String getResponse(String query) throws IOException {
@@ -51,8 +58,22 @@ public class RequestResponse {
 	
 	private String getJson(String response) {
 		response = response.replaceAll(System.lineSeparator(), "");
-		response = removeBracketsFromEnds(response);
-		response = extractGeometry(response);
+		//String alkuSulku = "[";
+		//String loppuSulku = "]";
+		//response = alkuSulku + response + loppuSulku;
+		//JSONArray jsonKysely = new JSONArray(response);
+		//JSONObject jsonData = jsonKysely.getJSONObject(0);
+		JSONObject jsonData = new JSONObject(response);
+		JSONArray features = new JSONArray(jsonData.getJSONArray("features").toString()); 
+		JSONObject feature = features.getJSONObject(0);
+		JSONObject geometry = feature.getJSONObject("geometry");
+		this.type = geometry.getString("type");
+		this.coordinates = geometry.getJSONArray("coordinates").toString();
+		JSONObject properties = feature.getJSONObject("properties");
+		//jsonKysely = new JSONArray(response);
+		response = properties.toString();
+		//response = removeBracketsFromEnds(response);
+		//response = extractGeometry(response);
 		return response;
 	}
 	

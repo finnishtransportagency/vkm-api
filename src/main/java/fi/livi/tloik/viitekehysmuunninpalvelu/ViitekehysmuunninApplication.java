@@ -1,4 +1,4 @@
-package fi.livi.tloik.viitekehysmyynninpalvelu;
+package fi.livi.tloik.viitekehysmuunninpalvelu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

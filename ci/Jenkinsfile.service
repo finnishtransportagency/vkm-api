@@ -21,11 +21,25 @@ def get_version(version) {
     return "${version_xyz}-${get_environment().toUpperCase()}-SNAPSHOT"
 }
 
+def get_db_url() {
+	if (get_environment().equals("dev")) { return "DB_VKM_TEST_URL" }
+	if (get_environment().equals("test")) { return "DB_VKM_TEST_URL" }
+	if (get_environment().equals("prod")) { return "DB_VKM_PROD_URL" }
+}
+
+def get_db_cred() {
+	if (get_environment().equals("dev")) { return "DB_VKM_TEST_CRED" }
+	if (get_environment().equals("test")) { return "DB_VKM_TEST_CRED" }
+	if (get_environment().equals("prod")) { return "DB_VKM_PROD_CRED" }	
+}
+
 pipeline {
     agent any
     environment {
-        DB_VKM_URL = credentials("DB_VKM_URL")
-        DB_VKM_CRED = credentials("DB_VKM_CRED")
+    	def vkm_url = get_db_url()
+    	def vkm_cred =  get_db_cred()
+        DB_VKM_URL = credentials("${vkm_url}")
+        DB_VKM_CRED = credentials("${vkm_cred}")
         DB_TR_URL = credentials("DB_TR_URL")
         DB_TR_CRED = credentials("DB_TR_CRED")
         NOTIFY_SLACK_SUBJECT = "${JOB_NAME} - <${RUN_DISPLAY_URL}|${BUILD_DISPLAY_NAME}>"

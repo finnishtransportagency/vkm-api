@@ -1,4 +1,4 @@
-package fi.livi.tloik.viitekehysmyynninpalvelu;
+package fi.livi.tloik.viitekehysmuunninpalvelu;
 
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.HashMap;

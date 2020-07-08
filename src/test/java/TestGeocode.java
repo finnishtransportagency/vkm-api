@@ -6,7 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestGeocode {
 	
-	String BaseUrl = "http://localhost:8889/vkm-api/geocode/";
+	//String BaseUrl = "http://localhost:8889/vkm-api/geocode/";
+	String BaseUrl = "http://localhost:8989/viitekehysmuunnin/muunna";
 	
 	@Test
 	public void testBasicGeocodeQuery() throws IOException {
