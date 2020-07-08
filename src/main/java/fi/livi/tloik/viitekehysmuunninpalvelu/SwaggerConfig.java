@@ -27,7 +27,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("fi.livi.tloik.viitekehysmuunninpalvelu.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .pathMapping("/")
                 .apiInfo(apiInfo());
     }
     
