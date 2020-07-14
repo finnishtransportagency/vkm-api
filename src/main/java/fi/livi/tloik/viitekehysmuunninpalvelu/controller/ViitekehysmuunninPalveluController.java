@@ -61,7 +61,7 @@ public class ViitekehysmuunninPalveluController {
 //    	return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
 //    }
 //    
-    @RequestMapping(value = "*", method = RequestMethod.GET)
+    @RequestMapping(value = "muunna", method = RequestMethod.GET)
 	@ResponseBody
 	public String getFallback() {
 	    return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";

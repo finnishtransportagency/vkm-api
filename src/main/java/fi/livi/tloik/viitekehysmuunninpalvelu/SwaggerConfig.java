@@ -31,9 +31,9 @@ public class SwaggerConfig {
     
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("VIITEKEHYSMUUNNIN")
+                .title("VIITEKEHYSMUUNNIN (TESTIVERSIO)")
                 .version("uusi")
-                .description("Tuki: " + contactOperator )
+                .description("Tuki: " + contactOperator + ". HUOMAA! Tämä on testiversio. Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä." )
                 .build();
         }
 
