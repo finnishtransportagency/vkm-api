@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,23 +45,28 @@ public class ViitekehysmuunninPalveluController {
     
     // Seuraavat kolme metodia toistaiseksi käytössä tuotantoversiossa
     
-    @RequestMapping(method = RequestMethod.GET)
-    @ApiIgnore
-    public String swaggerRedir() {
-        return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    @ApiIgnore
+//    public String swaggerRedir() {
+//        return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
+//    }
+//    
+//    @RequestMapping(value = "swagger-ui.html", method= RequestMethod.GET)
+//    public String notInUseSwagger() {
+//    	return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
+//    }
+//    
+//    @RequestMapping(value = "muunna", method= RequestMethod.GET)
+//    public String notInUse() {
+//    	return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
+//    }
+//    
+    @RequestMapping(value = "*", method = RequestMethod.GET)
+	@ResponseBody
+	public String getFallback() {
+	    return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
+	}
     
-    @RequestMapping(value = "swagger-ui.html", method= RequestMethod.GET)
-    public String notInUseSwagger() {
-    	return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
-    }
-    
-    @RequestMapping(value = "muunna", method= RequestMethod.GET)
-    public String notInUse() {
-    	return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
-    }
-    
-        
 //    @RequestMapping(method = RequestMethod.GET)
 //    @ApiIgnore
 //    public ModelAndView swaggerUi(ModelMap model) {
