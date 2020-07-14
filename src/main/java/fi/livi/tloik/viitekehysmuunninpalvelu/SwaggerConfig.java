@@ -33,7 +33,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("VIITEKEHYSMUUNNIN")
                 .version("uusi")
-                .description("Tuki: " + contactOperator + ". HUOMAA! Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, eikä Swagger toimi tässä osoitteessa. Testiversion toimivaan Swagger-käyttöliittymään pääset osoitteessa testioag.vayla.fi/viitekehysmuunnin/swagger-ui.html tai testijulkinen.vayla.fi/viitekehysmuunnin/swagger-ui.html." )
+                .description("Tuki: " + contactOperator )
                 .build();
         }
 
