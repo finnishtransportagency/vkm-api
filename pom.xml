@@ -26,7 +26,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
+   <dependency>
       <groupId>fi.livi.vkm</groupId>
       <artifactId>vkm-core</artifactId>
       <version>0.3.2-SNAPSHOT</version>
@@ -36,7 +36,7 @@
        <artifactId>gt-main</artifactId>
        <version>17.0</version>
    </dependency>
-   <!-- https://mvnrepository.com/artifact/org.geotools/gt-api -->
+    <!-- https://mvnrepository.com/artifact/org.geotools/gt-api -->
     <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-api</artifactId>
@@ -134,7 +134,8 @@
     <repository>
         <id>geotools</id>
         <name>Geotools</name>
-        <url>http://download.osgeo.org/webdav/geotools/</url>
+        <url>http://maven.geomajas.org/nexus/content/groups/public/org/geotools/</url>
+        <!-- <url>http://download.osgeo.org/webdav/geotools/</url>< -->
         <layout>default</layout>
         <releases>
             <enabled>true</enabled>
