@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 	
-	private String contactOperator = "ptptuki@sitowise.com";
+	private String contactOperator = "viitekehysmuunnin@vayla.fi";
 	
     @Bean
     public Docket productApi() {
