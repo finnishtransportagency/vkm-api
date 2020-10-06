@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	
 	private String contactOperator = "viitekehysmuunnin@vayla.fi";
-	private String rajapintaKuvaus = "<a href=\"\\..\\resources\\viitekehysmuunnin-2020-rajapintakuvaus.pdf\">Rajapintakuvaus</a>";
+	private String rajapintaKuvaus = "<a href=\"/vkm-api/rajapintakuvaus\">Rajapintakuvaus (pdf)</a>";
 	
     @Bean
     public Docket productApi() {
@@ -34,7 +34,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("VIITEKEHYSMUUNNIN")
                 .version("uusi")
-                .description("Tuki: " + contactOperator + "<br/>" + "Rajapintakuvaus: " + rajapintaKuvaus)
+                .description("Tuki: " + contactOperator + "<br/><br/>" + rajapintaKuvaus)
                 .build();
         }
 

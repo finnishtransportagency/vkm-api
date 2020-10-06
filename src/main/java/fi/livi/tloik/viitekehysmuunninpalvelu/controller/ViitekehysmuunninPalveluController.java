@@ -1,6 +1,7 @@
 package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,11 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,11 +48,25 @@ public class ViitekehysmuunninPalveluController {
     @Autowired
     private Environment env;
 
-//  @RequestMapping(value = "*", method = RequestMethod.GET)
-//	@ResponseBody
-//	public String getFallback() {
-//	    return "<html><h2>Uusi viitekehysmuunnin</h2><p>Tähän osoitteeseen tulee uuden viitekehysmuuntimen tuotantoversio.</p><p>Uusi viitekehysmuunnin ei ole vielä tuotantokäytössä, vaan integraatiotestissä.</p><p>Testiversiota voi käyttää osoitteessa testioag.vayla.fi/viitekehysmuunnin/ tai testijulkinen.vayla.fi/viitekehysmuunnin/.</p></html>";
-//	}
+    
+    @RequestMapping(value = "rajapintakuvaus", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getRajapintakuvaus()
+            throws IOException {
+
+        ClassPathResource pdfFile = new ClassPathResource("viitekehysmuunnin-2020-rajapintakuvaus.pdf");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(pdfFile.contentLength())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new InputStreamResource(pdfFile.getInputStream()));
+    }
 
     
     @RequestMapping(method = RequestMethod.GET)
