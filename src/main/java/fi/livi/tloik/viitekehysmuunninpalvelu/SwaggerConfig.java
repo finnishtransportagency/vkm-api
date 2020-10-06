@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	
 	private String contactOperator = "viitekehysmuunnin@vayla.fi";
-	private String rajapintaKuvaus = "<a href=\"/vkm-api/rajapintakuvaus\">Rajapintakuvaus (pdf)</a>";
+	private String rajapintaKuvaus = "<a href=\"/viitekehysmuunnin/rajapintakuvaus\">Rajapintakuvaus (pdf)</a>";
 	
     @Bean
     public Docket productApi() {
