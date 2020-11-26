@@ -268,6 +268,12 @@ public class ViitekehysmuunninPalveluController {
                 	t.id = null;
                 }
                 
+                //Poistetaan kaikista featureista featurecollection_metadata, jos mitään metadataa ei ole merkitty featureen
+                for (geoJsonWrapper t : tulos) {
+                	if (t.properties.featurecollection_metadata.allNulls())
+                		t.properties.featurecollection_metadata = null;
+                }
+                
                 
          return new FeatureCollection(tulos);
     }
