@@ -30,6 +30,7 @@ import fi.livi.vkm.dto.InParameters;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.geoJsonWrapper;
+import fi.livi.vkm.service.ViitekehysmuunninNGPalvelu;
 import fi.livi.vkm.util.VkmUtil;
 import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
@@ -47,7 +48,16 @@ public class ViitekehysmuunninPalveluController {
 
     @Autowired
     private Environment env;
-
+    
+    public static final String API_VERSION = "3.0.1";
+    
+    
+    @RequestMapping(value = "versio", method = RequestMethod.GET)
+	@ResponseBody
+	public String getVersion() {
+	    return "API-versio: " + API_VERSION + ", CORE-versio: " + VkmUtil.getCoreVersion();
+	}
+    
     
     @RequestMapping(value = "rajapintakuvaus", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> getRajapintakuvaus()
