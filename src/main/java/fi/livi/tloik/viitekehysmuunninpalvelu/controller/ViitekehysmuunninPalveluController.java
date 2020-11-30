@@ -55,7 +55,7 @@ public class ViitekehysmuunninPalveluController {
     @RequestMapping(value = "versio", method = RequestMethod.GET)
 	@ResponseBody
 	public String getVersion() {
-	    return "API-versio: " + API_VERSION + ", CORE-versio: " + VkmUtil.getCoreVersion();
+	    return "API-versio: " + API_VERSION + ", CORE-versio: " + VkmUtil.CORE_VERSION;
 	}
     
     
