@@ -49,7 +49,7 @@ public class ViitekehysmuunninPalveluController {
     @Autowired
     private Environment env;
     
-    public static final String API_VERSION = "3.0.1";
+    public static final String API_VERSION = "3.0.2";
     
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
