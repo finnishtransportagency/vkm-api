@@ -30,7 +30,7 @@
     <dependency>
       <groupId>fi.livi.vkm</groupId>
       <artifactId>vkm-core</artifactId>
-      <version>0.3.6</version>
+      <version>0.3.7</version>
     </dependency>
 
     <dependency>
