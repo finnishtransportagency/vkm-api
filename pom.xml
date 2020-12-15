@@ -5,7 +5,7 @@
 
   <groupId>fi.livi.ptp</groupId>
   <artifactId>viitekehysmuunnin</artifactId>
-  <version>3.0.3</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>viitekehysmuunnin</name>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>fi.livi.vkm</groupId>
       <artifactId>vkm-core</artifactId>
-      <version>0.3.7</version>
+      <version>0.3.8-SNAPSHOT</version>
     </dependency>
 
     <dependency>
