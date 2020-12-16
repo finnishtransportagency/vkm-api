@@ -1,9 +1,15 @@
 package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,6 +92,15 @@ public class ViitekehysmuunninPalveluController {
     public ModelAndView swaggerUi(ModelMap model) {
         return new ModelAndView("redirect:/swagger-ui.html", model);
     }
+    
+    
+//    @RequestMapping(value = "muunna", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
+//    	BufferedReader reader = request.getReader();
+//    	String str = reader.lines().collect(Collectors.joining());
+//    	return "Post request";           
+//    }
    
 
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
