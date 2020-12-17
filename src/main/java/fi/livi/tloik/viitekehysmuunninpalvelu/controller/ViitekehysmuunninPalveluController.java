@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
@@ -57,7 +58,7 @@ public class ViitekehysmuunninPalveluController {
     
     public static final String API_VERSION = "1.0.0";
     
-    // Comment for build nr 0002
+    // Comment for build nr 0003
     
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
@@ -94,13 +95,16 @@ public class ViitekehysmuunninPalveluController {
     }
     
     
-//    @RequestMapping(value = "muunna", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
-//    	BufferedReader reader = request.getReader();
-//    	String str = reader.lines().collect(Collectors.joining());
-//    	return "Post request";           
-//    }
+    @RequestMapping(value = "muunna", method = RequestMethod.POST)
+    @ResponseBody
+    public FeatureCollection handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
+    	String json = request.getParameter("json");
+    	FeatureCollection fc = yleisRajapinta(null,null,null,null,null,null,null,null,null,null,
+    			null,null,null,null,null,null,null,null,null,null,
+    			null,null,null,null,null,null,null,null,null,null,
+    			null,null,json,null,null,null,null,null);
+    	return fc;           
+    }
    
 
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
