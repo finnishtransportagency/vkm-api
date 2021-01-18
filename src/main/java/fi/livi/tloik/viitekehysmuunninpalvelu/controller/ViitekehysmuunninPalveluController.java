@@ -231,8 +231,8 @@ public class ViitekehysmuunninPalveluController {
     						aet = VkmUtil.getJsonInteger(jsonData, "etaisyys");
     						losa = VkmUtil.getJsonInteger(jsonData, "osa_loppu");
     						let = VkmUtil.getJsonInteger(jsonData, "etaisyys_loppu");
-    						tilannepvmAsString = VkmUtil.getJsonString(jsonData, "tilannepvmAsString");
-    						kohdepvmAsString = VkmUtil.getJsonString(jsonData, "kohdepvmAsString");
+    						tilannepvmAsString = VkmUtil.getJsonString(jsonData, "tilannepvm");
+    						kohdepvmAsString = VkmUtil.getJsonString(jsonData, "kohdepvm");
     						link_id = VkmUtil.getJsonInteger(jsonData, "link_id");
     						m_arvo = VkmUtil.getJsonDouble(jsonData, "m_arvo");
     						link_id_loppu = VkmUtil.getJsonInteger(jsonData, "link_id_loppu");
