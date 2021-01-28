@@ -56,6 +56,8 @@ public class ViitekehysmuunninPalveluController {
     @Autowired
     private Environment env;
     
+    private boolean addMetadata = false;
+    
     public static final String API_VERSION = "3.0.6";
     
     // Comment for build nr 0004
@@ -99,10 +101,11 @@ public class ViitekehysmuunninPalveluController {
     @ResponseBody
     public FeatureCollection handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
     	String json = request.getParameter("json");
+    	String metadata = request.getParameter("metadata");
     	FeatureCollection fc = yleisRajapinta(null,null,null,null,null,null,null,null,null,null,
     			null,null,null,null,null,null,null,null,null,null,
     			null,null,null,null,null,null,null,null,null,null,
-    			null,null,json,null,null,null,null,null);
+    			null,null,json,metadata,null,null,null,null,null);
     	return fc;           
     }
    
@@ -151,11 +154,13 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "ualue", required = false) Integer ualue,
             @RequestParam(name = "maakuntakoodi", required = false) Integer maakuntakoodi,
             
-            @ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku, oletus 'false'")
+            @ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku. Oletus 'false'.")
             @RequestParam(name = "valihaku", required = false) String valihaku,
             @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria, 6=lineaarilokaatio")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
     		@RequestParam(name = "json", required = false) String json,
+    		@ApiParam(value = "Vain json-parametria käytettäessä. Arvolla 'true' antaa FeatureCollectionin metatiedot. Oletus 'false'.")
+            @RequestParam(name = "metadata", required = false) String metadata,
     		
     		// Aliakset tietyille in-parametreille
     		@RequestParam(name = "ajr", required = false) @ApiIgnore List<Integer> ajr2,
@@ -188,6 +193,9 @@ public class ViitekehysmuunninPalveluController {
     			boolean metaParametritNull = (valihaku == null && tunniste == null && palautusarvot == null);
     			boolean muutKuinJsonNull = (koordinaatitNull && tieOsoiteNull && pvmNull && linkOsoiteNull && katuOsoiteNull && vaylaTyypitNull && alueetNull && metaParametritNull);
     			
+    			//Tarkistetaan halutaanko FeatureCollectionin metadata
+    			Boolean addMetadata = (metadata != null && metadata.trim().toUpperCase().equals("TRUE"));
+    			
     			//Kyseessä yksittäinen muunnos, ei json-parametrin kautta
     			if (json == null && !muutKuinJsonNull) {
     				kysely = new InParameters(tunniste, 
@@ -197,7 +205,7 @@ public class ViitekehysmuunninPalveluController {
     											kuntakoodi, katunimi, katunumero, katunumero_loppu, 
     											vaylan_luonne, tietyyppi, 
     											ely, ualue, maakuntakoodi,
-    											valihaku, palautusarvot
+    											valihaku, palautusarvot, addMetadata
     											);
     				kyselyLista.add(kysely);
     			}
@@ -212,6 +220,7 @@ public class ViitekehysmuunninPalveluController {
     					throw new JSONException("Virhe json-parametrissa: "+ e.getMessage());
     				}
     				if (jsonKysely != null ) {
+    					
     					for (int i = 0; i < jsonKysely.length(); i++) {
     						jsonData = jsonKysely.getJSONObject(i);
     						
@@ -263,7 +272,7 @@ public class ViitekehysmuunninPalveluController {
 														kuntakoodi, katunimi, katunumero, katunumero_loppu, 
 														vaylan_luonne, tietyyppi, 
 														ely, ualue, maakuntakoodi,
-														valihaku, palautusarvot
+														valihaku, palautusarvot, addMetadata
 														);
     						kyselyLista.add(kysely);
     					}
@@ -307,7 +316,7 @@ public class ViitekehysmuunninPalveluController {
                 }
                 
                 
-         return new FeatureCollection(tulos);
+         return new FeatureCollection(tulos, addMetadata);
     }
    
 }
