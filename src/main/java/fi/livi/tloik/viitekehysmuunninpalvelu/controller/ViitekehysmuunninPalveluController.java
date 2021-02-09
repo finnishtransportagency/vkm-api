@@ -60,7 +60,7 @@ public class ViitekehysmuunninPalveluController {
     
     public static final String API_VERSION = "1.0.0";
     
-    // Comment for build nr 0006
+    // Comment for postgres build 01
     
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
