@@ -4,14 +4,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 
-public class ResultParameters{
+public class ResultParametersTemp{
 
-	
-	public String type;
-	public String geomType;
-	public String coordinates;
-	public String virheet;
-	public String featurecollection_metadata;
 	
 	public String tunniste;
 	public Double x;
@@ -65,24 +59,12 @@ public class ResultParameters{
 	
 	
 	//Constructor
-    public ResultParameters() throws JsonParseException, JsonMappingException, IOException {
+    public ResultParametersTemp() throws JsonParseException, JsonMappingException, IOException {
 		setAllToNull();
     }
 
 
     //Getters
-    
-    public String getType() {
-		return type;
-	}
-    
-    public String getGeomType() {
-		return geomType;
-	}
-	
-	public String getCoordinates() {
-		return coordinates;
-	}
     
     public String getTunniste() {
 		return tunniste;
@@ -280,30 +262,8 @@ public class ResultParameters{
 		return ualuenimi_loppu;
 	}
 	
-	public String getVirheet() {
-		return virheet;
-	}
 	
-	public String getFeatureCollectionMetadata() {
-		return featurecollection_metadata;
-	}
-	
-	
-	//
 	//Setters
-	
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	public void setGeomType(String type) {
-		this.geomType = type;
-	}
-	
-	public void setCoordinates(String coordinates) {
-		this.coordinates = coordinates;
-	}
 	
 	public void setTunniste(String tunniste) {
 		this.tunniste = tunniste;
@@ -502,21 +462,10 @@ public class ResultParameters{
 		this.ualuenimi_loppu = ualuenimi_loppu;
 	}
 	
-	public void setVirheet(String virheet) {
-		this.virheet = virheet;
-	}
-	
-	public void setFeatureCollectionMetadata(String metadata) {
-		this.featurecollection_metadata = metadata;
-	}
-	
 	
 	//Other methods
 	
 	private void setAllToNull() throws JsonParseException, JsonMappingException, IOException {
-		setType(null);
-		setGeomType(null);
-		setCoordinates(null);
 		setTunniste(null);
 		setX(null);
 		setY(null);
@@ -566,176 +515,6 @@ public class ResultParameters{
 		setElynimi_loppu(null);
 		setUalue_loppu(null);
 		setUaluenimi_loppu(null);
-		setVirheet(null);
-		setFeatureCollectionMetadata(null);
-	}
-	
-	
-	public void mapBasicProperties(ResultParametersTemp resultTemp) {
-		this.tunniste = resultTemp.tunniste;
-		this.x = resultTemp.x;
-		this.y = resultTemp.y;
-		this.z = resultTemp.z;
-		this.x_loppu = resultTemp.x_loppu;
-		this.y_loppu = resultTemp.y_loppu;
-		this.z_loppu = resultTemp.z_loppu;
-		this.valimatka = resultTemp.valimatka;
-		this.valimatka_loppu = resultTemp.valimatka_loppu;
-		this.tie = resultTemp.tie;
-		this.ajorata = resultTemp.ajorata;
-		this.osa = resultTemp.osa;
-		this.etaisyys = resultTemp.etaisyys;
-		this.tie_loppu = resultTemp.tie_loppu;
-		this.ajorata_loppu = resultTemp.ajorata_loppu;
-		this.osa_loppu = resultTemp.osa_loppu;
-		this.etaisyys_loppu = resultTemp.etaisyys_loppu;
-		this.link_id = resultTemp.link_id;
-		this.m_arvo = resultTemp.m_arvo;
-		this.link_id_loppu = resultTemp.link_id_loppu;
-		this.m_arvo_loppu = resultTemp.m_arvo_loppu;
-		this.kuntakoodi = resultTemp.kuntakoodi;
-		this.kuntanimi = resultTemp.kuntanimi;
-		this.katunimi = resultTemp.katunimi;
-		this.katunimi_se = resultTemp.katunimi_se;
-		this.katunumero = resultTemp.katunumero;
-		this.katunimi_loppu = resultTemp.katunimi_loppu;
-		this.katunimi_se_loppu = resultTemp.katunimi_se_loppu;
-		this.katunumero_loppu = resultTemp.katunumero_loppu;
-		this.viivan_pituus = resultTemp.viivan_pituus;
-		this.mitattu_pituus = resultTemp.mitattu_pituus;
-		this.vaylan_luonne = resultTemp.vaylan_luonne;
-		this.tietyyppi = resultTemp.tietyyppi;
-		this.vaylan_luonne_loppu = resultTemp.vaylan_luonne_loppu;
-		this.tietyyppi_loppu = resultTemp.tietyyppi_loppu;
-		this.ely = resultTemp.ely;
-		this.elynimi = resultTemp.elynimi;
-		this.maakuntakoodi = resultTemp.maakuntakoodi;
-		this.maakuntanimi = resultTemp.maakuntanimi;
-		this.ualue = resultTemp.ualue;
-		this.ualuenimi = resultTemp.ualuenimi;
-		this.kuntakoodi_loppu = resultTemp.kuntakoodi_loppu;
-		this.kuntanimi_loppu = resultTemp.kuntanimi_loppu;
-		this.maakuntakoodi_loppu = resultTemp.maakuntakoodi_loppu;
-		this.maakuntanimi_loppu = resultTemp.maakuntanimi_loppu;
-		this.ely_loppu = resultTemp.ely_loppu;
-		this.elynimi_loppu = resultTemp.elynimi_loppu;
-		this.ualue_loppu = resultTemp.ualue_loppu;
-		this.ualuenimi_loppu = resultTemp.ualuenimi_loppu;
 	}
     
 }
-
-
-/*** Testikeissin pohja --- Liitä testikansiossa siihen rajapintaluokkaan, jota haluat testata
-
-		@Test
-		public void testNameOfTest() throws IOException {
-			
-			// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
-			
-			Query q = new Query(BaseUrl);
-			
-			//q.addToQuery("tunniste", "");
-			//q.addToQuery("x", "");
-			//q.addToQuery("y", "");
-			//q.addToQuery("z", "");
-			//q.addToQuery("z_vaihtelu", "");
-			//q.addToQuery("sade", "");
-			//q.addToQuery("tie", "");
-			//q.addToQuery("ajorata", "");
-			//q.addToQuery("osa", "");
-			//q.addToQuery("etaisyys", "");
-			//q.addToQuery("tilannepvm", "");
-			//q.addToQuery("kohdepvm", "");
-			//q.addToQuery("link_id", "");
-			//q.addToQuery("m_arvo", "");
-			//q.addToQuery("kuntakoodi", "");
-			//q.addToQuery("katunimi", "");
-			//q.addToQuery("katunumero", "");
-			//q.addToQuery("tietyyppi", "");
-			//q.addToQuery("vaylan_luonne", "");
-			//q.addToQuery("ely", "");
-			//q.addToQuery("ualue", "");
-			//q.addToQuery("maakuntakoodi", "");
-			
-			//q.addToQuery("x_loppu", "");
-			//q.addToQuery("y_loppu", "");
-			//q.addToQuery("z_loppu", "");
-			//q.addToQuery("osa_loppu", "");
-			//q.addToQuery("etaisyys_loppu", "");
-			//q.addToQuery("link_id_loppu", "");
-			//q.addToQuery("m_arvo_loppu", "");
-			//q.addToQuery("katunumero_loppu", "");
-			
-			//q.addToQuery("valihaku", "");
-			//q.addToQuery("palautusarvot", "");
-			//q.addToQuery("json", "");
-			
-			RequestResponse testInfo = new RequestResponse( q.getQuery().toString() );
-			
-			// ANNETAAN ODOTETUT OUT-PARAMETRIT
-		
-			ResultParameters expected = new ResultParameters();
-			
-			//expected.setType();
-			//expected.setGeomType();
-			//expected.setCoordinates();
-			//expected.setTunniste();
-			//expected.setX();
-			//expected.setY();
-			//expected.setZ();
-			//expected.setValimatka();
-			//expected.setTie();
-			//expected.setAjr();
-			//expected.setAosa();
-			//expected.setAet();
-			//expected.setLink_id();
-			//expected.setM_arvo();
-			//expected.setKuntakoodi();
-			//expected.setKuntanimi();
-			//expected.setKatunimi();
-			//expected.setKatunimi_se();
-			//expected.setKatunumero();
-			//expected.setTietyyppi();
-			//expected.setVaylan_luonne();
-			//expected.setMaakuntakoodi();
-			//expected.setMaakuntanimi();
-			//expected.setEly();
-			//expected.setElynimi();
-			//expected.setUalue();
-			//expected.setUaluenimi();
-		
-			//expected.setViivanPituus();
-			//expected.setMitattuPituus();
-			//expected.setX_loppu();
-			//expected.setY_loppu();
-			//expected.setZ_loppu();
-			//expected.setValimatka_loppu();
-			//expected.setL_tie();
-			//expected.setL_ajr();
-			//expected.setLosa();
-			//expected.setLet();
-			//expected.setLink_id_loppu();
-			//expected.setM_arvo_loppu();
-			//expected.setKuntakoodi_loppu();
-			//expected.setKuntanimi_loppu();
-			//expected.setKatunimi_loppu();
-			//expected.setKatunimi_se_loppu();
-			//expected.setKatunumero_loppu();
-			//expected.setTietyyppi_loppu();
-			//expected.setVaylan_luonne_loppu();
-			//expected.setMaakuntakoodi_loppu();
-			//expected.setMaakuntanimi_loppu();
-			//expected.setEly_loppu();
-			//expected.setElynimi_loppu();
-			//expected.setUalue_loppu();
-			//expected.setUaluenimi_loppu();
-			//expected.setVirheet();
-			//expected.setFeatureCollectionMetadata();
-			
-			// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
-		
-			assertThat(testInfo.result).isEqualToComparingFieldByField(expected);
-		}
-
-***/

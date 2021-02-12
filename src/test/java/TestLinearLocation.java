@@ -4,21 +4,22 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestXY {
+public class TestLinearLocation {
 	
-	//String BaseUrl = "http://localhost:8889/vkm-api/xyhaku/";
+	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitehaku/";
 	String BaseUrl = "http://localhost:8889/viitekehysmuunnin/muunna";
 	
+	
 	@Test
-	public void testBasicXY2D() throws IOException {
+	public void testBasicLinearLocation() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 		
 		Query q = new Query(BaseUrl);
 		
 		q.addToQuery("tunniste", "1");
-		q.addToQuery("x", "385885.719999971");
-		q.addToQuery("y", "6671747.8099999");
+		//q.addToQuery("x", "");
+		//q.addToQuery("y", "");
 		//q.addToQuery("z", "");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
@@ -28,8 +29,8 @@ public class TestXY {
 		//q.addToQuery("etaisyys", "");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
-		//q.addToQuery("link_id", "");
-		//q.addToQuery("m_arvo", "");
+		q.addToQuery("link_id", "442308");
+		q.addToQuery("m_arvo", "0");
 		//q.addToQuery("kuntakoodi", "");
 		//q.addToQuery("katunimi", "");
 		//q.addToQuery("katunumero", "");
@@ -65,7 +66,7 @@ public class TestXY {
 		expected.setX(385885.719999971);
 		expected.setY(6671747.8099999);
 		expected.setZ(9.66899999999441);
-		expected.setValimatka(0.0);
+		//expected.setValimatka();
 		expected.setTie(1);
 		expected.setAjr(1);
 		expected.setAosa(1);
@@ -121,15 +122,15 @@ public class TestXY {
 	
 	
 	@Test
-	public void testBasicXY2DWEndPoint() throws IOException {
+	public void testBasicLinearLocationWEndPoint() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 		
 		Query q = new Query(BaseUrl);
 		
 		q.addToQuery("tunniste", "1");
-		q.addToQuery("x", "385885.719999971");
-		q.addToQuery("y", "6671747.8099999");
+		//q.addToQuery("x", "");
+		//q.addToQuery("y", "");
 		//q.addToQuery("z", "");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
@@ -139,8 +140,8 @@ public class TestXY {
 		//q.addToQuery("etaisyys", "");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
-		//q.addToQuery("link_id", "");
-		//q.addToQuery("m_arvo", "");
+		q.addToQuery("link_id", "442308");
+		q.addToQuery("m_arvo", "0");
 		//q.addToQuery("kuntakoodi", "");
 		//q.addToQuery("katunimi", "");
 		//q.addToQuery("katunumero", "");
@@ -150,13 +151,13 @@ public class TestXY {
 		//q.addToQuery("ualue", "");
 		//q.addToQuery("maakuntakoodi", "");
 		
-		q.addToQuery("x_loppu", "385872.187999971");
-		q.addToQuery("y_loppu", "6671767.2179999");
+		//q.addToQuery("x_loppu", "");
+		//q.addToQuery("y_loppu", "");
 		//q.addToQuery("z_loppu", "");
 		//q.addToQuery("osa_loppu", "");
 		//q.addToQuery("etaisyys_loppu", "");
-		//q.addToQuery("link_id_loppu", "");
-		//q.addToQuery("m_arvo_loppu", "");
+		q.addToQuery("link_id_loppu", "442308");
+		q.addToQuery("m_arvo_loppu", "23.659799999994");
 		//q.addToQuery("katunumero_loppu", "");
 		
 		//q.addToQuery("valihaku", "");
@@ -176,7 +177,7 @@ public class TestXY {
 		expected.setX(385885.719999971);
 		expected.setY(6671747.8099999);
 		expected.setZ(9.66899999999441);
-		expected.setValimatka(0.0);
+		//expected.setValimatka();
 		expected.setTie(1);
 		expected.setAjr(1);
 		expected.setAosa(1);
@@ -202,7 +203,7 @@ public class TestXY {
 		expected.setX_loppu(385872.187999971);
 		expected.setY_loppu(6671767.2179999);
 		expected.setZ_loppu(9.13199999999779);
-		expected.setValimatka_loppu(0.0);
+		//expected.setValimatka_loppu();
 		expected.setL_tie(1);
 		expected.setL_ajr(1);
 		expected.setLosa(1);

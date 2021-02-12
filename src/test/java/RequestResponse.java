@@ -9,31 +9,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 public class RequestResponse {
 	
 	String query;
 	String response;
 	String json;
-	String geom;
 	String type;
+	String geomType;
 	String coordinates;
+	String virheet = null;
+	String featurecollection_metadata = null;
 	ResultParameters result = new ResultParameters();
 	
+	
+	//Constructor
 	public RequestResponse(String url) throws IOException {
 		query = url;
 		response = getResponse(url);
-		json = getJson(response);
-		result = getResult(json);
+		json = getPropertiesJson(response);
+		result = getResult(json, result);
 		result.setType(this.type);
+		result.setGeomType(this.geomType);
 		result.setCoordinates(this.coordinates);
-		//result.setGeometria(geom);
 	}
+	
 	
 	private String getResponse(String query) throws IOException {
 		StringBuilder content;
@@ -53,83 +56,46 @@ public class RequestResponse {
 			connection.disconnect();
 		}
 
-		return staticContent = content.toString();
+		staticContent = content.toString();
+		return staticContent;
 	}
 	
-	private String getJson(String response) {
+	
+	private String getPropertiesJson(String response) {
 		response = response.replaceAll(System.lineSeparator(), "");
-		//String alkuSulku = "[";
-		//String loppuSulku = "]";
-		//response = alkuSulku + response + loppuSulku;
-		//JSONArray jsonKysely = new JSONArray(response);
-		//JSONObject jsonData = jsonKysely.getJSONObject(0);
 		JSONObject jsonData = new JSONObject(response);
 		JSONArray features = new JSONArray(jsonData.getJSONArray("features").toString()); 
 		JSONObject feature = features.getJSONObject(0);
 		JSONObject geometry = feature.getJSONObject("geometry");
-		this.type = geometry.getString("type");
+		this.type = feature.getString("type");
+		this.geomType = geometry.getString("type");
 		this.coordinates = geometry.getJSONArray("coordinates").toString();
 		JSONObject properties = feature.getJSONObject("properties");
-		//jsonKysely = new JSONArray(response);
+		try {
+			JSONObject featurecoll_metadata = properties.getJSONObject("featurecollection_metadata");
+			this.featurecollection_metadata = featurecoll_metadata.toString();
+		}
+		catch(Exception e) {
+			//
+		}
+		try {
+			JSONObject errors = properties.getJSONObject("virheet");
+			this.virheet = errors.toString();
+		}
+		catch(Exception e) {
+			//
+		}
 		response = properties.toString();
-		//response = removeBracketsFromEnds(response);
-		//response = extractGeometry(response);
 		return response;
 	}
 	
-	private ResultParameters getResult(String json) throws JsonParseException, JsonMappingException, IOException {
+	
+	private ResultParameters getResult(String json, ResultParameters result) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		ResultParameters ready = new ResultParameters();
-		
-		return ready = mapper.readValue(json, ResultParameters.class);
-		
+		ResultParametersTemp resultTemp = new ResultParametersTemp();
+		resultTemp = mapper.readValue(json, ResultParametersTemp.class);
+		result.mapBasicProperties(resultTemp);
+		return result;
 	}
 	
-	private static String removeBracketsFromEnds(String process) {
-		Integer bracketStartCharNumber = 91;
-		Integer bracketEndCharNumber = 93;
-		Integer charNumber;
-		boolean search = true;
-		while (search) {
-			charNumber = (int) process.charAt(0);
-			if ( charNumber == bracketStartCharNumber ) {
-				process = process.substring(1);
-			}
-			else {
-				search = false;
-			}
-		}
-		
-		search = true;
-		while (search) {
-			charNumber = (int) process.charAt(process.length()-1);
-			if ( charNumber == bracketEndCharNumber ) {
-				process = process.substring(0,process.length()-1);
-			}
-			else {
-				search = false;
-			}
-		}
-		
-		return process;
-	}
-	
-	private String extractGeometry(String json) {
-		String regexGeom = ",\"geometria\".*.]]]}";
-		Pattern r = Pattern.compile(regexGeom);
-		Matcher m = r.matcher(json);
-		
-		if (m.find()) {
-			geom = json;
-			String regexOtherStart = ".*.\"geometria\":";
-			String regexOtherEnd = "]]]}.*.";
-			geom = geom.replaceAll(regexOtherStart, "");
-			geom = geom.replaceAll(regexOtherEnd, "]]]}");
-			
-			json = json.replaceAll(regexGeom, "");
-		}
-		
-		return json;
-	}
-
 }

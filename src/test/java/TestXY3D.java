@@ -4,13 +4,13 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestXY {
+public class TestXY3D {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/xyhaku/";
 	String BaseUrl = "http://localhost:8889/viitekehysmuunnin/muunna";
 	
 	@Test
-	public void testBasicXY2D() throws IOException {
+	public void testBasicXY3D() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 		
@@ -19,7 +19,7 @@ public class TestXY {
 		q.addToQuery("tunniste", "1");
 		q.addToQuery("x", "385885.719999971");
 		q.addToQuery("y", "6671747.8099999");
-		//q.addToQuery("z", "");
+		q.addToQuery("z", "9.66899999999441");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
 		//q.addToQuery("tie", "");
@@ -121,7 +121,7 @@ public class TestXY {
 	
 	
 	@Test
-	public void testBasicXY2DWEndPoint() throws IOException {
+	public void testBasicXY3DWEndPoint() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 		
@@ -130,7 +130,7 @@ public class TestXY {
 		q.addToQuery("tunniste", "1");
 		q.addToQuery("x", "385885.719999971");
 		q.addToQuery("y", "6671747.8099999");
-		//q.addToQuery("z", "");
+		q.addToQuery("z", "9.66899999999441");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
 		//q.addToQuery("tie", "");
@@ -152,7 +152,7 @@ public class TestXY {
 		
 		q.addToQuery("x_loppu", "385872.187999971");
 		q.addToQuery("y_loppu", "6671767.2179999");
-		//q.addToQuery("z_loppu", "");
+		q.addToQuery("z_loppu", "9.13199999999779");
 		//q.addToQuery("osa_loppu", "");
 		//q.addToQuery("etaisyys_loppu", "");
 		//q.addToQuery("link_id_loppu", "");
