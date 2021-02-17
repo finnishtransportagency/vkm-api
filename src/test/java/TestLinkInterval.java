@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestRoadAdressInterval {
+public class TestLinkInterval {
 	
-	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitevali/";
+	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitehaku/";
 	String BaseUrl = "http://localhost:8889/viitekehysmuunnin/muunna";
-	
+
 	
 	@Test
 	public void testRoadAddressIntervalOnLink() throws IOException {
@@ -23,13 +23,13 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("z", "");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
-		q.addToQuery("tie", "1");
-		q.addToQuery("ajorata", "1");
-		q.addToQuery("osa", "1");
-		q.addToQuery("etaisyys", "0");
+		//q.addToQuery("tie", "");
+		//q.addToQuery("ajorata", "");
+		//q.addToQuery("osa", "");
+		//q.addToQuery("etaisyys", "");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
-		//q.addToQuery("link_id", "");
+		q.addToQuery("link_id", "442308");
 		//q.addToQuery("m_arvo", "");
 		//q.addToQuery("kuntakoodi", "");
 		//q.addToQuery("katunimi", "");
@@ -43,8 +43,8 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("x_loppu", "");
 		//q.addToQuery("y_loppu", "");
 		//q.addToQuery("z_loppu", "");
-		q.addToQuery("osa_loppu", "1");
-		q.addToQuery("etaisyys_loppu", "24");
+		//q.addToQuery("osa_loppu", "");
+		//q.addToQuery("etaisyys_loppu", "");
 		//q.addToQuery("link_id_loppu", "");
 		//q.addToQuery("m_arvo_loppu", "");
 		//q.addToQuery("katunumero_loppu", "");
@@ -88,7 +88,7 @@ public class TestRoadAdressInterval {
 		expected.setUaluenimi("Kunta hoitaa");
 	
 		expected.setViivanPituus(23.659786304893704);//Should be 23.659799999994!
-		expected.setMitattuPituus(24);
+		//expected.setMitattuPituus();
 		expected.setX_loppu(385872.187999971);
 		expected.setY_loppu(6671767.2179999);
 		expected.setZ_loppu(9.13199999999779);
@@ -119,5 +119,5 @@ public class TestRoadAdressInterval {
 	
 		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);	
 	}
-
+	
 }

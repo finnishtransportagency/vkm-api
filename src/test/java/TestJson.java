@@ -4,29 +4,29 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestRoadAdressInterval {
+
+public class TestJson {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitevali/";
 	String BaseUrl = "http://localhost:8889/viitekehysmuunnin/muunna";
 	
-	
 	@Test
-	public void testRoadAddressIntervalOnLink() throws IOException {
+	public void testBasicJson() throws IOException {
 		
 		// ANNETAAN IN-PARAMETRIT JA TEHDÄÄN KYSELY
 		
 		Query q = new Query(BaseUrl);
 		
-		q.addToQuery("tunniste", "1");
+		//q.addToQuery("tunniste", "");
 		//q.addToQuery("x", "");
 		//q.addToQuery("y", "");
 		//q.addToQuery("z", "");
 		//q.addToQuery("z_vaihtelu", "");
 		//q.addToQuery("sade", "");
-		q.addToQuery("tie", "1");
-		q.addToQuery("ajorata", "1");
-		q.addToQuery("osa", "1");
-		q.addToQuery("etaisyys", "0");
+		//q.addToQuery("tie", "");
+		//q.addToQuery("ajorata", "");
+		//q.addToQuery("osa", "");
+		//q.addToQuery("etaisyys", "");
 		//q.addToQuery("tilannepvm", "");
 		//q.addToQuery("kohdepvm", "");
 		//q.addToQuery("link_id", "");
@@ -43,15 +43,15 @@ public class TestRoadAdressInterval {
 		//q.addToQuery("x_loppu", "");
 		//q.addToQuery("y_loppu", "");
 		//q.addToQuery("z_loppu", "");
-		q.addToQuery("osa_loppu", "1");
-		q.addToQuery("etaisyys_loppu", "24");
+		//q.addToQuery("osa_loppu", "");
+		//q.addToQuery("etaisyys_loppu", "");
 		//q.addToQuery("link_id_loppu", "");
 		//q.addToQuery("m_arvo_loppu", "");
 		//q.addToQuery("katunumero_loppu", "");
 		
-		q.addToQuery("valihaku", "true");
-		q.addToQuery("palautusarvot", "1,2,3,4,5,6");
-		//q.addToQuery("json", "");
+		//q.addToQuery("valihaku", "");
+		//q.addToQuery("palautusarvot", "");
+		q.addToQuery("json", "[{'tunniste':'1','tie':1,'ajorata':'1','osa':1,'etaisyys':0,'palautusarvot':'1,2,3,4,5,6'}]");
 		
 		RequestResponse testInfo = new RequestResponse( q.getQuery().toString() );
 		
@@ -60,8 +60,8 @@ public class TestRoadAdressInterval {
 		ResultParameters expected = new ResultParameters();
 		
 		expected.setType("Feature");
-		expected.setGeomType("LineString");
-		expected.setCoordinates("[[385885.719999971,6671747.8099999,9.66899999999441],[385872.187999971,6671767.2179999,9.13199999999779]]");
+		expected.setGeomType("Point");
+		expected.setCoordinates("[385885.719999971,6671747.8099999]");
 		expected.setTunniste("1");
 		expected.setX(385885.719999971);
 		expected.setY(6671747.8099999);
@@ -87,37 +87,37 @@ public class TestRoadAdressInterval {
 		expected.setUalue(400);
 		expected.setUaluenimi("Kunta hoitaa");
 	
-		expected.setViivanPituus(23.659786304893704);//Should be 23.659799999994!
-		expected.setMitattuPituus(24);
-		expected.setX_loppu(385872.187999971);
-		expected.setY_loppu(6671767.2179999);
-		expected.setZ_loppu(9.13199999999779);
+		//expected.setViivanPituus();
+		//expected.setMitattuPituus();
+		//expected.setX_loppu();
+		//expected.setY_loppu();
+		//expected.setZ_loppu();
 		//expected.setValimatka_loppu();
-		expected.setL_tie(1);
-		expected.setL_ajr(1);
-		expected.setLosa(1);
-		expected.setLet(24);
-		expected.setLink_id_loppu(442308);
-		expected.setM_arvo_loppu(23.659799999994);
-		expected.setKuntakoodi_loppu(91);
-		expected.setKuntanimi_loppu("Helsinki");
-		expected.setKatunimi_loppu("Mannerheimintie");
-		expected.setKatunimi_se_loppu("Mannerheimvägen");
+		//expected.setL_tie();
+		//expected.setL_ajr();
+		//expected.setLosa();
+		//expected.setLet();
+		//expected.setLink_id_loppu();
+		//expected.setM_arvo_loppu();
+		//expected.setKuntakoodi_loppu();
+		//expected.setKuntanimi_loppu();
+		//expected.setKatunimi_loppu();
+		//expected.setKatunimi_se_loppu();
 		//expected.setKatunumero_loppu();
-		expected.setTietyyppi_loppu(3);
-		expected.setVaylan_luonne_loppu(11);
-		expected.setMaakuntakoodi_loppu(1);
-		expected.setMaakuntanimi_loppu("Uusimaa");
-		expected.setEly_loppu(1);
-		expected.setElynimi_loppu("Uusimaa");
-		expected.setUalue_loppu(400);
-		expected.setUaluenimi_loppu("Kunta hoitaa");
+		//expected.setTietyyppi_loppu();
+		//expected.setVaylan_luonne_loppu();
+		//expected.setMaakuntakoodi_loppu();
+		//expected.setMaakuntanimi_loppu();
+		//expected.setEly_loppu();
+		//expected.setElynimi_loppu();
+		//expected.setUalue_loppu();
+		//expected.setUaluenimi_loppu();
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
 		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	
-		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);	
+		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);
 	}
 
 }
