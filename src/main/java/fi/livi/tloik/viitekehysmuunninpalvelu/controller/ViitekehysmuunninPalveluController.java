@@ -129,6 +129,7 @@ public class ViitekehysmuunninPalveluController {
     	List<Integer> ajr = request.getParameter("ajorata") != null ? VkmUtil.toIntegerList(request.getParameter("ajorata")) : null;
     	Integer aosa = request.getParameter("osa") != null ? Integer.parseInt(request.getParameter("osa")) : null;
     	Integer aet = request.getParameter("etaisyys") != null ? Integer.parseInt(request.getParameter("etaisyys")) : null;
+    	String lakkautuspvmAsString = request.getParameter("lakkautuspvm");
     	String tilannepvmAsString = request.getParameter("tilannepvm");
     	String kohdepvmAsString = request.getParameter("kohdepvm");
 
@@ -165,7 +166,7 @@ public class ViitekehysmuunninPalveluController {
     	
     	FeatureCollection fc = yleisRajapinta(tunniste, 
 				x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
-				tie, ajr, aosa, aet, tilannepvmAsString, kohdepvmAsString, losa, let, 
+				tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 				link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
 				kuntakoodi, katunimi, katunumero, katunumero_loppu, 
 				vaylan_luonne, tietyyppi, 
@@ -197,6 +198,8 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "ajorata", required = false) List<Integer> ajr,
             @RequestParam(name = "osa", required = false) Integer aosa,
             @RequestParam(name = "etaisyys", required = false) Integer aet,
+            @ApiParam(value = "Muodossa pp.kk.vvvv")
+            @RequestParam(name = "lakkautuspvm", required = false) String lakkautuspvmAsString,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
             @ApiParam(value = "Muodossa pp.kk.vvvv")
@@ -253,7 +256,7 @@ public class ViitekehysmuunninPalveluController {
     			//Tarkistetaan minkä tyyppiset parametrit null
     			boolean koordinaatitNull = (x == null && y == null && x_loppu == null && y_loppu == null && z == null && z_loppu == null && z_vaihtelu == null & sade == null);
     			boolean tieOsoiteNull = (tie == null && ajr == null && aosa == null && aet == null && losa == null && let == null);
-    			boolean pvmNull = (tilannepvmAsString == null && kohdepvmAsString == null);
+    			boolean pvmNull = (lakkautuspvmAsString == null && tilannepvmAsString == null && kohdepvmAsString == null);
     			boolean linkOsoiteNull = (link_id == null && m_arvo == null && link_id_loppu == null && m_arvo_loppu == null);
     			boolean katuOsoiteNull = (kuntakoodi == null && katunimi == null && katunumero == null && katunumero_loppu == null);
     			boolean vaylaTyypitNull = (vaylan_luonne == null && tietyyppi == null);
@@ -268,7 +271,7 @@ public class ViitekehysmuunninPalveluController {
     			if (json == null && !muutKuinJsonNull) {
     				kysely = new InParameters(tunniste, 
     											x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
-    											tie, ajr, aosa, aet, tilannepvmAsString, kohdepvmAsString, losa, let, 
+    											tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
     											link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
     											kuntakoodi, katunimi, katunumero, katunumero_loppu, 
     											vaylan_luonne, tietyyppi, 
@@ -308,6 +311,7 @@ public class ViitekehysmuunninPalveluController {
     						aet = VkmUtil.getJsonInteger(jsonData, "etaisyys");
     						losa = VkmUtil.getJsonInteger(jsonData, "osa_loppu");
     						let = VkmUtil.getJsonInteger(jsonData, "etaisyys_loppu");
+    						lakkautuspvmAsString = VkmUtil.getJsonString(jsonData, "lakkautuspvm");
     						tilannepvmAsString = VkmUtil.getJsonString(jsonData, "tilannepvm");
     						kohdepvmAsString = VkmUtil.getJsonString(jsonData, "kohdepvm");
     						link_id = VkmUtil.getJsonInteger(jsonData, "link_id");
@@ -335,7 +339,7 @@ public class ViitekehysmuunninPalveluController {
     						
     						kysely = new InParameters(tunniste, 
 														x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
-														tie, ajr, aosa, aet, tilannepvmAsString, kohdepvmAsString, losa, let, 
+														tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 														link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
 														kuntakoodi, katunimi, katunumero, katunumero_loppu, 
 														vaylan_luonne, tietyyppi, 
