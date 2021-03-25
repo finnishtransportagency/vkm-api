@@ -97,18 +97,86 @@ public class ViitekehysmuunninPalveluController {
     }
     
     
+//    @RequestMapping(value = "muunna", method = RequestMethod.POST)
+//    @ResponseBody
+//    public FeatureCollection handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
+//    	String json = request.getParameter("json");
+//    	String metadata = request.getParameter("metadata");
+//    	FeatureCollection fc = yleisRajapinta(null,null,null,null,null,null,null,null,null,null,
+//    			null,null,null,null,null,null,null,null,null,null,
+//    			null,null,null,null,null,null,null,null,null,null,
+//    			null,null,json,metadata,null,null,null,null,null);
+//    	return fc;           
+//    }
+   
+    
     @RequestMapping(value = "muunna", method = RequestMethod.POST)
     @ResponseBody
     public FeatureCollection handlePost(HttpServletRequest request) throws VkmVirheException, NamingException, SQLException, IOException {
+    	
+    	String tunniste = request.getParameter("tunniste"); 
+		
+    	Double x = request.getParameter("x") != null ? Double.parseDouble(request.getParameter("x")) : null;
+    	Double y = request.getParameter("y") != null ? Double.parseDouble(request.getParameter("y")) : null;
+    	Double z = request.getParameter("z") != null ? Double.parseDouble(request.getParameter("z")) : null;
+    	Double x_loppu = request.getParameter("x_loppu") != null ? Double.parseDouble(request.getParameter("x_loppu")) : null;
+    	Double y_loppu = request.getParameter("y_loppu") != null ? Double.parseDouble(request.getParameter("y_loppu")) : null;
+    	Double z_loppu = request.getParameter("z_loppu") != null ? Double.parseDouble(request.getParameter("z_loppu")) : null;
+    	Double z_vaihtelu = request.getParameter("z_vaihtelu") != null ? Double.parseDouble(request.getParameter("z_vaihtelu")) : null;
+    	Integer sade = request.getParameter("sade") != null ? Integer.parseInt(request.getParameter("sade")) : null;
+
+    	Integer tie = request.getParameter("tie") != null ? Integer.parseInt(request.getParameter("tie")) : null;
+    	List<Integer> ajr = request.getParameter("ajorata") != null ? VkmUtil.toIntegerList(request.getParameter("ajorata")) : null;
+    	Integer aosa = request.getParameter("osa") != null ? Integer.parseInt(request.getParameter("osa")) : null;
+    	Integer aet = request.getParameter("etaisyys") != null ? Integer.parseInt(request.getParameter("etaisyys")) : null;
+    	String tilannepvmAsString = request.getParameter("tilannepvm");
+    	String kohdepvmAsString = request.getParameter("kohdepvm");
+
+    	Integer losa = request.getParameter("osa_loppu") != null ? Integer.parseInt(request.getParameter("osa_loppu")) : null;
+    	Integer let = request.getParameter("etaisyys_loppu") != null ? Integer.parseInt(request.getParameter("etaisyys_loppu")) : null;
+
+    	Integer link_id = request.getParameter("link_id") != null ? Integer.parseInt(request.getParameter("link_id")) : null;
+    	Double m_arvo = request.getParameter("m_arvo") != null ? Double.parseDouble(request.getParameter("m_arvo")) : null;
+    	Integer link_id_loppu = request.getParameter("link_id_loppu") != null ? Integer.parseInt(request.getParameter("link_id_loppu")) : null;
+    	Double m_arvo_loppu = request.getParameter("m_arvo_loppu") != null ? Double.parseDouble(request.getParameter("m_arvo_loppu")) : null;
+
+    	Integer kuntakoodi = request.getParameter("kuntakoodi") != null ? Integer.parseInt(request.getParameter("kuntakoodi")) : null;
+    	String katunimi = request.getParameter("katunimi");
+    	Integer katunumero = request.getParameter("katunumero") != null ? Integer.parseInt(request.getParameter("katunumero")) : null;
+    	Integer katunumero_loppu = request.getParameter("katunumero_loppu") != null ? Integer.parseInt(request.getParameter("katunumero_loppu")) : null;
+
+    	List<Integer> vaylan_luonne = request.getParameter("vaylan_luonne") != null ? VkmUtil.toIntegerList(request.getParameter("vaylan_luonne")) : null;
+    	List<Integer> tietyyppi = request.getParameter("tietyyppi") != null ? VkmUtil.toIntegerList(request.getParameter("tietyyppi")) : null;
+
+    	Integer ely = request.getParameter("ely") != null ? Integer.parseInt(request.getParameter("ely")) : null;
+    	Integer ualue = request.getParameter("ualue") != null ? Integer.parseInt(request.getParameter("ualue")) : null;
+    	Integer maakuntakoodi = request.getParameter("maakuntakoodi") != null ? Integer.parseInt(request.getParameter("maakuntakoodi")) : null;
+
+    	String valihaku = request.getParameter("valihaku");
+    	List<Integer> palautusarvot = request.getParameter("palautusarvot") != null ? VkmUtil.toIntegerList(request.getParameter("palautusarvot")) : null;
     	String json = request.getParameter("json");
     	String metadata = request.getParameter("metadata");
-    	FeatureCollection fc = yleisRajapinta(null,null,null,null,null,null,null,null,null,null,
-    			null,null,null,null,null,null,null,null,null,null,
-    			null,null,null,null,null,null,null,null,null,null,
-    			null,null,json,metadata,null,null,null,null,null);
+    	   		
+    	List<Integer> ajr2 = request.getParameter("ajr") != null ? VkmUtil.toIntegerList(request.getParameter("ajr")) : null;
+    	Integer aosa2 = request.getParameter("aosa") != null ? Integer.parseInt(request.getParameter("aosa")) : null;
+    	Integer aet2 = request.getParameter("aet") != null ? Integer.parseInt(request.getParameter("aet")) : null;
+    	Integer losa2 = request.getParameter("losa") != null ? Integer.parseInt(request.getParameter("losa")) : null;
+    	Integer let2 = request.getParameter("let") != null ? Integer.parseInt(request.getParameter("let")) : null;
+    	
+    	FeatureCollection fc = yleisRajapinta(tunniste, 
+				x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
+				tie, ajr, aosa, aet, tilannepvmAsString, kohdepvmAsString, losa, let, 
+				link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
+				kuntakoodi, katunimi, katunumero, katunumero_loppu, 
+				vaylan_luonne, tietyyppi, 
+				ely, ualue, maakuntakoodi,
+				valihaku, palautusarvot, json, metadata,
+				ajr2, aosa2, aet2, losa2, let2
+				);
+    	
     	return fc;           
     }
-   
+    
 
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
     public FeatureCollection yleisRajapinta(
@@ -232,7 +300,7 @@ public class ViitekehysmuunninPalveluController {
     						y_loppu = VkmUtil.getJsonDouble(jsonData, "y_loppu");
     						z = VkmUtil.getJsonDouble(jsonData, "z");
     						z_loppu = VkmUtil.getJsonDouble(jsonData, "z_loppu");
-    						z_vaihtelu = VkmUtil.getJsonDouble(jsonData, "z_yla");
+    						z_vaihtelu = VkmUtil.getJsonDouble(jsonData, "z_vaihtelu");
     						sade = VkmUtil.getJsonInteger(jsonData, "sade");
     						tie = VkmUtil.getJsonInteger(jsonData, "tie");
     						ajr =  VkmUtil.getJsonString(jsonData, "ajorata") != null ? VkmUtil.toIntegerList(jsonData.getString("ajorata")) : null;
