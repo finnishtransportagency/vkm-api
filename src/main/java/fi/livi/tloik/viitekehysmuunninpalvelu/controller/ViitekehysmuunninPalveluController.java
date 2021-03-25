@@ -142,6 +142,7 @@ public class ViitekehysmuunninPalveluController {
     	Double m_arvo_loppu = request.getParameter("m_arvo_loppu") != null ? Double.parseDouble(request.getParameter("m_arvo_loppu")) : null;
 
     	Integer kuntakoodi = request.getParameter("kuntakoodi") != null ? Integer.parseInt(request.getParameter("kuntakoodi")) : null;
+    	String kuntanimi = request.getParameter("kuntanimi");
     	String katunimi = request.getParameter("katunimi");
     	Integer katunumero = request.getParameter("katunumero") != null ? Integer.parseInt(request.getParameter("katunumero")) : null;
     	Integer katunumero_loppu = request.getParameter("katunumero_loppu") != null ? Integer.parseInt(request.getParameter("katunumero_loppu")) : null;
@@ -168,7 +169,7 @@ public class ViitekehysmuunninPalveluController {
 				x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
 				tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 				link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
-				kuntakoodi, katunimi, katunumero, katunumero_loppu, 
+				kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
 				vaylan_luonne, tietyyppi, 
 				ely, ualue, maakuntakoodi,
 				valihaku, palautusarvot, json, metadata,
@@ -214,6 +215,7 @@ public class ViitekehysmuunninPalveluController {
             @RequestParam(name = "m_arvo_loppu", required = false) Double m_arvo_loppu,
             
             @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
+            @RequestParam(name = "kuntanimi", required = false) String kuntanimi,
             @RequestParam(name = "katunimi", required = false) String katunimi,
             @RequestParam(name = "katunumero", required = false) Integer katunumero,
             @RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
@@ -273,7 +275,7 @@ public class ViitekehysmuunninPalveluController {
     											x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
     											tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
     											link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
-    											kuntakoodi, katunimi, katunumero, katunumero_loppu, 
+    											kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
     											vaylan_luonne, tietyyppi, 
     											ely, ualue, maakuntakoodi,
     											valihaku, palautusarvot, addMetadata
@@ -319,6 +321,7 @@ public class ViitekehysmuunninPalveluController {
     						link_id_loppu = VkmUtil.getJsonInteger(jsonData, "link_id_loppu");
     						m_arvo_loppu = VkmUtil.getJsonDouble(jsonData, "m_arvo_loppu");
     						kuntakoodi = VkmUtil.getJsonInteger(jsonData, "kuntakoodi");
+    						kuntanimi = VkmUtil.getJsonString(jsonData, "kuntanimi");
     						katunimi = VkmUtil.getJsonString(jsonData, "katunimi");
     						katunumero = VkmUtil.getJsonInteger(jsonData, "katunumero");
     						katunumero_loppu = VkmUtil.getJsonInteger(jsonData, "katunumero_loppu");
@@ -341,7 +344,7 @@ public class ViitekehysmuunninPalveluController {
 														x, y, z, x_loppu, y_loppu, z_loppu, z_vaihtelu, sade, 
 														tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 														link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
-														kuntakoodi, katunimi, katunumero, katunumero_loppu, 
+														kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
 														vaylan_luonne, tietyyppi, 
 														ely, ualue, maakuntakoodi,
 														valihaku, palautusarvot, addMetadata

@@ -26,6 +26,7 @@ public class ResultParameters{
 	public Integer ajorata;
 	public Integer osa;
 	public Integer etaisyys;
+	public String lakkautuspvm;
 	public Integer tie_loppu;
 	public Integer ajorata_loppu;
 	public Integer osa_loppu;
@@ -134,6 +135,10 @@ public class ResultParameters{
 
 	public Integer getAet() {
 		return etaisyys;
+	}
+	
+	public String getlakkPvm() {
+		return lakkautuspvm;
 	}
 
 	public Integer getL_tie() {
@@ -361,6 +366,10 @@ public class ResultParameters{
 		this.tie_loppu = l_tie;
 	}
 
+	public void setLakkPvm(String pvm) {
+		this.lakkautuspvm = pvm;
+	}
+	
 	public void setL_ajr(Integer l_ajr) {
 		this.ajorata_loppu = l_ajr;
 	}
@@ -530,6 +539,7 @@ public class ResultParameters{
 		setAjr(null);
 		setAosa(null);
 		setAet(null);
+		setLakkPvm(null);
 		setL_tie(null);
 		setL_ajr(null);
 		setLosa(null);
@@ -585,6 +595,7 @@ public class ResultParameters{
 		this.ajorata = resultTemp.ajorata;
 		this.osa = resultTemp.osa;
 		this.etaisyys = resultTemp.etaisyys;
+		this.lakkautuspvm = resultTemp.lakkautuspvm;
 		this.tie_loppu = resultTemp.tie_loppu;
 		this.ajorata_loppu = resultTemp.ajorata_loppu;
 		this.osa_loppu = resultTemp.osa_loppu;
@@ -645,6 +656,7 @@ public class ResultParameters{
 			//q.addToQuery("ajorata", "");
 			//q.addToQuery("osa", "");
 			//q.addToQuery("etaisyys", "");
+			//q.addToQuery("lakkautuspvm", "");
 			//q.addToQuery("tilannepvm", "");
 			//q.addToQuery("kohdepvm", "");
 			//q.addToQuery("link_id", "");
@@ -689,6 +701,7 @@ public class ResultParameters{
 			//expected.setAjr();
 			//expected.setAosa();
 			//expected.setAet();
+			//expected.setLakkPvm();
 			//expected.setLink_id();
 			//expected.setM_arvo();
 			//expected.setKuntakoodi();

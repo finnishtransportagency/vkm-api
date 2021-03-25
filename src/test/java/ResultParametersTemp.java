@@ -20,6 +20,7 @@ public class ResultParametersTemp{
 	public Integer ajorata;
 	public Integer osa;
 	public Integer etaisyys;
+	public String lakkautuspvm;
 	public Integer tie_loppu;
 	public Integer ajorata_loppu;
 	public Integer osa_loppu;
@@ -118,6 +119,10 @@ public class ResultParametersTemp{
 		return etaisyys;
 	}
 
+	public String getLakkPvm() {
+		return lakkautuspvm;
+	}
+	
 	public Integer getL_tie() {
 		return tie_loppu;
 	}
@@ -317,6 +322,10 @@ public class ResultParametersTemp{
 		this.etaisyys = aet;
 	}
 
+	public void setLakkPvm(String pvm) {
+		this.lakkautuspvm = pvm;
+	}
+	
 	public void setL_tie(Integer l_tie) {
 		this.tie_loppu = l_tie;
 	}
@@ -479,6 +488,7 @@ public class ResultParametersTemp{
 		setAjr(null);
 		setAosa(null);
 		setAet(null);
+		setLakkPvm(null);
 		setL_tie(null);
 		setL_ajr(null);
 		setLosa(null);
