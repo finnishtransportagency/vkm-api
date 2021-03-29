@@ -58,7 +58,7 @@ public class ViitekehysmuunninPalveluController {
     
     private boolean addMetadata = false;
     
-    public static final String API_VERSION = "1.0.0";
+    public static final String API_VERSION = "4.0.1";
     
     // Comment for build nr 0006
     
