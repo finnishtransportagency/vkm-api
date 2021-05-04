@@ -115,6 +115,11 @@ public class TestLinearLocation {
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
 		
+		expected.setKuntanimi_se("Helsingfors");
+		expected.setMaakuntanimi_se("Nyland");
+		//expected.setKuntanimi_se_loppu("");
+		//expected.setMaakuntanimi_se_loppu("");
+		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	
 		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);	
@@ -225,6 +230,11 @@ public class TestLinearLocation {
 		expected.setUaluenimi_loppu("Kunta hoitaa");
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
+		
+		expected.setKuntanimi_se("Helsingfors");
+		expected.setMaakuntanimi_se("Nyland");
+		expected.setKuntanimi_se_loppu("Helsingfors");
+		expected.setMaakuntanimi_se_loppu("Nyland");
 		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	

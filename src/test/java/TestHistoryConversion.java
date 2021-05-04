@@ -114,6 +114,11 @@ public class TestHistoryConversion {
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
 		
+		expected.setKuntanimi_se("Limingo");
+		expected.setMaakuntanimi_se("Norra Österbotten");
+		//expected.setKuntanimi_se_loppu("");
+		//expected.setMaakuntanimi_se_loppu("");
+		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	
 		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);
@@ -224,6 +229,11 @@ public class TestHistoryConversion {
 		expected.setUaluenimi_loppu("Oulu 17-22");
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
+		
+		expected.setKuntanimi_se("Limingo");
+		expected.setMaakuntanimi_se("Norra Österbotten");
+		expected.setKuntanimi_se_loppu("Limingo");
+		expected.setMaakuntanimi_se_loppu("Norra Österbotten");
 		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	

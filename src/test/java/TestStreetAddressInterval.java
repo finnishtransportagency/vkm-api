@@ -115,6 +115,11 @@ public class TestStreetAddressInterval {
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
 		
+		expected.setKuntanimi_se("Tammerfors");
+		expected.setMaakuntanimi_se("Birkaland");
+		expected.setKuntanimi_se_loppu("Tammerfors");
+		expected.setMaakuntanimi_se_loppu("Birkaland");
+		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	
 		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);

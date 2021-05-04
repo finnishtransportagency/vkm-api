@@ -37,6 +37,7 @@ public class ResultParameters{
 	public Double m_arvo_loppu;
 	public Integer kuntakoodi;
 	public String kuntanimi;
+	public String kuntanimi_se;
 	public String katunimi;
 	public String katunimi_se;
 	public Integer katunumero;
@@ -53,12 +54,15 @@ public class ResultParameters{
 	public String elynimi;
 	public Integer maakuntakoodi;
 	public String maakuntanimi;
+	public String maakuntanimi_se;
 	public Integer ualue;	
 	public String ualuenimi;
 	public Integer kuntakoodi_loppu;
 	public String kuntanimi_loppu;
+	public String kuntanimi_se_loppu;
 	public Integer maakuntakoodi_loppu;
 	public String maakuntanimi_loppu;
+	public String maakuntanimi_se_loppu;
 	public Integer ely_loppu;
 	public String elynimi_loppu;
 	public Integer ualue_loppu;
@@ -180,6 +184,10 @@ public class ResultParameters{
 	public String getKuntanimi() {
 		return kuntanimi;
 	}
+	
+	public String getKuntanimi_se() {
+		return kuntanimi_se;
+	}
 
 	public String getKatunimi() {
 		return katunimi;
@@ -244,6 +252,10 @@ public class ResultParameters{
 	public String getMaakuntanimi() {
 		return maakuntanimi;
 	}
+	
+	public String getMaakuntanimi_se() {
+		return maakuntanimi_se;
+	}
 
 	public Integer getUalue() {
 		return ualue;
@@ -260,6 +272,10 @@ public class ResultParameters{
 	public String getKuntanimi_loppu() {
 		return kuntanimi_loppu;
 	}
+	
+	public String getKuntanimi_se_loppu() {
+		return kuntanimi_se_loppu;
+	}
 
 	public Integer getMaakuntakoodi_loppu() {
 		return maakuntakoodi_loppu;
@@ -267,6 +283,10 @@ public class ResultParameters{
 
 	public String getMaakuntanimi_loppu() {
 		return maakuntanimi_loppu;
+	}
+	
+	public String getMaakuntanimi_se_loppu() {
+		return maakuntanimi_se_loppu;
 	}
 
 	public Integer getEly_loppu() {
@@ -405,6 +425,10 @@ public class ResultParameters{
 	public void setKuntanimi(String kuntanimi) {
 		this.kuntanimi = kuntanimi;
 	}
+	
+	public void setKuntanimi_se(String kuntanimi) {
+		this.kuntanimi_se = kuntanimi;
+	}
 
 	public void setKatunimi(String katunimi) {
 		this.katunimi = katunimi;
@@ -469,6 +493,10 @@ public class ResultParameters{
 	public void setMaakuntanimi(String maakuntanimi) {
 		this.maakuntanimi = maakuntanimi;
 	}
+	
+	public void setMaakuntanimi_se(String maakuntanimi) {
+		this.maakuntanimi_se = maakuntanimi;
+	}
 
 	public void setUalue(Integer ualue) {
 		this.ualue = ualue;
@@ -485,7 +513,11 @@ public class ResultParameters{
 	public void setKuntanimi_loppu(String kuntanimi_loppu) {
 		this.kuntanimi_loppu = kuntanimi_loppu;
 	}
-		
+	
+	public void setKuntanimi_se_loppu(String kuntanimi_loppu) {
+		this.kuntanimi_se_loppu = kuntanimi_loppu;
+	}
+	
 	//Huom. myös maakuntakoodi_loppu palautuu geocodessa merkkinä
 	public void setMaakuntakoodi_loppu(Integer maakuntakoodi_loppu) {
 		this.maakuntakoodi_loppu = maakuntakoodi_loppu;
@@ -493,6 +525,10 @@ public class ResultParameters{
 
 	public void setMaakuntanimi_loppu(String maakuntanimi_loppu) {
 		this.maakuntanimi_loppu = maakuntanimi_loppu;
+	}
+	
+	public void setMaakuntanimi_se_loppu(String maakuntanimi_loppu) {
+		this.maakuntanimi_se_loppu = maakuntanimi_loppu;
 	}
 
 	public void setEly_loppu(Integer ely_loppu) {
@@ -550,6 +586,7 @@ public class ResultParameters{
 		setM_arvo_loppu(null);
 		setKuntakoodi(null);
 		setKuntanimi(null);
+		setKuntanimi_se(null);
 		setKatunimi(null);
 		setKatunimi_se(null);
 		setKatunumero(null);
@@ -566,12 +603,15 @@ public class ResultParameters{
 		setElynimi(null);
 		setMaakuntakoodi(null);
 		setMaakuntanimi(null);
+		setMaakuntanimi_se(null);
 		setUalue(null);
 		setUaluenimi(null);
 		setKuntakoodi_loppu(null);
 		setKuntanimi_loppu(null);
+		setKuntanimi_se_loppu(null);
 		setMaakuntakoodi_loppu(null);
 		setMaakuntanimi_loppu(null);
+		setMaakuntanimi_se_loppu(null);
 		setEly_loppu(null);
 		setElynimi_loppu(null);
 		setUalue_loppu(null);
@@ -606,6 +646,7 @@ public class ResultParameters{
 		this.m_arvo_loppu = resultTemp.m_arvo_loppu;
 		this.kuntakoodi = resultTemp.kuntakoodi;
 		this.kuntanimi = resultTemp.kuntanimi;
+		this.kuntanimi_se = resultTemp.kuntanimi_se;
 		this.katunimi = resultTemp.katunimi;
 		this.katunimi_se = resultTemp.katunimi_se;
 		this.katunumero = resultTemp.katunumero;
@@ -622,12 +663,15 @@ public class ResultParameters{
 		this.elynimi = resultTemp.elynimi;
 		this.maakuntakoodi = resultTemp.maakuntakoodi;
 		this.maakuntanimi = resultTemp.maakuntanimi;
+		this.maakuntanimi_se = resultTemp.maakuntanimi_se;
 		this.ualue = resultTemp.ualue;
 		this.ualuenimi = resultTemp.ualuenimi;
 		this.kuntakoodi_loppu = resultTemp.kuntakoodi_loppu;
 		this.kuntanimi_loppu = resultTemp.kuntanimi_loppu;
+		this.kuntanimi_se_loppu = resultTemp.kuntanimi_se_loppu;
 		this.maakuntakoodi_loppu = resultTemp.maakuntakoodi_loppu;
 		this.maakuntanimi_loppu = resultTemp.maakuntanimi_loppu;
+		this.maakuntanimi_se_loppu = resultTemp.maakuntanimi_se_loppu;
 		this.ely_loppu = resultTemp.ely_loppu;
 		this.elynimi_loppu = resultTemp.elynimi_loppu;
 		this.ualue_loppu = resultTemp.ualue_loppu;

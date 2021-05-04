@@ -115,6 +115,11 @@ public class TestJson {
 		//expected.setVirheet();
 		//expected.setFeatureCollectionMetadata();
 		
+		expected.setKuntanimi_se("Helsingfors");
+		expected.setMaakuntanimi_se("Nyland");
+		//expected.setKuntanimi_se_loppu("");
+		//expected.setMaakuntanimi_se_loppu("");
+		
 		// VERRATAAN KYSELYN TULOSTA ODOTETTUUN TULOKSEEN
 	
 		assertThat(testInfo.result).isEqualToComparingFieldByField(expected);

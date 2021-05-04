@@ -58,7 +58,7 @@ public class ViitekehysmuunninPalveluController {
     
     private boolean addMetadata = false;
     
-    public static final String API_VERSION = "4.0.2";
+    public static final String API_VERSION = "4.0.3";
     
     // Comment for build nr 0006
     
@@ -260,7 +260,7 @@ public class ViitekehysmuunninPalveluController {
     			boolean tieOsoiteNull = (tie == null && ajr == null && aosa == null && aet == null && losa == null && let == null);
     			boolean pvmNull = (lakkautuspvmAsString == null && tilannepvmAsString == null && kohdepvmAsString == null);
     			boolean linkOsoiteNull = (link_id == null && m_arvo == null && link_id_loppu == null && m_arvo_loppu == null);
-    			boolean katuOsoiteNull = (kuntakoodi == null && katunimi == null && katunumero == null && katunumero_loppu == null);
+    			boolean katuOsoiteNull = (kuntakoodi == null && kuntanimi== null && katunimi == null && katunumero == null && katunumero_loppu == null);
     			boolean vaylaTyypitNull = (vaylan_luonne == null && tietyyppi == null);
     			boolean alueetNull = (ely == null && ualue == null && maakuntakoodi == null);
     			boolean metaParametritNull = (valihaku == null && tunniste == null && palautusarvot == null);
