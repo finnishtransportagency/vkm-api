@@ -22,8 +22,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	
 	private String contactOperator = "viitekehysmuunnin@vayla.fi";
-	private String rajapintaKuvaus = "<a href=\"/viitekehysmuunnin/rajapintakuvaus\">Rajapintakuvaus (pdf)</a>";
-	private String tayttoOhje = "Parametrilomakkeen avaaminen: klikkaa ensin tekstiä <i>viitekehysmuunnin-palvelu-controller</i>, sitten laatikkoa <i>GET /muunna</i> ja sitten pikkulaatikkoa <i>Try it out</i>";
+	private String rajapintaKuvaus = "<a href=\"/viitekehysmuunnin/rajapintakuvaus\">Rajapintakuvaus (pdf), lokakuu 2020</a>";
+	private String muutoksetLatest = "<a href=\"/viitekehysmuunnin/muutokset-latest\">Kuvaus toimintojen laajennuksista rajapintakuvauksen jälkeen (pdf), toukokuu 2021</a>";
+	private String tayttoOhje = "<b>Parametrilomakkeen avaaminen:</b><ul><li>klikkaa ensin tekstiä <i>viitekehysmuunnin-palvelu-controller</i></li><li>klikkaa laatikkoa <i>GET /muunna</i></li><li>klikkaa pikkulaatikkoa <i>Try it out</i></li></ul>";
 	
     @Bean
     public Docket productApi() {
@@ -46,7 +47,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("VIITEKEHYSMUUNNIN")
                 .version("uusi")
-                .description("Tuki: " + contactOperator + "<br/><br/>" + rajapintaKuvaus + "<br/><br/>" + tayttoOhje)
+                .description("Tuki: " + contactOperator + "<br/><br/>" + rajapintaKuvaus + "<br/><br/>" + muutoksetLatest + "<br/><br/><br/>" + tayttoOhje)
                 .build();
         }
 
