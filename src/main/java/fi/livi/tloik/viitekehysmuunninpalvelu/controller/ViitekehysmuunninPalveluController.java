@@ -67,7 +67,7 @@ public class ViitekehysmuunninPalveluController {
     
     public static final String API_VERSION = "4.0.5";
     
-    // Comment for build nr 0006
+    // Comment for build nr 00099
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
 	@ResponseBody
