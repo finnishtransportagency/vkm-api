@@ -3,6 +3,7 @@ package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.annotation.Target;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,13 @@ import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.geoJsonWrapper;
 import fi.livi.vkm.service.ViitekehysmuunninNGPalvelu;
 import fi.livi.vkm.util.VkmUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 
@@ -58,10 +65,9 @@ public class ViitekehysmuunninPalveluController {
     
     private boolean addMetadata = false;
     
-    public static final String API_VERSION = "4.0.4";
+    public static final String API_VERSION = "4.0.5";
     
     // Comment for build nr 0006
-    
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
 	@ResponseBody
@@ -179,60 +185,96 @@ public class ViitekehysmuunninPalveluController {
     	return fc;           
     }
     
-
     @RequestMapping(value = "muunna", method= RequestMethod.GET)
     public FeatureCollection yleisRajapinta(
 
-    		@RequestParam(name = "tunniste", required = false) String tunniste, 
-    		
+    		@ApiParam(value = "Tekstimuotoinen, vapaamuotoinen tunniste, joka palautuu jokaisessa kyselyyn liittyvässä featuressa")
+    		@RequestParam(name = "tunniste", required = false) String tunniste,
+
+    		@ApiParam(value = "X-koordinaatti eli itäkoordinaatti")
     		@RequestParam(name = "x", required = false) Double x,
+    		@ApiParam(value = "Y-koordinaatti eli pohjoiskoordinaatti")
             @RequestParam(name = "y", required = false) Double y,
+            @ApiParam(value = "Z-koordinaatti eli korkeusarvo")
             @RequestParam(name = "z", required = false) Double z,
+            @ApiParam(value = "Loppupisteen x-koordinaatti")
             @RequestParam(name = "x_loppu", required = false) Double x_loppu,
+            @ApiParam(value = "Loppupisteen y-koordinaatti")
             @RequestParam(name = "y_loppu", required = false) Double y_loppu,
+            @ApiParam(value = "Loppupisteen z-koordinaatti")
             @RequestParam(name = "z_loppu", required = false) Double z_loppu,
+            @ApiParam(value = "Vaihteluväli, jonka sisältä etsitään korkeusarvoja")
             @RequestParam(name = "z_vaihtelu", required = false) Double z_vaihtelu,
-            @ApiParam(value = "Oletusarvo 100")
+            @ApiParam(value = "Säde xy(z)-koordinaateista, jonka sisältä etsitään sijainteja. Oletusarvo 100 (m)")
             @RequestParam(name = "sade", required = false) Integer sade,
             
+            @ApiParam(value = "Tienumero")
             @RequestParam(name = "tie", required = false) Integer tie,
+            @ApiParam(value = "Ajoratanumero. Oletus 0, 1 ja 2. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
             @RequestParam(name = "ajorata", required = false) List<Integer> ajr,
+            @ApiParam(value = "Tieosanumero")
             @RequestParam(name = "osa", required = false) Integer aosa,
+            @ApiParam(value = "Etäisyysarvo tieosalla")
             @RequestParam(name = "etaisyys", required = false) Integer aet,
-            @ApiParam(value = "Muodossa pp.kk.vvvv")
+            @ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv. Oletuksena kuluva päivä")
+            //@ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv")
             @RequestParam(name = "lakkautuspvm", required = false) String lakkautuspvmAsString,
-            @ApiParam(value = "Muodossa pp.kk.vvvv")
+            @ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv. Oletuksena kuluva päivä")
+            //@ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv. Oletuksena kuluva päivä.")
             @RequestParam(name = "tilannepvm", required = false) String tilannepvmAsString,
-            @ApiParam(value = "Muodossa pp.kk.vvvv")
+            @ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv. Oletuksena kuluva päivä")
+            //@ApiParam(value = "Muodossa pp.kk.vvvv tai p.k.vvvv. Oletuksena kuluva päivä.")
             @RequestParam(name = "kohdepvm", required = false) String kohdepvmAsString,
 
+            @ApiParam(value = "Loppupisteen tieosanumero")
             @RequestParam(name = "osa_loppu", required = false) Integer losa,
+            @ApiParam(value = "Etäisyysarvo loppupisteen tieosalla")
             @RequestParam(name = "etaisyys_loppu", required = false) Integer let,
             
+            @ApiParam(value = "Tielinkin numerotunnus")
             @RequestParam(name = "link_id", required = false) Integer link_id,
+            @ApiParam(value = "M-arvo tielinkillä")
             @RequestParam(name = "m_arvo", required = false) Double m_arvo,
+            @ApiParam(value = "Loppupisteen tielinkin numerotunnus")
             @RequestParam(name = "link_id_loppu", required = false) Integer link_id_loppu,
+            @ApiParam(value = "M-arvo loppupisteen tielinkillä")
             @RequestParam(name = "m_arvo_loppu", required = false) Double m_arvo_loppu,
             
+            @ApiParam(value = "Kunnan numerokoodi")
             @RequestParam(name = "kuntakoodi", required = false) Integer kuntakoodi,
+            @ApiParam(value = "Kunnan nimi suomeksi tai ruotsiksi")
+            //@ApiParam(value = "Suomeksi tai ruotsiksi")
             @RequestParam(name = "kuntanimi", required = false) String kuntanimi,
+            @ApiParam(value = "Kadun nimi suomeksi tai ruotsiksi. Nimen voi katkaista asteriskilla * (esimerkiksi Hämeen*)")
+            //@ApiParam(value = "Suomeksi tai ruotsiksi")
             @RequestParam(name = "katunimi", required = false) String katunimi,
+            @ApiParam(value = "Katunumero")
             @RequestParam(name = "katunumero", required = false) Integer katunumero,
+            @ApiParam(value = "Loppupisteen katunumero")
             @RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
             
+            @ApiParam(value = "Väylän luonteen numerokoodi. Oletuksena haetaan kaikilla väylän luonteilla. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
+            @ApiParam(value = "Tietyypin numerokoodi. Oletuksena haetaan kaikilla tietyypeillä. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
             @RequestParam(name = "tietyyppi", required = false) List<Integer> tietyyppi,
             
+            @ApiParam(value = "Elyn numerokoodi", allowMultiple = true)
             @RequestParam(name = "ely", required = false) Integer ely,
+            @ApiParam(value = "Urakka-alueen numerokoodi")
             @RequestParam(name = "ualue", required = false) Integer ualue,
+            @ApiParam(value = "Maakunnan numerokoodi")
             @RequestParam(name = "maakuntakoodi", required = false) Integer maakuntakoodi,
             
-            @ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku. Oletus 'false'.")
+            @ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku. Oletus 'false'")
+            //@ApiParam(value = "Arvolla 'false' pistemäinen haku, arvolla 'true' viivamainen haku. Oletus 'false'.")
             @RequestParam(name = "valihaku", required = false) String valihaku,
-            @ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=viivageometria, 6=lineaarilokaatio")
+            @ApiParam(value = "Palautukseen halutut tiedot: 1=xyz-arvot, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=geometria, 6=lineaarilokaatio. Oletuksena 1, 2, 3 ja 4. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
+            //@ApiParam(value = "1=pistekoordinaatti, 2=tieosoite, 3=katuosoite, 4=aluetiedot, 5=geometria, 6=lineaarilokaatio")
             @RequestParam(name = "palautusarvot", required = false) List<Integer> palautusarvot,
+            @ApiParam(value = "Json, joka sisältää yhden tai useamman kyselyn. Json-parametrin lisäksi voi antaa vain metadata-parametrin. Muut parametrit sisältyvät json:iin")
     		@RequestParam(name = "json", required = false) String json,
-    		@ApiParam(value = "Vain json-parametria käytettäessä. Arvolla 'true' antaa FeatureCollectionin metatiedot. Oletus 'false'.")
+    		@ApiParam(value = "Arvolla 'true' antaa FeatureCollectionin metatiedot, kuten virhetiedot kootusti. Oletus 'false'")
+    		//@ApiParam(value = "Arvolla 'true' antaa FeatureCollectionin metatiedot. Oletus 'false'.")
             @RequestParam(name = "metadata", required = false) String metadata,
     		
     		// Aliakset tietyille in-parametreille
