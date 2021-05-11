@@ -34,13 +34,13 @@
    <dependency>
        <groupId>org.geotools</groupId>
        <artifactId>gt-main</artifactId>
-       <version>17.0</version>
+       <version>19.2</version>
    </dependency>
    <!-- https://mvnrepository.com/artifact/org.geotools/gt-api -->
     <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-api</artifactId>
-        <version>17.0</version>
+        <version>19.2</version>
     </dependency>
 
     <dependency>
