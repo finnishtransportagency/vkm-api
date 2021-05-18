@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -92,6 +93,7 @@ public class RequestResponse {
 	
 	private ResultParameters getResult(String json, ResultParameters result) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
+		//mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		ResultParametersTemp resultTemp = new ResultParametersTemp();
 		resultTemp = mapper.readValue(json, ResultParametersTemp.class);
 		result.mapBasicProperties(resultTemp);

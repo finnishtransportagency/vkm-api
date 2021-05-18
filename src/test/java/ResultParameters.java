@@ -676,6 +676,7 @@ public class ResultParameters{
 		this.elynimi_loppu = resultTemp.elynimi_loppu;
 		this.ualue_loppu = resultTemp.ualue_loppu;
 		this.ualuenimi_loppu = resultTemp.ualuenimi_loppu;
+		//this.featurecollection_metadata = resultTemp.featurecollection_metadata;
 	}
     
 }

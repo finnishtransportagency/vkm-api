@@ -1,11 +1,14 @@
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 public class ResultParametersTemp{
 
+	@JsonIgnore
+	public String featurecollection_metadata;
 	
 	public String tunniste;
 	public Double x;
@@ -61,7 +64,6 @@ public class ResultParametersTemp{
 	public String elynimi_loppu;
 	public Integer ualue_loppu;
 	public String ualuenimi_loppu;
-	
 	
 	//Constructor
     public ResultParametersTemp() throws JsonParseException, JsonMappingException, IOException {
@@ -287,6 +289,10 @@ public class ResultParametersTemp{
 		return ualuenimi_loppu;
 	}
 	
+	public String getFeatureCollectionMetadata() {
+		return featurecollection_metadata;
+	}
+	
 	
 	//Setters
 	
@@ -507,6 +513,9 @@ public class ResultParametersTemp{
 		this.ualuenimi_loppu = ualuenimi_loppu;
 	}
 	
+	public void setFeatureCollectionMetadata(String metadata) {
+		this.featurecollection_metadata = metadata;
+	}
 	
 	//Other methods
 	
@@ -565,6 +574,7 @@ public class ResultParametersTemp{
 		setElynimi_loppu(null);
 		setUalue_loppu(null);
 		setUaluenimi_loppu(null);
+		setFeatureCollectionMetadata(null);
 	}
     
 }
