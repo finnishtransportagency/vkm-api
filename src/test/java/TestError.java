@@ -9,7 +9,7 @@ public class TestError {
 	
 	//String BaseUrl = "http://localhost:8889/vkm-api/tieosoitevali/";
 	//String BaseUrl = "http://localhost:8889/viitekehysmuunnin/muunna";
-	String BaseUrl = "https://testijulkinen.vayla.fi/viitekehysmuunnin/muunna";
+	String BaseUrl = "https://julkinen.vayla.fi/viitekehysmuunnin/muunna";
 	
 	@Test
 	public void testBasicError() throws IOException {

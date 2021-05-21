@@ -10,7 +10,7 @@ public class TestRunner {
 
 	public static void main(String[] args) throws InterruptedException {
 	int min = 1;
-	int max = 1000;
+	int max = 2500;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	for (int i=min; i<=max; i++) {
 		
@@ -35,7 +35,7 @@ public class TestRunner {
 		}
 		else if (i % 10 == 0)
 			System.out.println(i);
-		//TimeUnit.SECONDS.sleep(10);
+		TimeUnit.MILLISECONDS.sleep(100);
 	}
 		
 	}
