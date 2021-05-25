@@ -1,14 +1,14 @@
 package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.annotation.Target;
+//import java.lang.annotation.Target;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+//import java.util.Map;
+//import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,15 +38,15 @@ import fi.livi.vkm.dto.InParameters;
 import fi.livi.vkm.IViitekehysmuunnin;
 import fi.livi.vkm.VkmVirheException;
 import fi.livi.vkm.dto.geoJsonWrapper;
-import fi.livi.vkm.service.ViitekehysmuunninNGPalvelu;
+//import fi.livi.vkm.service.ViitekehysmuunninNGPalvelu;
 import fi.livi.vkm.util.VkmUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiImplicitParam;
+//import io.swagger.annotations.ApiModel;
+//import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.Tag;
+//import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 
