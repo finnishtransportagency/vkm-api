@@ -5,7 +5,7 @@
 
   <groupId>fi.livi.ptp</groupId>
   <artifactId>vkm-api</artifactId>
-  <version>0.3.9</version>
+  <version>0.4.1</version>
   <packaging>jar</packaging>
 
   <name>vkm-api</name>
