@@ -174,6 +174,7 @@ public class ViitekehysmuunninPalveluController {
     	Integer katunumero_loppu = request.getParameter("katunumero_loppu") != null ? Integer.parseInt(request.getParameter("katunumero_loppu")) : null;
 
     	List<Integer> vaylan_luonne = request.getParameter("vaylan_luonne") != null ? VkmUtil.toIntegerList(request.getParameter("vaylan_luonne")) : null;
+    	List<Integer> hallinnollinen_luokka = request.getParameter("hallinnollinen_luokka") != null ? VkmUtil.toIntegerList(request.getParameter("vaylan_luonne")) : null;
     	List<Integer> tietyyppi = request.getParameter("tietyyppi") != null ? VkmUtil.toIntegerList(request.getParameter("tietyyppi")) : null;
 
     	Integer ely = request.getParameter("ely") != null ? Integer.parseInt(request.getParameter("ely")) : null;
@@ -196,7 +197,7 @@ public class ViitekehysmuunninPalveluController {
 				tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 				link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
 				kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
-				vaylan_luonne, tietyyppi, 
+				vaylan_luonne, hallinnollinen_luokka, tietyyppi, 
 				ely, ualue, maakuntakoodi,
 				valihaku, palautusarvot, json, metadata,
 				ajr2, aosa2, aet2, losa2, let2
@@ -273,9 +274,11 @@ public class ViitekehysmuunninPalveluController {
             @ApiParam(value = "Loppupisteen katunumero")
             @RequestParam(name = "katunumero_loppu", required = false) Integer katunumero_loppu,
             
-            @ApiParam(value = "Väylän luonteen numerokoodi. Oletuksena haetaan kaikilla väylän luonteilla. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
+            @ApiParam(value = "Väylän luonteen numerokoodi. Anna halutessasi arvot (paina 'Add item' jokaiselle uudelle arvolle)")
             @RequestParam(name = "vaylan_luonne", required = false) List<Integer> vaylan_luonne,
-            @ApiParam(value = "Tietyypin numerokoodi. Oletuksena haetaan kaikilla tietyypeillä. Anna halutessasi uudet arvot (paina 'Add item' jokaiselle uudelle arvolle)")
+            @ApiParam(value = "Hallinnollisen luokan numerokoodi. Anna halutessasi arvot (paina 'Add item' jokaiselle uudelle arvolle)")
+            @RequestParam(name = "hallinnollinen_luokka", required = false) List<Integer> hallinnollinen_luokka,
+            @ApiParam(value = "Tietyypin numerokoodi. Anna halutessasi arvot (paina 'Add item' jokaiselle uudelle arvolle)")
             @RequestParam(name = "tietyyppi", required = false) List<Integer> tietyyppi,
             
             @ApiParam(value = "Elyn numerokoodi", allowMultiple = true)
@@ -323,7 +326,7 @@ public class ViitekehysmuunninPalveluController {
     			boolean pvmNull = (lakkautuspvmAsString == null && tilannepvmAsString == null && kohdepvmAsString == null);
     			boolean linkOsoiteNull = (link_id == null && m_arvo == null && link_id_loppu == null && m_arvo_loppu == null);
     			boolean katuOsoiteNull = (kuntakoodi == null && kuntanimi== null && katunimi == null && katunumero == null && katunumero_loppu == null);
-    			boolean vaylaTyypitNull = (vaylan_luonne == null && tietyyppi == null);
+    			boolean vaylaTyypitNull = (vaylan_luonne == null && hallinnollinen_luokka == null && tietyyppi == null);
     			boolean alueetNull = (ely == null && ualue == null && maakuntakoodi == null);
     			boolean metaParametritNull = (valihaku == null && tunniste == null && palautusarvot == null);
     			boolean muutKuinJsonNull = (koordinaatitNull && tieOsoiteNull && pvmNull && linkOsoiteNull && katuOsoiteNull && vaylaTyypitNull && alueetNull && metaParametritNull);
@@ -338,7 +341,7 @@ public class ViitekehysmuunninPalveluController {
     											tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
     											link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
     											kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
-    											vaylan_luonne, tietyyppi, 
+    											vaylan_luonne, hallinnollinen_luokka, tietyyppi, 
     											ely, ualue, maakuntakoodi,
     											valihaku, palautusarvot, addMetadata
     											);
@@ -388,6 +391,7 @@ public class ViitekehysmuunninPalveluController {
     						katunumero = VkmUtil.getJsonInteger(jsonData, "katunumero");
     						katunumero_loppu = VkmUtil.getJsonInteger(jsonData, "katunumero_loppu");
     						vaylan_luonne = VkmUtil.getJsonString(jsonData, "vaylan_luonne") != null ? VkmUtil.toIntegerList(jsonData.getString("vaylan_luonne")) : null;
+    						hallinnollinen_luokka = VkmUtil.getJsonString(jsonData, "hallinnollinen_luokka") != null ? VkmUtil.toIntegerList(jsonData.getString("hallinnollinen_luokka")) : null;
     						tietyyppi =  VkmUtil.getJsonString(jsonData, "tietyyppi") != null ? VkmUtil.toIntegerList(jsonData.getString("tietyyppi")) : null;
     						ely = VkmUtil.getJsonInteger(jsonData, "ely");
     						ualue = VkmUtil.getJsonInteger(jsonData, "ualue");
@@ -407,7 +411,7 @@ public class ViitekehysmuunninPalveluController {
 														tie, ajr, aosa, aet, lakkautuspvmAsString, tilannepvmAsString, kohdepvmAsString, losa, let, 
 														link_id, m_arvo, link_id_loppu, m_arvo_loppu, 
 														kuntakoodi, kuntanimi, katunimi, katunumero, katunumero_loppu, 
-														vaylan_luonne, tietyyppi, 
+														vaylan_luonne, hallinnollinen_luokka, tietyyppi, 
 														ely, ualue, maakuntakoodi,
 														valihaku, palautusarvot, addMetadata
 														);
