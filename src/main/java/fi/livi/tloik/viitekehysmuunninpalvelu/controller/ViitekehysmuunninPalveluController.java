@@ -76,6 +76,26 @@ public class ViitekehysmuunninPalveluController {
 	}
     
     
+    @RequestMapping(value = "tiedote", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getMuutostiedote()
+            throws IOException {
+
+        ClassPathResource pdfFile = new ClassPathResource("vkm-muutostiedote-avoindata.pdf");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(pdfFile.contentLength())
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(new InputStreamResource(pdfFile.getInputStream()));
+    }
+    
+    
     @RequestMapping(value = "rajapintakuvaus", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> getRajapintakuvaus()
             throws IOException {
