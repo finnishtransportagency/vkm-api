@@ -67,6 +67,12 @@ public class ViitekehysmuunninPalveluController {
     
     public static final String API_VERSION = "4.1.7";
     
+    private static final Integer MAX_PISTEMAISIA = 1000;
+    
+    private static final Integer MAX_VIIVAMAISIA = 100;
+    
+    //private static final Long MAX_VASTAUSKOKO = 10485760L;
+    
     // Comment for build
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
@@ -369,8 +375,11 @@ public class ViitekehysmuunninPalveluController {
     			}
     			//Kyseessä muunnos json-parametrin kautta
     			else if (json != null && muutKuinJsonNull){
+    				json = replaceJsonWithTestJson(json, 1100, true); //For testing, normally commented
     				JSONArray jsonKysely;
     				JSONObject jsonData;
+    				int pistemaisia = 0;
+    				int viivamaisia = 0;
     				try {
     					jsonKysely = new JSONArray(json);
     				}
@@ -378,6 +387,9 @@ public class ViitekehysmuunninPalveluController {
     					throw new JSONException("Virhe json-parametrissa: "+ e.getMessage());
     				}
     				if (jsonKysely != null ) {
+    					
+    					if (jsonKysely.length() > MAX_PISTEMAISIA + MAX_VIIVAMAISIA)
+    						throw new JSONException("Kyselyssä liikaa muunnoksia. Kyselyssä voi olla korkeintaan 1000 pistemäistä ja 100 viivamaista muunnosta.");
     					
     					for (int i = 0; i < jsonKysely.length(); i++) {
     						jsonData = jsonKysely.getJSONObject(i);
@@ -417,6 +429,12 @@ public class ViitekehysmuunninPalveluController {
     						ualue = VkmUtil.getJsonInteger(jsonData, "ualue");
     						maakuntakoodi = VkmUtil.getJsonInteger(jsonData, "maakuntakoodi");
     						valihaku = VkmUtil.getJsonString(jsonData, "valihaku");
+    							if (valihaku != null && valihaku.trim().toUpperCase().equals("TRUE"))
+    								viivamaisia += 1;
+    							else
+    								pistemaisia += 1;
+    							if (pistemaisia > MAX_PISTEMAISIA || viivamaisia > MAX_VIIVAMAISIA)
+    								throw new JSONException("Kyselyssä liikaa muunnoksia. Kyselyssä voi olla korkeintaan 1000 pistemäistä ja 100 viivamaista muunnosta.");
     						palautusarvot =  VkmUtil.getJsonString(jsonData, "palautusarvot") != null ? VkmUtil.toIntegerList(jsonData.getString("palautusarvot")) : null;
     						
     						//Aliasten käsittely
@@ -457,10 +475,13 @@ public class ViitekehysmuunninPalveluController {
                 }
                 
                 //Tässä luupataan muunnokset läpi ja kootaan muunnosten tulokset
+                //Long koko = 0L;
                 for (InParameters inParametrit : kyselyLista) {
                 	List<geoJsonWrapper> tempStore = palveluNG.muunnosController(inParametrit);
                 	for (geoJsonWrapper response : tempStore) {
                 		tulos.add(response);
+//                		if (koko > MAX_VASTAUSKOKO)
+//                			throw new JSONException("Vastauksen koko liian suuri. Maksimikoko on " + MAX_VASTAUSKOKO + " tavua.");
                 	}
                 }
                 
@@ -478,6 +499,27 @@ public class ViitekehysmuunninPalveluController {
                 
                 
          return new FeatureCollection(tulos, addMetadata);
+    }
+    
+    
+    private String replaceJsonWithTestJson(String original, int count, boolean valihaku) {
+    	original = null;
+    	StringBuilder testjsonquery = new StringBuilder(0);
+		int maxCount = count;
+		testjsonquery.append("[");
+		for (int i=0; i <= maxCount; i++) {
+			if (!valihaku)
+				testjsonquery.append("{\"tie\":3,\"osa\":101,\"ajorata\":\"1\",\"etaisyys\":" + i + "}");
+			else {
+				int loppu = i + 10;
+				testjsonquery.append("{\"tie\":3,\"osa\":101,\"ajorata\":\"1\",\"etaisyys\":" + i + ",\"osa_loppu\":101,\"etaisyys_loppu\":" + loppu + ",\"valihaku\":\"true\"}");
+			}
+			if (i < maxCount)
+				testjsonquery.append(",");
+		}
+		testjsonquery.append("]");
+		original = testjsonquery.toString();
+		return original;
     }
    
 }
