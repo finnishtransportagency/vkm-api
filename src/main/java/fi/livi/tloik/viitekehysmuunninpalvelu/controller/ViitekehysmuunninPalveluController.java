@@ -375,7 +375,7 @@ public class ViitekehysmuunninPalveluController {
     			}
     			//Kyseessä muunnos json-parametrin kautta
     			else if (json != null && muutKuinJsonNull){
-    				json = replaceJsonWithTestJson(json, 1100, true); //For testing, normally commented
+    				 //For testing, normally commented // json = replaceJsonWithTestJson(json, 100, true);
     				JSONArray jsonKysely;
     				JSONObject jsonData;
     				int pistemaisia = 0;
