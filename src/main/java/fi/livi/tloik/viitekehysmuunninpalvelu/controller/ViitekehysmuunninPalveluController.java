@@ -68,7 +68,7 @@ public class ViitekehysmuunninPalveluController {
     
     private boolean addMetadata = false;
     
-    public static final String API_VERSION = "4.1.7";
+    public static final String API_VERSION = "4.1.8";
     
     private static final Integer MAX_PISTEMAISIA = 1000;
     
