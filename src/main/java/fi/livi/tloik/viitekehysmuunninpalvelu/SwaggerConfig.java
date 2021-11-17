@@ -22,9 +22,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	
 	private String muutosTiedote = "<a href=\"/viitekehysmuunnin/tiedote\"><b style=\"color:red;\">Tiedote (pdf)</b>: Vanhat viitekehysmuuntimet poistuvat käytöstä 30.11.2021, uuden viitekehysmuuntimen osoite muuttuu</a>";
+	private String uusiOsoiteApi = "<b style=\"color:red;\">Uusi julkinen tuotanto-osoite</b> on 1.12. alkaen https://avoinapi.vaylapilvi.fi/viitekehysmuunnin/. Uusi julkinen testiosoite on https://avoinapi.testivaylapilvi.fi/viitekehysmuunnin/.";
+	private String uusiOsoiteSwagger = "Viitekehysmuuntimen uusi Swagger-osoite on <a href=\"https://avoinapi.vaylapilvi.fi/viitekehysmuunnin/swagger-ui.html\">https://avoinapi.vaylapilvi.fi/viitekehysmuunnin/swagger-ui.html</a>";
 	private String contactOperator = "viitekehysmuunnin@vayla.fi";
 	private String rajapintaKuvaus = "<a href=\"/viitekehysmuunnin/rajapintakuvaus\">Rajapintakuvaus (pdf), lokakuu 2020</a>";
-	private String muutoksetLatest = "<a href=\"/viitekehysmuunnin/muutokset-latest\">Kuvaus toimintojen laajennuksista rajapintakuvauksen jälkeen (pdf), toukokuu 2021</a>";
+	private String muutoksetOlder = "<a href=\"/viitekehysmuunnin/muutokset-older\">Kuvaus toimintojen laajennuksista rajapintakuvauksen jälkeen (pdf), toukokuu 2021</a>";
+	private String muutoksetLatest = "<a href=\"/viitekehysmuunnin/muutokset-latest\">Kuvaus toimintojen laajennuksista rajapintakuvauksen jälkeen (pdf), lokakuu 2021</a>";
 	private String tayttoOhje = "<b>Parametrilomakkeen avaaminen:</b><ul><li>klikkaa ensin tekstiä <i>viitekehysmuunnin-palvelu-controller</i></li><li>klikkaa laatikkoa <i>GET /muunna</i></li><li>klikkaa pikkulaatikkoa <i>Try it out</i></li></ul>";
 	
     @Bean
@@ -48,7 +51,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("VIITEKEHYSMUUNNIN")
                 .version("uusi")
-                .description(muutosTiedote + "<br/><br/>" + "Tuki: " + contactOperator + "<br/><br/>" + rajapintaKuvaus + "<br/><br/>" + muutoksetLatest + "<br/><br/><br/>" + tayttoOhje)
+                .description(muutosTiedote + "<br/><br/>" + uusiOsoiteApi + "<br/><br/>" + uusiOsoiteSwagger + "<br/><br/>" + "Tuki: " + contactOperator + "<br/><br/>" + rajapintaKuvaus + "<br/><br/>" + muutoksetOlder + "<br/><br/>" + muutoksetLatest + "<br/><br/><br/>" + tayttoOhje)
                 .build();
         }
 

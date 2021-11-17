@@ -122,11 +122,31 @@ public class ViitekehysmuunninPalveluController {
     }
     
     
+    @RequestMapping(value = "muutokset-older", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getMuutoksetOlder()
+            throws IOException {
+
+        ClassPathResource pdfFile = new ClassPathResource("VKM-muutokset-touko2021.pdf");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(pdfFile.contentLength())
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(new InputStreamResource(pdfFile.getInputStream()));
+    }
+    
+    
     @RequestMapping(value = "muutokset-latest", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> getMuutoksetLatest()
             throws IOException {
 
-        ClassPathResource pdfFile = new ClassPathResource("VKM-muutokset-touko2021.pdf");
+        ClassPathResource pdfFile = new ClassPathResource("VKM-muutokset-loka2021.pdf");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
