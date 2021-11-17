@@ -5,6 +5,9 @@ package fi.livi.tloik.viitekehysmuunninpalvelu.controller;
 import java.io.IOException;
 //import java.lang.annotation.Target;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.Map;
@@ -71,16 +74,25 @@ public class ViitekehysmuunninPalveluController {
     
     private static final Integer MAX_VIIVAMAISIA = 100;
     
+    private ZoneId zone = ZoneId.of("Europe/Helsinki");
+    private LocalDateTime PVM_SERVER = LocalDateTime.now();
+    private LocalDateTime PVM_VKM = LocalDateTime.now(zone);
+    
     //private static final Long MAX_VASTAUSKOKO = 10485760L;
     
     // Comment for build
+    
+    @RequestMapping(value = "aika", method = RequestMethod.GET)
+	@ResponseBody
+	public String getTime() {
+	    return "Päivämäärä serverillä: " + PVM_SERVER + ". VKM-päivämäärä (\"kuluva päivä\" VKM:n mukaan, eli Suomen aika) : " + PVM_VKM;
+	}
     
     @RequestMapping(value = "versio", method = RequestMethod.GET)
 	@ResponseBody
 	public String getVersion() {
 	    return "API-versio: " + API_VERSION + ", CORE-versio: " + VkmUtil.CORE_VERSION;
 	}
-    
     
     @RequestMapping(value = "tiedote", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> getMuutostiedote()
